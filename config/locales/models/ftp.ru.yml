@@ -1,0 +1,30 @@
+ru:
+  headers:
+    ftp: FTP
+    ftps: FTP
+
+  activerecord:
+    attributes:
+      ftp:
+        User: Логин
+        Dir: Путь
+        new_password: Новый пароль
+        system_user: Системный пользователь
+        ip_address: IP адрес
+
+  actions:
+    ftp: &ftp
+      create: Создать FTP
+      edit: Редактировать FTP
+      update: Сохранить FTP
+
+  flash:
+    ftp:
+      create: FTP создан
+      update: FTP обновлен
+      destroy: FTP удален
+
+  helpers:
+    submit:
+      ftp:
+        <<: *ftp

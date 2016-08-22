@@ -1,0 +1,28 @@
+ru:
+  headers:
+    rails_server: Rails сервер
+    rails_servers: Rails серверы
+
+  activerecord:
+    attributes:
+      rails_server:
+        name: Имя сервера
+        hostname: Основное доменное имя
+        user: Пользователь
+
+  actions:
+    rails_server: &rails_server
+      create: Создать Rails сервер
+      edit: Редактировать Rails сервер
+      update: Сохранить Rails сервер
+
+  flash:
+    rails_server:
+      create: Rails сервер создан
+      update: Rails сервер обновлен
+      destroy: Rails сервер удален
+
+  helpers:
+    submit:
+      rails_server:
+        <<: *rails_server

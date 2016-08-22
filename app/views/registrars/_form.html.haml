@@ -1,0 +1,9 @@
+- breadcrumb @registrar
+
+= link_to_back registrars_path
+
+= form_wrapper(t("actions.registrar.#{action}")) do
+  = permitted_form_for(@registrar) do |f|
+    = f.error_notification
+    = f.input :name
+    = f.button :submit

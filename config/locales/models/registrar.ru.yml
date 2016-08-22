@@ -1,0 +1,26 @@
+ru:
+  headers:
+    registrar: Регистратор доменов
+    registrars: Регистраторы доменов
+
+  activerecord:
+    attributes:
+      registrar:
+        name: Имя
+
+  actions:
+    registrar: &registrar
+      create: Создать регистратора доменов
+      edit: Редактировать регистратора доменов
+      update: Сохранить регистратора доменов
+
+  flash:
+    registrar:
+      create: Регистратор доменов создан
+      update: Регистратор доменов обновлен
+      destroy: Регистратор доменов удален
+
+  helpers:
+    submit:
+      registrar:
+        <<: *registrar

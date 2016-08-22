@@ -1,0 +1,29 @@
+ru:
+  headers:
+    dns_record: DNS запись
+    dns_records: DNS записи
+
+  activerecord:
+    attributes:
+      dns_record:
+        origin: Имя DNS записи
+        type: Тип
+        mx_priority: Приоритет mx
+        value: Значение
+
+  actions:
+    dns_record: &dns_record
+      create: Создать DNS запись
+      edit: Редактировать DNS запись
+      update: Сохранить DNS запись
+
+  flash:
+    dns_record:
+      create: DNS запись создана
+      update: DNS запись обновлена
+      destroy: DNS запись удалена
+
+  helpers:
+    submit:
+      dns_record:
+        <<: *dns_record

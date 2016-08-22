@@ -1,0 +1,14 @@
+- breadcrumb @system_user
+
+= link_to_back system_users_path
+
+= form_wrapper(t("actions.system_user.#{action}")) do
+  = permitted_form_for @system_user do |f|
+    = f.error_notification
+    = f.input :name
+    = f.input :new_password
+    = f.input :uid
+    = f.association :system_group
+    = f.association :user
+    = f.association :system_user_shell
+    = f.button :submit

@@ -1,0 +1,59 @@
+class SystemUser < ActiveRecord::Base
+  include PasswordGenerator
+
+  belongs_to :user
+  belongs_to :system_group
+  belongs_to :system_user_shell
+  has_many :apaches
+  has_many :ftps
+
+  default_scope { order(:name) }
+
+  validates :name, :uid, :user, :system_group, :system_user_shell, presence: true
+  validates :name, :uid, uniqueness: true
+
+  attr_accessor :new_password
+  before_save :set_updated, :hash_new_password
+
+  scope :updated, -> { where(updated: true) }
+  scope :not_deleted, -> { where(is_deleted: false) }
+  scope :is_deleted, -> { where(is_deleted: true) }
+
+  def set_defaults(nologin = false)
+    self.uid = 1 + SystemUser.maximum(:uid).to_i
+    self.system_group = SystemGroup.find_by_name('webuser')
+    self.system_user_shell = if nologin
+                               SystemUserShell.get_nologin_shell
+                             else
+                               SystemUserShell.get_default_shell
+                             end
+  end
+
+  def destroy
+    update_attribute :is_deleted, true
+  end
+
+  def to_chef_json(action)
+    system_user_hash = serializable_hash
+    system_user_hash.keep_if do |key, value|
+      %w(name uid).include?(key)
+    end
+    system_user_hash['group'] = system_group.name
+    system_user_hash['shell'] = system_user_shell.path
+    system_user_hash['action'] = if action == :create
+                             'create'
+                           elsif action == :destroy
+                             'destroy'
+                           end
+    system_user_hash.to_json
+  end
+
+  private
+  def set_updated
+    self.updated = true
+  end
+
+  def hash_new_password
+    self.hashed_password = new_password.crypt('$6$' + generate_random_password(16)) if new_password.present?
+  end
+end

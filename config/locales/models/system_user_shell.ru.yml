@@ -1,0 +1,28 @@
+ru:
+  headers:
+    system_user_shell: Системная оболочка
+    system_user_shells: Системные оболочки
+
+  activerecord:
+    attributes:
+      system_user_shell:
+        name: Название
+        path: Путь
+        is_default: По умолчанию
+
+  actions:
+    system_user_shell: &system_user_shell
+      create: Создать системную оболочку
+      edit: Редактировать системную оболочку
+      update: Сохранить системную оболочку
+
+  flash:
+    system_user_shell:
+      create: Системная оболочка создана
+      update: Системная оболочка обновлена
+      destroy: Системная оболочка удалена
+
+  helpers:
+    submit:
+      system_user_shell:
+        <<: *system_user_shell

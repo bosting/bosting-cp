@@ -1,0 +1,34 @@
+ru:
+  headers:
+    user: Пользователь
+    users: Пользователи
+
+  activerecord:
+    attributes:
+      user:
+        name: Имя
+        email: Email
+        password: Пароль
+        password_confirmation: Повторите пароль
+        is_admin: Администратор
+        remember_me: Запомнить меня
+
+  actions:
+    user: &user
+      create: Создать пользователя
+      edit: Редактировать пользователя
+      update: Сохранить пользователя
+
+  flash:
+    user:
+      create: Пользователь создан
+      update: Пользователь обновлен
+      destroy: Пользователь удален
+
+  helpers:
+    label:
+      user:
+        remember_me: French text here!
+    submit:
+      user:
+        <<: *user

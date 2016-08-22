@@ -1,0 +1,10 @@
+- breadcrumb @ip_address
+
+= link_to_back ip_addresses_path
+
+= form_wrapper(t("actions.ip_address.#{action}")) do
+  = permitted_form_for(@ip_address) do |f|
+    = f.error_notification
+    = f.input :name
+    = f.input :ip
+    = f.button :submit

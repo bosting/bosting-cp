@@ -1,0 +1,17 @@
+- breadcrumb @domain
+
+= link_to_back domains_path
+
+= form_wrapper(t("actions.domain.#{action}")) do
+  = permitted_form_for(@domain) do |f|
+    = f.error_notification
+    = f.input :name
+    = f.input :email
+    = f.association :ns1_ip_address
+    = f.association :ns2_ip_address
+    = f.association :user
+    = f.input :active
+    = f.input :add_default_records, as: :boolean
+    = f.input :add_default_mx_records, as: :boolean
+    = f.input :add_gmail_mx_records, as: :boolean
+    = f.button :submit

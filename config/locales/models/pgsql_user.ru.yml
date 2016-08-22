@@ -1,0 +1,30 @@
+ru:
+  headers:
+    pgsql_user: PgSQL
+    pgsql_users: PgSQL
+
+  activerecord:
+    attributes:
+      pgsql_user:
+        login: Имя пользователя
+        apache: Апач
+        rails_server: Сервер Rails
+        new_password: Новый пароль
+        create_db: Создать базу с таким же именем
+
+  actions:
+    pgsql_user: &pgsql_user
+      create: Создать пользователя PgSQL
+      edit: Редактировать пользователя PgSQL
+      update: Сохранить пользователя PgSQL
+
+  flash:
+    pgsql_user:
+      create: PgSQL пользователь создан
+      update: PgSQL пользователь обновлен
+      destroy: PgSQL пользователь удален
+
+  helpers:
+    submit:
+      pgsql_user:
+        <<: *pgsql_user

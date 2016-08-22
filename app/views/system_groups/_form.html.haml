@@ -1,0 +1,10 @@
+- breadcrumb @system_group
+
+= link_to_back system_groups_path
+
+= form_wrapper(t("actions.system_group.#{action}")) do
+  = permitted_form_for(@system_group) do |f|
+    = f.error_notification
+    = f.input :gid
+    = f.input :name
+    = f.button :submit

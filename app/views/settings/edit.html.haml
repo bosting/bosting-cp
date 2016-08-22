@@ -1,0 +1,9 @@
+- breadcrumb @setting
+
+= link_to_back settings_path
+
+= form_wrapper(t('actions.setting.edit')) do
+  = permitted_form_for(@setting) do |f|
+    = f.error_notification
+    = f.input :value
+    = f.button :submit

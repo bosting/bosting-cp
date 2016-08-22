@@ -1,0 +1,27 @@
+ru:
+  headers:
+    mysql_db: MySQL база
+    mysql_dbs: MySQL базы
+
+  activerecord:
+    attributes:
+      mysql_db:
+        db_name: Имя базы
+        user_name: Имя пользователя
+
+  actions:
+    mysql_db: &mysql_db
+      create: Создать базу MySQL
+      edit: Редактировать базу MySQL
+      update: Сохранить базу MySQL
+
+  flash:
+    mysql_db:
+      create: MySQL база создана
+      update: MySQL база обновлена
+      destroy: MySQL база удалена
+
+  helpers:
+    submit:
+      mysql_db:
+        <<: *mysql_db

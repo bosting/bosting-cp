@@ -1,0 +1,8 @@
+ru:
+  headers:
+    rails_server_aliases: Синонимы
+
+  activerecord:
+    attributes:
+      rails_server_alias:
+        name: Хост

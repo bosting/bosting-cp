@@ -1,0 +1,19 @@
+- breadcrumb @rails_server
+
+= link_to_back rails_servers_path
+
+= permitted_nested_form_for(@rails_server) do |f|
+  = f.error_notification
+  = field_set_tag do
+    = f.input :name
+    = f.input :hostname
+    = f.association :user
+  = field_set_tag t('headers.rails_server_aliases') do
+    = f.simple_fields_for :rails_server_aliases do |g|
+      = g.label :name, class: 'control-label'
+      .input-group
+        = g.text_field :name, class: 'form-control'
+        %span.input-group-addon= g.link_to_remove admin_icon(:destroy)
+    - if f.editable_field?(:rails_server_aliases)
+      = f.link_to_add('Добавить', :rails_server_aliases)
+  = f.button :submit

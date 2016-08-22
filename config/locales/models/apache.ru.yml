@@ -1,0 +1,41 @@
+ru:
+  headers:
+    apache: Апач
+    apaches: Апачи
+
+  activerecord:
+    attributes:
+      apache:
+        system_user: Системный пользователь
+        system_group: Системная группа
+        user: Пользователь
+        ip_address: IP адрес
+        port: порт
+        active: Включен
+        skip_nginx: Пропустить конфиг nginx
+        updated: Обновлен
+        apache_variation: Версия Apache и PHP
+        destroy_user: Удалить пользователя
+        destroy_domains: Удалить домены
+        destroy_ftps: Удалить ftp логины
+        destroy_system_user: Удалить системного пользователя
+        destroy_mysql_users: Удалить все базы и всех пользователей MySQL
+        destroy_pgsql_users: Удалить все базы и всех пользователей PgSQL
+
+  actions:
+    apache: &apache
+      create: Создать апач
+      edit: Редактировать апач
+      update: Сохранить апач
+      destroy: Удалить апач
+
+  flash:
+    apache:
+      create: Апач создан
+      update: Апач обновлен
+      destroy: Апач удален
+
+  helpers:
+    submit:
+      apache:
+        <<: *apache

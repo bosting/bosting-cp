@@ -1,0 +1,16 @@
+- title t('headers.mysql_dbs')
+- breadcrumb :mysql_dbs, @mysql_user
+
+= link_to_new(:mysql_db, @mysql_user)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.mysql_db.db_name')
+    %th.btn-col &nbsp;
+
+  - @mysql_dbs.each do |mysql_db|
+    %tr
+      %td.btn-col= link_to_edit [@mysql_user, mysql_db]
+      %td= mysql_db.db_name
+      %td.btn-col= link_to_destroy [@mysql_user, mysql_db]

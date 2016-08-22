@@ -1,0 +1,10 @@
+- breadcrumb @email_domain
+
+= link_to_back email_domains_path
+
+= form_wrapper(t("actions.email_domain.#{action}")) do
+  = permitted_form_for(@email_domain) do |f|
+    = f.error_notification
+    = f.input :name
+    = f.association :user
+    = f.button :submit

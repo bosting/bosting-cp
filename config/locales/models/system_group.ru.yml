@@ -1,0 +1,27 @@
+ru:
+  headers:
+    system_group: Системная группа
+    system_groups: Системные группы
+
+  activerecord:
+    attributes:
+      system_group:
+        gid: Идентификатор в системе
+        name: Имя
+
+  actions:
+    system_group: &system_group
+      create: Создать системную группу
+      edit: Редактировать системную группу
+      update: Сохранить системную группу
+
+  flash:
+    system_group:
+      create: Системная группа создана
+      update: Системная группа обновлена
+      destroy: Системная группа удалена
+
+  helpers:
+    submit:
+      system_group:
+        <<: *system_group

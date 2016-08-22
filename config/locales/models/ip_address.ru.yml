@@ -1,0 +1,27 @@
+ru:
+  headers:
+    ip_address: IP адрес
+    ip_addresses: IP адреса
+
+  activerecord:
+    attributes:
+      ip_address:
+        name: Имя
+        ip: IP Адрес
+
+  actions:
+    ip_address: &ip_address
+      create: Создать IP адрес
+      edit: Редактировать IP адрес
+      update: Сохранить IP адрес
+
+  flash:
+    ip_address:
+      create: IP адрес создан
+      update: IP адрес обновлен
+      destroy: IP адрес удален
+
+  helpers:
+    submit:
+      ip_address:
+        <<: *ip_address

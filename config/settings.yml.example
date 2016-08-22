@@ -1,0 +1,3 @@
+server_domain: bosting.net
+panel_domain: cp.bosting.net
+panel_ssl: true

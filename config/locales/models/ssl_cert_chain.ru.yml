@@ -1,0 +1,27 @@
+ru:
+  headers:
+    ssl_cert_chain: Цепочка промежуточных сертификатов
+    ssl_cert_chains: Цепочки промежуточных сертификатов
+
+  activerecord:
+    attributes:
+      ssl_cert_chain:
+        name: Название
+        certificate: Сертификаты
+
+  actions:
+    ssl_cert_chain: &ssl_cert_chain
+      create: Создать цепочку сертификатов
+      edit: Редактировать цепочку сертификатов
+      update: Сохранить цепочку сертификатов
+
+  flash:
+    ssl_cert_chain:
+      create: Цепочка создана
+      update: Цепочка обновлена
+      destroy: Цепочка удалена
+
+  helpers:
+    submit:
+      ssl_cert_chain:
+        <<: *ssl_cert_chain

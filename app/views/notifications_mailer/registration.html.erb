@@ -1,0 +1,39 @@
+<%- if @user_password -%>
+<h3>Панель управления</h3>
+<p>Логин: <%= @login %><br />
+Пароль: <%= @user_password %><br />
+<%= link_to(@panel_url, @panel_url) %></p>
+
+<%- end -%>
+<%- if @ssh_password -%>
+<h3>SSH</h3>
+<p>Логин: <%= @login %><br />
+Пароль: <%= @ssh_password %><br />
+Сервер: <%= @domain %> или <%= @server_domain %></p>
+
+<%- end -%>
+<%- if @ftp_password -%>
+<h3>FTP</h3>
+<p>Логин: <%= @login %><br />
+Пароль: <%= @ftp_password %><br />
+Сервер: <%= @domain %> или <%= @server_domain %></p>
+
+<%- end -%>
+<%- if @mysql_password -%>
+<h3>MySQL</h3>
+<p>Логин: <%= @login %><br />
+Пароль: <%= @mysql_password %><br />
+База: <%= @login %><br />
+Сервер: localhost<br />
+UNIX Сокет: <%= @mysql_socket %><br />
+<%= link_to("#{@panel_url}/phpmyadmin", "#{@panel_url}/phpmyadmin") %></p>
+<%- end -%>
+
+<%- if @pgsql_password -%>
+<h3>Postgres</h3>
+<p>Логин: <%= @login %><br />
+Пароль: <%= @pgsql_password %><br />
+База: <%= @login %><br />
+Сервер: localhost<br />
+<%= link_to("#{@panel_url}/phppgadmin", "#{@panel_url}/phppgadmin") %></p>
+<%- end -%>

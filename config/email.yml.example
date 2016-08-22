@@ -1,0 +1,8 @@
+:delivery_method: :smtp
+:smtp_settings:
+  :address: smtp.example.com
+  :port: 25
+  :domain: smtp.example.com
+  :authentication: plain
+  :user_name: user_name
+  :password: password

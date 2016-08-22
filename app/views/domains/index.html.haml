@@ -1,0 +1,25 @@
+- title t('headers.domains')
+- breadcrumb :domains
+
+- if can? :create, Domain
+  = link_to_new(:domain)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th.btn-col.text-nowrap= t('headers.dns_records')
+    %th= t('activerecord.attributes.domain.name')
+    %th= t('activerecord.attributes.domain.ns1_ip_address')
+    %th= t('activerecord.attributes.domain.ns2_ip_address')
+    - if @can_destroy
+      %th.btn-col &nbsp;
+
+  - @domains.each do |domain|
+    %tr
+      %td.btn-col= link_to_edit domain
+      %td.btn-col.text-center= link_to admin_icon(:dns_records), domain_dns_records_path(domain), class: 'btn btn-default btn-info', title: 'Перейти к ресурсным записям', 'data-toggle': 'tooltip'
+      %td= domain.name
+      %td= domain.ns1_ip_address.name
+      %td= domain.ns2_ip_address.name
+      - if @can_destroy
+        %td.btn-col= link_to_destroy domain

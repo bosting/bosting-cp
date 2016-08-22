@@ -1,0 +1,25 @@
+- title t('headers.email_domains')
+- breadcrumb :email_domains
+
+- if can? :new, EmailDomain
+  = link_to_new(:email_domain)
+
+%table{ class: table_class }
+  %tr
+    - if @can_edit
+      %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.email_domain.name')
+    %th.text-center= t('activerecord.attributes.email_domain.mail_users')
+    %th.text-center= t('activerecord.attributes.email_domain.mail_aliases')
+    - if @can_edit
+      %th.btn-col &nbsp;
+
+  - @email_domains.each do |email_domain|
+    %tr
+      - if @can_edit
+        %td.btn-col= link_to_edit email_domain
+      %td= email_domain.name
+      %td.text-center= link_to admin_icon(:email_users), email_domain_email_users_path(email_domain), class: 'btn btn-default btn-info'
+      %td.text-center= link_to admin_icon(:mail_aliases), email_domain_email_aliases_path(email_domain), class: 'btn btn-default btn-info'
+      - if @can_edit
+        %td.btn-col= link_to_destroy email_domain

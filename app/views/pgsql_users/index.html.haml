@@ -1,0 +1,18 @@
+- title t('headers.pgsql_users')
+- breadcrumb :pgsql_users
+
+= link_to_new(:pgsql_user)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.pgsql_user.login')
+    %th &nbsp;
+
+  - @pgsql_users.each do |pgsql_user|
+    %tr
+      %td.btn-col= link_to_edit pgsql_user
+      %td.btn-col.text-center= link_to admin_icon(:databases), pgsql_user_pgsql_dbs_path(pgsql_user), class: 'btn btn-default btn-info', title: 'Перейти к PostreSQL базам', 'data-toggle': 'tooltip'
+      %td= pgsql_user.login
+      %td.btn-col= link_to_destroy pgsql_user

@@ -1,0 +1,28 @@
+ru:
+  headers:
+    edit_user: Пользователь
+    edit_users: Пользователи
+
+  activerecord:
+    attributes:
+      edit_user:
+        name: Имя
+        email: Email
+        is_admin: Администратор
+
+  actions:
+    edit_user: &edit_user
+      create: Создать пользователя
+      edit: Редактировать пользователя
+      update: Сохранить пользователя
+
+  flash:
+    edit_user:
+      create: Пользователь создан
+      update: Пользователь обновлен
+      destroy: Пользователь удален
+
+  helpers:
+    submit:
+      edit_user:
+        <<: *edit_user

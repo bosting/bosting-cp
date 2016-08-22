@@ -1,0 +1,16 @@
+- title t('headers.registrars')
+- breadcrumb :registrars
+
+= link_to_new(:registrar)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.registrar.name')
+    %th.btn-col &nbsp;
+
+  - @registrars.each do |registrar|
+    %tr
+      %td.btn-col= link_to_edit registrar
+      %td= registrar.name
+      %td.btn-col= link_to_destroy registrar

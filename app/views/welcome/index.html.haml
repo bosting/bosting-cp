@@ -1,0 +1,40 @@
+- title 'Панель управления'
+
+= link_to_new :quick_registration
+
+.col-sm-4
+  %h2.h3 Услуги
+  .list-group
+    = link_to t('headers.domains'), domains_path, class: 'list-group-item'
+    = link_to t('headers.apaches'), apaches_path, class: 'list-group-item'
+    = link_to t('headers.ftps'), ftps_path, class: 'list-group-item'
+    = link_to t('headers.email_domains'), email_domains_path, class: 'list-group-item'
+    = link_to t('headers.mysql_users'), mysql_users_path, class: 'list-group-item'
+    = link_to t('headers.pgsql_users'), pgsql_users_path, class: 'list-group-item'
+    = link_to t('headers.rails_servers'), rails_servers_path, class: 'list-group-item'
+
+.col-sm-4
+  %h2.h3 Настройки
+  .list-group
+    = link_to t('headers.users'), edit_users_path, class: 'list-group-item'
+    - if can?(:index, IpAddress)
+      = link_to t('headers.ip_addresses'), ip_addresses_path, class: 'list-group-item'
+    - if can?(:index, SystemUser)
+      = link_to t('headers.system_users'), system_users_path, class: 'list-group-item'
+    - if can?(:index, SystemGroup)
+      = link_to t('headers.system_groups'), system_groups_path, class: 'list-group-item'
+    - if can?(:index, SystemUserShell)
+      = link_to t('headers.system_user_shells'), system_user_shells_path, class: 'list-group-item'
+    - if can?(:index, Registrar)
+      = link_to t('headers.registrars'), registrars_path, class: 'list-group-item'
+    - if can?(:index, Setting)
+      = link_to t('headers.settings'), settings_path, class: 'list-group-item'
+    - if can?(:index, SslCertChain)
+      = link_to t('headers.ssl_cert_chains'), ssl_cert_chains_path, class: 'list-group-item'
+
+.col-sm-4
+  %h2.h3 Ссылки
+  .list-group
+    = link_to(('PhpMyAdmin ' + admin_icon(:external_link)).html_safe, '/phpmyadmin/', target: '_blank', class: 'list-group-item')
+    = link_to(('PhpPgAdmin ' + admin_icon(:external_link)).html_safe, '/phppgadmin/', target: '_blank', class: 'list-group-item')
+    = link_to(('Roundcube ' + admin_icon(:external_link)).html_safe, '/roundcube/', target: '_blank', class: 'list-group-item')

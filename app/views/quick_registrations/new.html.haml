@@ -1,0 +1,23 @@
+- title t('actions.quick_registration.create'), false
+- javascript 'quick_registration'
+- breadcrumb :quick_registration
+
+= link_to_back root_path
+
+= form_wrapper(t('actions.quick_registration.create')) do
+  = permitted_form_for(@quick_registration) do |f|
+    = f.error_notification
+    = f.input :domain, label: t('activerecord.attributes.quick_registration.domain')
+    = f.input :ns1_ip_address, label: t('activerecord.attributes.quick_registration.ns1_ip_address'), collection: IpAddress.get_collection, selected: IpAddress.get_default_ns1_ip_id
+    = f.input :ns2_ip_address, label: t('activerecord.attributes.quick_registration.ns2_ip_address'), collection: IpAddress.get_collection, selected: IpAddress.get_default_ns2_ip_id
+    = f.input :user, label: t('activerecord.attributes.quick_registration.user'), collection: User.get_collection, include_blank: 'Создать нового', required: true
+    = f.input :email, label: t('activerecord.attributes.quick_registration.email'), required: true, wrapper_html: { style: @quick_registration.user.present? ? 'display:none' : 'display:block' }
+    = f.input :login, label: t('activerecord.attributes.quick_registration.login')
+    = f.input :apache_variation, label: t('activerecord.attributes.quick_registration.apache_variation'), collection: ApacheVariation.get_collection, selected: ApacheVariation.get_default_id
+    = f.input :ip_address, label: t('activerecord.attributes.quick_registration.ip_address'), collection: IpAddress.get_collection, selected: IpAddress.get_default_apache_ip_id
+    = f.input :with_ssh, as: :boolean, label: t('activerecord.attributes.quick_registration.with_ssh')
+    = f.input :with_ftp, as: :boolean, label: t('activerecord.attributes.quick_registration.with_ftp')
+    = f.input :with_mysql, as: :boolean, label: t('activerecord.attributes.quick_registration.with_mysql')
+    = f.input :with_pgsql, as: :boolean, label: t('activerecord.attributes.quick_registration.with_pgsql')
+    -#= f.input :with_email, as: :boolean, label: t('activerecord.attributes.quick_registration.with_email')
+    = f.button :submit

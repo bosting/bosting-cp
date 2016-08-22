@@ -1,0 +1,18 @@
+- title t('headers.ip_addresses')
+- breadcrumb :ip_addresses
+
+= link_to_new(:ip_address)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.ip_address.name')
+    %th= t('activerecord.attributes.ip_address.ip')
+    %th.btn-col &nbsp;
+
+  - @ip_addresses.each do |ip_address|
+    %tr
+      %td.btn-col= link_to_edit ip_address
+      %td= ip_address.name
+      %td= ip_address.ip
+      %td.btn-col= link_to_destroy ip_address

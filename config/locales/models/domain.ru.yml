@@ -1,0 +1,29 @@
+ru:
+  headers:
+    domain: Домен
+    domains: Домены
+
+  activerecord:
+    attributes:
+      domain:
+        name: Имя домена
+        ns1_ip_address: Имя первичного DNS сервера
+        ns2_ip_address: Имя вторичного DNS сервера
+        active: Активный
+
+  actions:
+    domain: &domain
+      create: Создать домен
+      edit: Редактировать домен
+      update: Сохранить домен
+
+  flash:
+    domain:
+      create: Домен создан
+      update: Домен обновлен
+      destroy: Домен удален
+
+  helpers:
+    submit:
+      domain:
+        <<: *domain

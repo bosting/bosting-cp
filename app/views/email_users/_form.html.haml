@@ -1,0 +1,12 @@
+- breadcrumb @email_user, @email_domain
+
+= link_to_back email_domain_email_users_path(@email_domain)
+
+= form_wrapper(t("actions.email_user.#{action}")) do
+  = permitted_form_for([@email_domain, @email_user], wrapper: :vertical_input_group) do |f|
+    = f.error_notification
+    = f.input :username do
+      = f.input_field :username, class: 'form-control'
+      %span.input-group-addon= "@#{@email_domain.name}"
+    = f.input :new_password
+    = f.button :submit

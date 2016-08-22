@@ -1,0 +1,17 @@
+- breadcrumb @mysql_user
+
+= link_to_back mysql_users_path
+
+= form_wrapper(t("actions.mysql_user.#{action}")) do
+  = permitted_form_for(@mysql_user) do |f|
+    = f.error_notification
+    = field_set_tag do
+      = f.input :login
+      = f.input :new_password, required: @mysql_user.new_record?
+      - if @mysql_user.new_record?
+        = f.input :create_db, as: :boolean
+    = field_set_tag do
+      = f.association :apache, collection: @apaches, required: true
+      или
+      = f.association :rails_server, collection: @rails_servers, required: true
+    = f.button :submit

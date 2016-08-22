@@ -1,0 +1,28 @@
+ru:
+  headers:
+    email_user: Email ящик
+    email_users: Email ящики
+
+  activerecord:
+    attributes:
+      email_user:
+        username: Имя ящика
+        email: Email ящик
+        new_password: Новый пароль
+
+  actions:
+    email_user: &email_user
+      create: Создать email ящик
+      edit: Редактировать email ящик
+      update: Сохранить email ящик
+
+  flash:
+    email_user:
+      create: Email ящик создан
+      update: Email ящик обновлен
+      destroy: Email ящик удален
+
+  helpers:
+    submit:
+      email_user:
+        <<: *email_user

@@ -1,0 +1,11 @@
+- breadcrumb @<%= singular_table_name %>
+
+= link_to_back <%= plural_table_name %>_path
+
+= form_wrapper(t("actions.<%= singular_table_name %>.#{action}") do
+  = permitted_form_for(@<%= singular_table_name %>) do |f|
+    = f.error_notification
+<%- attributes.each do |attribute| -%>
+    = f.<%= attribute.reference? ? 'association' : 'input' %> :<%= attribute.name %>
+<%- end -%>
+    = f.button :submit

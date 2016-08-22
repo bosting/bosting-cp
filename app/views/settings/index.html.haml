@@ -1,0 +1,16 @@
+- title t('headers.settings')
+- breadcrumb :settings
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.setting.description')
+    %th= t('activerecord.attributes.setting.name')
+    %th= t('activerecord.attributes.setting.value')
+
+  - @settings.each do |setting|
+    %tr
+      %td.btn-col= link_to_edit setting
+      %td= setting.description
+      %td= setting.name
+      %td= setting.value

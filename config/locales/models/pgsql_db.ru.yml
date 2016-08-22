@@ -1,0 +1,27 @@
+ru:
+  headers:
+    pgsql_db: PgSQL база
+    pgsql_dbs: PgSQL базы
+
+  activerecord:
+    attributes:
+      pgsql_db:
+        db_name: Имя базы
+        user_name: Имя пользователя
+
+  actions:
+    pgsql_db: &pgsql_db
+      create: Создать базу PgSQL
+      edit: Редактировать базу PgSQL
+      update: Сохранить базу PgSQL
+
+  flash:
+    pgsql_db:
+      create: PgSQL база создана
+      update: PgSQL база обновлена
+      destroy: PgSQL база удалена
+
+  helpers:
+    submit:
+      pgsql_db:
+        <<: *pgsql_db

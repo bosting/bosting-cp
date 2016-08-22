@@ -1,0 +1,16 @@
+- title t('headers.pgsql_dbs')
+- breadcrumb :pgsql_dbs, @pgsql_user
+
+= link_to_new(:pgsql_db, @pgsql_user)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.pgsql_db.db_name')
+    %th.btn-col &nbsp;
+
+  - @pgsql_dbs.each do |pgsql_db|
+    %tr
+      %td.btn-col= link_to_edit [@pgsql_user, pgsql_db]
+      %td= pgsql_db.db_name
+      %td.btn-col= link_to_destroy [@pgsql_user, pgsql_db]

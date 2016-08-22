@@ -1,0 +1,22 @@
+- title t('headers.dns_records')
+- breadcrumb :dns_records, @domain
+
+= link_to_new(:dns_record, @domain)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.dns_record.origin')
+    %th= t('activerecord.attributes.dns_record.type')
+    %th= t('activerecord.attributes.dns_record.mx_priority')
+    %th= t('activerecord.attributes.dns_record.value')
+    %th.btn-col &nbsp;
+
+  - @dns_records.each do |dns_record|
+    %tr
+      %td.btn-col= link_to_edit [@domain, dns_record]
+      %td= dns_record.origin
+      %td= dns_record.dns_record_type.name
+      %td= dns_record.mx_priority
+      %td= ip_address_value dns_record
+      %td.btn-col= link_to_destroy [@domain, dns_record]

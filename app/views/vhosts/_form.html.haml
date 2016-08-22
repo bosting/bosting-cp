@@ -1,0 +1,39 @@
+- breadcrumb @vhost, @apache
+
+= link_to_back apache_vhosts_path(@apache)
+
+= form_wrapper(t("actions.vhost.#{action}")) do
+  = permitted_nested_form_for([@apache, @vhost], wrapper: :vertical_input_group) do |f|
+    = f.error_notification
+    = tabs_block do
+      = tab_presentation 'main', 'Основное', true
+      = tab_presentation 'indexes', 'Индексы'
+      = tab_presentation 'ssl', 'SSL'
+    = tabs_content do
+      = tab_pane('main', true) do
+        = field_set_tag do
+          = f.input :server_name
+          = f.input :primary
+          = f.input :active
+          = f.input :skip_nginx
+        = field_set_tag t('headers.vhost_aliases') do
+          = f.simple_fields_for :vhost_aliases do |g|
+            = g.label :name, class: 'control-label'
+            .input-group
+              = g.text_field :name, class: 'form-control'
+              %span.input-group-addon= g.link_to_remove admin_icon(:destroy)
+          - if f.editable_field?(:vhost_aliases)
+            = f.link_to_add('Добавить', :vhost_aliases)
+      = tab_pane('indexes') do
+        = field_set_tag do
+          = f.input :directory_index
+          = f.input :indexes
+      = tab_pane('ssl') do
+        = field_set_tag do
+          = f.input :ssl
+          = f.association :ssl_ip_address, required: true
+          = f.input :ssl_port, required: true
+          = f.association :ssl_cert_chain
+          = f.input :ssl_key, required: true
+          = f.input :ssl_certificate, required: true
+    = f.button :submit

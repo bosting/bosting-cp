@@ -1,0 +1,30 @@
+ru:
+  activerecord:
+    attributes:
+      quick_registration:
+        user: Пользователь
+        domain: Домен
+        ns1_ip_address: NS1
+        ns2_ip_address: NS2
+        login: Логин
+        email: E-mail
+        apache_variation: Версия Apache и PHP
+        ip_address: IP адрес
+        with_ssh: Создать SSH
+        with_ftp: Создать FTP
+        with_mysql: Создать MySQL базу
+        with_pgsql: Создать Postgres базу
+        with_email: С почтой
+
+  actions:
+    quick_registration: &quick_registration
+      create: Быстрая регистрация площадки
+
+  flash:
+    quick_registration:
+      create: Площадка создана
+
+  helpers:
+    submit:
+      quick_registration:
+        <<: *quick_registration

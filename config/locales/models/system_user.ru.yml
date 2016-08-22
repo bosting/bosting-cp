@@ -1,0 +1,31 @@
+ru:
+  headers:
+    system_user: Системный пользователь
+    system_users: Системные пользователи
+
+  activerecord:
+    attributes:
+      system_user:
+        uid: Идентификатор в системе
+        system_group: Системная группа
+        name: Имя пользователя
+        new_password: Новый пароль
+        user: Пользователь
+        system_user_shell: Оболочка
+
+  actions:
+    system_user: &system_user
+      create: Создать системного пользователя
+      edit: Редактировать системного пользователя
+      update: Сохранить системного пользователя
+
+  flash:
+    system_user:
+      create: Системный пользователь создан
+      update: Системный пользователь обновлен
+      destroy: Системный пользователь удален
+
+  helpers:
+    submit:
+      system_user:
+        <<: *system_user

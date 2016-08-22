@@ -1,0 +1,62 @@
+class Vhost < ActiveRecord::Base
+  belongs_to :apache
+  has_many :vhost_aliases, dependent: :delete_all
+  belongs_to :ssl_cert_chain
+  belongs_to :ssl_ip_address, class_name: IpAddress
+
+  accepts_nested_attributes_for :vhost_aliases, allow_destroy: true
+
+  validates :server_name, :directory_index, presence: true
+  validates :server_name, uniqueness: true
+  validates :ssl_port, uniqueness: { scope: :ssl_ip_address_id }, if: :ssl
+  validates :ssl_ip_address, :ssl_port, :ssl_key, :ssl_certificate, presence: true, if: :ssl
+
+  before_save :set_updated
+  before_destroy :set_updated
+
+  scope :active, -> { where(active: true, is_deleted: false) }
+  scope :not_deleted, -> { where(is_deleted: false) }
+  scope :is_deleted, -> { where(is_deleted: true) }
+
+  def set_defaults
+    if self.apache.vhosts.size == 0
+      self.primary = true
+    end
+    self.directory_index = Setting.get('directory_index')
+    self.ssl_port = 443
+  end
+
+  def name
+    self.server_name
+  end
+
+  def destroy
+    update_attribute :is_deleted, true
+  end
+
+  def to_chef_json(action)
+    vhost_hash = serializable_hash
+    vhost_hash.keep_if do |key, value|
+      %w(directory_index).include?(key)
+    end
+    vhost_hash['port'] = apache.port
+    vhost_hash['show_indexes'] = indexes
+    vhost_hash['server_alias'] = vhost_aliases.map(&:name).join(' ')
+    vhost_hash['name'] = apache.vhosts.where(primary: true).first.server_name
+    vhost_hash['user'] = apache.system_user.name
+    vhost_hash['group'] = apache.system_group.name
+    vhost_hash['ip'] = apache.ip_address.ip
+    vhost_hash['php_version'] = apache.apache_variation.php_version[0]
+    vhost_hash['action'] = if action == :create
+                              'create'
+                            elsif action == :destroy
+                              'destroy'
+                            end
+    vhost_hash.to_json
+  end
+
+  protected
+  def set_updated
+    apache.update_attribute(:updated, true) if apache.active?
+  end
+end

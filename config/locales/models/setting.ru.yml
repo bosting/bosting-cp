@@ -1,0 +1,26 @@
+ru:
+  headers:
+    setting: Настройка сервера
+    settings: Настройки сервера
+
+  activerecord:
+    attributes:
+      setting:
+        name: Название
+        value: Значение
+        description: Описание
+
+  actions:
+    setting: &setting
+      edit: Редактировать настройку
+      update: Сохранить настройку
+
+  flash:
+    setting:
+      update: Настройка обновлена
+      destroy: Настройка удалена
+
+  helpers:
+    submit:
+      setting:
+        <<: *setting

@@ -1,0 +1,21 @@
+- title t('headers.system_users')
+- breadcrumb :system_users
+
+- if can? :create, SystemUser
+  = link_to_new(:system_user)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.system_user.name')
+    %th= t('activerecord.attributes.system_user.uid')
+    - if @can_destroy
+      %th.btn-col &nbsp;
+
+  - @system_users.each do |system_user|
+    %tr
+      %td.btn-col= link_to_edit system_user
+      %td= system_user.name
+      %td= system_user.uid
+      - if @can_destroy
+        %td.btn-col= link_to_destroy system_user

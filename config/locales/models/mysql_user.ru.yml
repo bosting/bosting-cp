@@ -1,0 +1,30 @@
+ru:
+  headers:
+    mysql_user: MySQL
+    mysql_users: MySQL
+
+  activerecord:
+    attributes:
+      mysql_user:
+        login: Имя пользователя
+        apache: Апач
+        rails_server: Сервер Rails
+        new_password: Новый пароль
+        create_db: Создать базу с таким же именем
+
+  actions:
+    mysql_user: &mysql_user
+      create: Создать пользователя MySQL
+      edit: Редактировать пользователя MySQL
+      update: Сохранить пользователя MySQL
+
+  flash:
+    mysql_user:
+      create: MySQL пользователь создан
+      update: MySQL пользователь обновлен
+      destroy: MySQL пользователь удален
+
+  helpers:
+    submit:
+      mysql_user:
+        <<: *mysql_user

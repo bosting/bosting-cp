@@ -1,0 +1,29 @@
+ru:
+  headers:
+    email_domain: Почтовый домен
+    email_domains: Почта
+
+  activerecord:
+    attributes:
+      email_domain:
+        name: Имя домена
+        user: Пользователь
+        mail_users: Ящики
+        mail_aliases: Перенаправления
+
+  actions:
+    email_domain: &email_domain
+      create: Создать почтовый домен
+      edit: Редактировать почтовый домен
+      update: Сохранить почтовый домен
+
+  flash:
+    email_domain:
+      create: Почтовый домен создан
+      update: Почтовый домен обновлен
+      destroy: Почтовый домен удален
+
+  helpers:
+    submit:
+      email_domain:
+        <<: *email_domain

@@ -1,0 +1,20 @@
+- title t('headers.system_user_shells')
+- breadcrumb :system_user_shells
+
+= link_to_new(:system_user_shell)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.system_user_shell.name')
+    %th= t('activerecord.attributes.system_user_shell.path')
+    %th.btn-col.text-nowrap= t('activerecord.attributes.system_user_shell.is_default')
+    %th.btn-col &nbsp;
+
+  - @system_user_shells.each do |system_user_shell|
+    %tr
+      %td.btn-col= link_to_edit system_user_shell
+      %td= system_user_shell.name
+      %td= system_user_shell.path
+      %td.btn-col.text-center= yes_no system_user_shell.is_default
+      %td.btn-col= link_to_destroy system_user_shell

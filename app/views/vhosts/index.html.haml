@@ -1,0 +1,21 @@
+- title "#{t('headers.vhosts')} #{@apache.system_user.name}"
+- breadcrumb :vhosts, @apache
+- javascript 'tooltip'
+
+= link_to_new(:vhost, @apache)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th.btn-col= t('activerecord.attributes.vhost.primary')
+    %th.btn-col= t('activerecord.attributes.vhost.active')
+    %th= t('activerecord.attributes.vhost.server_name')
+    %th.btn-col &nbsp;
+
+  - @vhosts.each do |vhost|
+    %tr
+      %td.btn-col= link_to_edit [@apache, vhost]
+      %td.btn-col.text-center= yes_no(vhost.primary)
+      %td.btn-col.text-center= yes_no(vhost.active)
+      %td= vhost.server_name
+      %td.btn-col= link_to_destroy [@apache, vhost]

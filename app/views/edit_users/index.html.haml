@@ -1,0 +1,21 @@
+- title t('headers.users')
+- breadcrumb :edit_users
+
+- if can? :create, EditUser
+  = link_to_new(:edit_user)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.edit_user.name')
+    %th= t('activerecord.attributes.edit_user.email')
+    %th.btn-col= t('activerecord.attributes.edit_user.is_admin')
+    %th.btn-col &nbsp;
+
+  - @edit_users.each do |edit_user|
+    %tr
+      %td.btn-col= link_to_edit edit_user
+      %td= edit_user.name
+      %td= edit_user.email
+      %td.btn-col.text-center= yes_no(edit_user.is_admin)
+      %td.btn-col= link_to_destroy edit_user

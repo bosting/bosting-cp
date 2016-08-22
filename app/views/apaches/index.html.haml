@@ -1,0 +1,35 @@
+- title t('headers.apaches')
+- breadcrumb :apaches
+
+.clearfix
+.col-md-6.col-sm-10
+  .panel.panel-default
+    .panel-body
+      = form_tag apaches_path, method: :get, class: 'form-inline' do
+        .form-group
+          %label{for:'domain'} Поиск по домену:
+          = text_field_tag :domain, params[:domain], class: 'form-control'
+          = submit_tag 'Найти', name: nil, class: 'btn btn-default'
+
+- if can? :create, Apache
+  = link_to_new(:apache)
+
+%table{class: table_class}
+  %tr
+    %th.btn-col &nbsp;
+    %th.btn-col Хосты
+    %th.btn-col= t('activerecord.attributes.apache.active')
+    %th= t('activerecord.attributes.apache.system_user')
+    %th= t('activerecord.attributes.apache.apache_variation')
+    - if @can_destroy
+      %th.btn-col &nbsp;
+
+  - @apaches.each do |apache|
+    %tr
+      %td.but-col= link_to_edit apache
+      %td.but-col.text-center= link_to admin_icon(:vhosts), apache_vhosts_path(apache), class: 'btn btn-default btn-info', title: 'Перейти к виртуальным хостам', 'data-toggle': 'tooltip'
+      %td.but-col.text-center= yes_no(apache.active)
+      %td= apache.system_user_name
+      %td= apache.apache_variation_name
+      - if @can_destroy
+        %td.btn-col= link_to admin_icon(:destroy), before_destroy_apache_path(apache), class: 'btn btn-danger', title: t('site.delete'), 'data-toggle': 'tooltip'

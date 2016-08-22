@@ -1,0 +1,14 @@
+.col-xs-12
+  = link_to_back apaches_path
+
+.clearfix
+.col-md-6.col-sm-10.col-xs-12
+  = form_wrapper("Удалить #{@apache.name}?", 'danger') do
+    = simple_form_for @apache, method: :delete do |f|
+      = f.input :destroy_domains, as: :boolean
+      = f.input :destroy_ftps, as: :boolean
+      = f.input :destroy_user, as: :boolean
+      = f.input :destroy_system_user, as: :boolean
+      = f.input :destroy_mysql_users, as: :boolean
+      = f.input :destroy_pgsql_users, as: :boolean
+      = f.button :submit, t('actions.apache.destroy'), class: 'btn-danger'

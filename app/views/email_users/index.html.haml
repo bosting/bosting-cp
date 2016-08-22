@@ -1,0 +1,16 @@
+- title "#{t('headers.email_users')} для домена #{@email_domain.name}"
+- breadcrumb :email_users, @email_domain
+
+= link_to_new(:email_user, @email_domain)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.email_user.username')
+    %th.btn-col &nbsp;
+
+  - @email_users.each do |email_user|
+    %tr
+      %td.btn-col= link_to_edit [@email_domain, email_user]
+      %td= email_user.email
+      %td.btn-col= link_to_destroy [@email_domain, email_user]

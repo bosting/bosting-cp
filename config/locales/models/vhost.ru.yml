@@ -1,0 +1,37 @@
+ru:
+  headers:
+    vhost: Виртуальный хост
+    vhosts: Виртуальные хосты
+
+  activerecord:
+    attributes:
+      vhost:
+        primary: Первичный
+        server_name: Имя сервера
+        indexes: Показывать индекс
+        directory_index: Индексные файлы
+        active: Включен
+        ssl: Включить SSL
+        ssl_ip_address: IP адрес
+        ssl_port: Порт
+        ssl_cert_chain: Промежуточные сертификаты
+        ssl_key: Ключ
+        ssl_certificate: Сертификат
+        skip_nginx: Пропустить конфиг nginx
+
+  actions:
+    vhost: &vhost
+      create: Создать виртуальный хост
+      edit: Редактировать виртуальный хост
+      update: Сохранить виртуальный хост
+
+  flash:
+    vhost:
+      create: Виртуальный хост создан
+      update: Виртуальный хост обновлен
+      destroy: Виртуальный хост удален
+
+  helpers:
+    submit:
+      vhost:
+        <<: *vhost

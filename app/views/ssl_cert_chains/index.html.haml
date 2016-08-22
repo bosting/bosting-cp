@@ -1,0 +1,16 @@
+- title t('headers.ssl_cert_chains')
+- breadcrumb :ssl_cert_chains
+
+= link_to_new(:ssl_cert_chain)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.ssl_cert_chain.name')
+    %th.btn-col &nbsp;
+
+  - @ssl_cert_chains.each do |ssl_cert_chain|
+    %tr
+      %td.btn-col= link_to_edit ssl_cert_chain
+      %td= ssl_cert_chain.name
+      %td.btn-col= link_to_destroy ssl_cert_chain

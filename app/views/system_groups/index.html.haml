@@ -1,0 +1,18 @@
+- title t('headers.system_groups')
+- breadcrumb :system_groups
+
+= link_to_new(:system_group)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.system_group.name')
+    %th= t('activerecord.attributes.system_group.gid')
+    %th.btn-col &nbsp;
+
+  - @system_groups.each do |system_group|
+    %tr
+      %td.btn-col= link_to_edit system_group
+      %td= system_group.name
+      %td= system_group.gid
+      %td.btn-col= link_to_destroy system_group

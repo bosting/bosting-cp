@@ -1,0 +1,21 @@
+- title t('headers.<%= plural_table_name %>')
+
+= link_to_new(:<%= singular_table_name %>)
+
+%table{class: table_class}
+  %tr
+    %th.btn-col &nbsp;
+    %th &nbsp;
+<% attributes.each do |attribute| -%>
+    %th= t('activerecord.attributes.<%= singular_table_name %>.<%= attribute.name %>')
+<% end -%>
+    %th.btn-col &nbsp;
+
+  - @<%= plural_table_name %>.each do |<%= singular_table_name %>|
+    %tr
+      %td.btn-col= link_to_edit <%= singular_table_name %>
+      %td= link_to 'Show', <%= singular_table_name %>
+<% attributes.each do |attribute| -%>
+      %td= <%= singular_table_name %>.<%= attribute.name %>
+<% end -%>
+      %td.btn-col= link_to_destroy <%= singular_table_name %>

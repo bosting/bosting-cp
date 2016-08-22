@@ -1,0 +1,19 @@
+- title t('headers.mysql_users')
+- breadcrumb :mysql_users
+
+= link_to_new(:mysql_user)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.mysql_user.login')
+    %th &nbsp;
+
+  - @mysql_users.each do |mysql_user|
+    %tr
+      %td.btn-col= link_to_edit mysql_user
+      %td.btn-col.text-center= link_to admin_icon(:databases), mysql_user_mysql_dbs_path(mysql_user), class: 'btn btn-default btn-info', title: 'Перейти к MySQL базам', 'data-toggle': 'tooltip'
+      %td= mysql_user.login
+      %td.btn-col= link_to_destroy mysql_user
+

@@ -1,0 +1,12 @@
+- breadcrumb @ftp
+
+= link_to_back ftps_path
+
+= form_wrapper(t("actions.ftp.#{action}")) do
+  = permitted_form_for(@ftp) do |f|
+    = f.error_notification
+    = f.input :User
+    = f.input :new_password, required: @ftp.new_record?
+    = f.input :Dir
+    = f.association :system_user, collection: @system_users, include_blank: false
+    = f.button :submit

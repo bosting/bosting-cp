@@ -1,0 +1,30 @@
+ru:
+  site:
+    title: Административная панель
+    users: Пользователи
+    enter: Вход в панель управления
+
+    username: Имя пользователя
+    password: Пароль
+    login: Войти
+    logout: Выход
+
+    edit: Редактировать
+    delete: Удалить
+    published: Опубликовано
+    publish: Опубликовать
+    synchronize: Cинхронизировать
+
+    'yes': Да
+    'no': Нет
+    confirm: Вы уверены?
+    back: Вернуться
+
+    to_site: На сайт
+    permissions: Права
+    welcome: Меню администиративной панели
+    welcome_link: Меню
+
+    external_link: Внешняя ссылка
+    settings: Настройки
+    databases: SQL

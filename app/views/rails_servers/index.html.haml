@@ -1,0 +1,16 @@
+- title t('headers.rails_servers')
+- breadcrumb :rails_servers
+
+= link_to_new(:rails_server)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.rails_server.name')
+    %th.btn-col &nbsp;
+
+  - @rails_servers.each do |rails_server|
+    %tr
+      %td.btn-col= link_to_edit rails_server
+      %td= rails_server.name
+      %td.btn-col= link_to_destroy rails_server

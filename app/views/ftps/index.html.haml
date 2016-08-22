@@ -1,0 +1,18 @@
+- title t('headers.ftps')
+- breadcrumb :ftps
+
+= link_to_new(:ftp)
+
+%table{ class: table_class }
+  %tr
+    %th.btn-col &nbsp;
+    %th= t('activerecord.attributes.ftp.User')
+    %th= t('activerecord.attributes.ftp.Dir')
+    %th.btn-col &nbsp;
+
+  - @ftps.each do |ftp|
+    %tr
+      %td.btn-col= link_to_edit ftp
+      %td= ftp.User
+      %td= ftp.Dir
+      %td.btn-col= link_to_destroy ftp

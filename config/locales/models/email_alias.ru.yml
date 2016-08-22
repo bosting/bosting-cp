@@ -1,0 +1,28 @@
+ru:
+  headers:
+    email_alias: Email перенаправление
+    email_aliases: Email перенаправления
+
+  activerecord:
+    attributes:
+      email_alias:
+        email: Email
+        username: Исходный Email
+        destination: Email назначения
+
+  actions:
+    email_alias: &email_alias
+      create: Создать email перенаправление
+      edit: Редактировать email перенаправление
+      update: Сохранить email перенаправление
+
+  flash:
+    email_alias:
+      create: Email перенаправление создано
+      update: Email перенаправление обновлено
+      destroy: Email перенаправление удалено
+
+  helpers:
+    submit:
+      email_alias:
+        <<: *email_alias

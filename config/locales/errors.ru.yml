@@ -1,0 +1,6 @@
+ru:
+  errors:
+    db_login_not_similar: Имя пользователя должно начинаться с %{login}
+    db_name_not_similar: Название базы должно начинаться с %{login}
+    apache_or_rails_server_required: Необходимо выбрать Апач или Rails сервер
+    bad_domain_name: Ошибка в имени домена

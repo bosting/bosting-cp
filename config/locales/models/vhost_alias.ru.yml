@@ -1,0 +1,8 @@
+ru:
+  headers:
+    vhost_aliases: Синонимы
+
+  activerecord:
+    attributes:
+      vhost_alias:
+        name: Хост

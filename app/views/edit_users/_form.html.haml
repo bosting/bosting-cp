@@ -1,0 +1,11 @@
+- breadcrumb @edit_user
+
+= link_to_back edit_users_path
+
+= form_wrapper(t("actions.edit_user.#{action}")) do
+  = permitted_form_for(@edit_user) do |f|
+    = f.error_notification
+    = f.input :name
+    = f.input :email
+    = f.input :is_admin
+    = f.button :submit
