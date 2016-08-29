@@ -42,7 +42,11 @@ class Vhost < ActiveRecord::Base
     vhost_hash['port'] = apache.port
     vhost_hash['show_indexes'] = indexes
     vhost_hash['server_alias'] = vhost_aliases.map(&:name).join(' ')
-    vhost_hash['name'] = apache.vhosts.where(primary: true).first.server_name
+    vhost_hash['name'] = if primary
+                           server_name
+                         else
+                           apache.vhosts.where(primary: true).first.server_name
+                         end
     vhost_hash['user'] = apache.system_user.name
     vhost_hash['group'] = apache.system_group.name
     vhost_hash['ip'] = apache.ip_address.ip
