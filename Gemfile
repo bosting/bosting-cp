@@ -59,4 +59,5 @@ group :test do
   gem 'timecop'
   gem 'simplecov', require: false
   gem 'json_expressions'
+  gem 'fakeredis', require: 'fakeredis/rspec'
 end
