@@ -35,28 +35,32 @@ class Vhost < ActiveRecord::Base
   end
 
   def to_chef_json(action)
-    vhost_hash = serializable_hash
-    vhost_hash.keep_if do |key, value|
-      %w(directory_index).include?(key)
-    end
-    vhost_hash['port'] = apache.port
-    vhost_hash['show_indexes'] = indexes
-    vhost_hash['server_alias'] = vhost_aliases.map(&:name).join(' ')
-    vhost_hash['name'] = if primary
-                           server_name
-                         else
-                           apache.vhosts.where(primary: true).first.server_name
-                         end
-    vhost_hash['user'] = apache.system_user.name
-    vhost_hash['group'] = apache.system_group.name
-    vhost_hash['ip'] = apache.ip_address.ip
-    vhost_hash['php_version'] = apache.apache_variation.php_version[0]
-    vhost_hash['action'] = if action == :create
-                              'create'
-                            elsif action == :destroy
-                              'destroy'
-                            end
-    vhost_hash.to_json
+    server_name = if primary
+                    self.server_name
+                  else
+                    apache.vhosts.where(primary: true).first.server_name
+                  end
+    user = apache.system_user.name
+    if action == :create
+      vhost_hash = serializable_hash
+      vhost_hash.keep_if do |key, value|
+        %w(directory_index).include?(key)
+      end
+      vhost_hash['port'] = apache.port
+      vhost_hash['show_indexes'] = indexes
+      vhost_hash['server_alias'] = vhost_aliases.map(&:name).join(' ')
+      vhost_hash['server_name'] = server_name
+      vhost_hash['user'] = user
+      vhost_hash['group'] = apache.system_group.name
+      vhost_hash['ip'] = apache.ip_address.ip
+      vhost_hash['php_version'] = apache.apache_variation.php_version[0]
+      vhost_hash['action'] = 'create'
+      vhost_hash
+    elsif action == :destroy
+      { user: user, server_name: server_name, action: 'destroy' }
+    else
+      raise ArgumentError, "Unknown action specified: #{action}"
+    end.to_json
   end
 
   protected

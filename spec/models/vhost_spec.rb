@@ -45,7 +45,7 @@ describe Vhost do
       expect(JSON.parse(vhost.to_chef_json(:create))).to(
           match_json_expression(
               {
-                  "name":"site.com",
+                  "server_name":"site.com",
                   "ip":"10.0.0.4",
                   "port":2200,
                   "user":"site",
@@ -55,6 +55,28 @@ describe Vhost do
                   "php_version":"5",
                   "show_indexes":false,
                   "action":"create"
+              }
+          )
+      )
+    end
+
+    specify 'destroy action' do
+      vhost = create(:vhost, server_name: 'www3.site.com', primary: true,
+                     directory_index: 'index.php index.html index.htm', indexes: false, vhost_aliases:
+                         [create(:vhost_alias, name: 'www4.site.com'), create(:vhost_alias, name: 'www5.site.com')])
+      create(:apache, server_admin: 'admin@bosting.net', port: 2201, start_servers: 1, min_spare_servers: 1,
+             max_spare_servers: 2, max_clients: 4,
+             system_user: create(:system_user, name: 'site2'),
+             system_group: create(:system_group, name: 'www'),
+             ip_address: create(:ip_address, ip: '10.0.0.4'),
+             apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5'),
+             vhosts: [vhost])
+      expect(JSON.parse(vhost.to_chef_json(:destroy))).to(
+          match_json_expression(
+              {
+                  "server_name":"www3.site.com",
+                  "user":"site2",
+                  "action":"destroy"
               }
           )
       )

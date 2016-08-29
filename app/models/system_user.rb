@@ -34,18 +34,20 @@ class SystemUser < ActiveRecord::Base
   end
 
   def to_chef_json(action)
-    system_user_hash = serializable_hash
-    system_user_hash.keep_if do |key, value|
-      %w(name uid).include?(key)
-    end
-    system_user_hash['group'] = system_group.name
-    system_user_hash['shell'] = system_user_shell.path
-    system_user_hash['action'] = if action == :create
-                             'create'
-                           elsif action == :destroy
-                             'destroy'
-                           end
-    system_user_hash.to_json
+    if action == :create
+      system_user_hash = serializable_hash
+      system_user_hash.keep_if do |key, value|
+        %w(name uid).include?(key)
+      end
+      system_user_hash['group'] = system_group.name
+      system_user_hash['shell'] = system_user_shell.path
+      system_user_hash['action'] = 'create'
+      system_user_hash
+    elsif action == :destroy
+      { name: name, action: 'destroy' }
+    else
+      raise ArgumentError, "Unknown action specified: #{action}"
+    end.to_json
   end
 
   private

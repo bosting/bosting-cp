@@ -25,5 +25,18 @@ describe SystemUser do
           )
       )
     end
+
+    specify 'destroy action' do
+      system_user = create(:system_user, name: 'site2', uid: 1002, system_group: create(:system_group, name: 'webuser'),
+                           system_user_shell: create(:system_user_shell, name: 'bash', path: '/usr/local/bin/bash'))
+      expect(JSON.parse(system_user.to_chef_json(:destroy))).to(
+          match_json_expression(
+              {
+                  "name":"site2",
+                  "action":"destroy"
+              }
+          )
+      )
+    end
   end
 end

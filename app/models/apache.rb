@@ -74,21 +74,24 @@ class Apache < ActiveRecord::Base
   end
 
   def to_chef_json(action)
-    apache_hash = serializable_hash
-    apache_hash.keep_if do |key, value|
-      %w(server_admin port min_spare_servers max_spare_servers start_servers max_clients).include?(key)
-    end
-    apache_hash['user'] = system_user.name
-    apache_hash['group'] = system_group.name
-    apache_hash['ip'] = ip_address.ip
-    apache_hash['apache_version'] = apache_variation.apache_version.sub('.', '')
-    apache_hash['php_version'] = apache_variation.php_version.sub('.', '')
-    apache_hash['action'] = if action == :create
-                              ['create', 'enable', 'start', 'reload']
-                            elsif action == :destroy
-                              'destroy'
-                            end
-    apache_hash.to_json
+    system_user_name = system_user.name
+    if action == :create
+      apache_hash = serializable_hash
+      apache_hash.keep_if do |key, value|
+        %w(server_admin port min_spare_servers max_spare_servers start_servers max_clients).include?(key)
+      end
+      apache_hash['user'] = system_user_name
+      apache_hash['group'] = system_group.name
+      apache_hash['ip'] = ip_address.ip
+      apache_hash['apache_version'] = apache_variation.apache_version.sub('.', '')
+      apache_hash['php_version'] = apache_variation.php_version.sub('.', '')
+      apache_hash['action'] = ['create', 'enable', 'start', 'reload']
+      apache_hash
+    elsif action == :destroy
+      { user: system_user_name, action: 'destroy' }
+    else
+      raise ArgumentError, "Unknown action specified: #{action}"
+    end.to_json
   end
 
   protected
