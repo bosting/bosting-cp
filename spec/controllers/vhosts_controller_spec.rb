@@ -22,13 +22,13 @@ describe VhostsController do
 
     it "create action should render new template when model is invalid" do
       Vhost.any_instance.stubs(:valid?).returns(false)
-      post :create, apache_id: @apache.id, vhost: attributes_for(:vhost)
+      post :create, apache_id: @apache.id, vhost: params_for(:vhost)
       response.should render_template(:new)
     end
 
     it "create action should redirect when model is valid" do
       Vhost.any_instance.stubs(:valid?).returns(true)
-      post :create, apache_id: @apache.id, vhost: attributes_for(:vhost)
+      post :create, apache_id: @apache.id, vhost: params_for(:vhost)
       response.should redirect_to(apache_vhosts_path(@apache))
     end
 
@@ -39,13 +39,13 @@ describe VhostsController do
 
     it "update action should render edit template when model is invalid" do
       Vhost.any_instance.stubs(:valid?).returns(false)
-      put :update, id: Vhost.first, apache_id: @apache.id, vhost: attributes_for(:vhost)
+      put :update, id: Vhost.first, apache_id: @apache.id, vhost: params_for(:vhost)
       response.should render_template(:edit)
     end
 
     it "update action should redirect when model is valid" do
       Vhost.any_instance.stubs(:valid?).returns(true)
-      put :update, id: Vhost.first, apache_id: @apache.id, vhost: attributes_for(:vhost)
+      put :update, id: Vhost.first, apache_id: @apache.id, vhost: params_for(:vhost)
       response.should redirect_to(apache_vhosts_path(@apache))
     end
 

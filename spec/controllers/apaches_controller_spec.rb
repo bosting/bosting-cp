@@ -21,13 +21,13 @@ describe ApachesController do
 
     it "update action should render edit template when model is invalid" do
       Apache.any_instance.stubs(:valid?).returns(false)
-      put :update, id: Apache.first, apache: attributes_for(:apache)
+      put :update, id: Apache.first, apache: params_for(:apache)
       response.should render_template(:edit)
     end
 
     it "update action should redirect when model is valid" do
       Apache.any_instance.stubs(:valid?).returns(true)
-      put :update, id: Apache.first, apache: attributes_for(:apache)
+      put :update, id: Apache.first, apache: params_for(:apache)
       response.should redirect_to(apaches_path)
     end
   end
@@ -42,13 +42,13 @@ describe ApachesController do
 
     it "create action should render new template when model is invalid" do
       Apache.any_instance.stubs(:valid?).returns(false)
-      post :create, apache: attributes_for(:apache)
+      post :create, apache: params_for(:apache)
       response.should render_template(:new)
     end
 
     it "create action should redirect when model is valid" do
       Apache.any_instance.stubs(:valid?).returns(true)
-      post :create, apache: attributes_for(:apache)
+      post :create, apache: params_for(:apache)
       response.should redirect_to(apaches_path)
     end
 

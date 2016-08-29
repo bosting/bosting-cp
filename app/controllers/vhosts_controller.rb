@@ -16,7 +16,8 @@ class VhostsController < ApplicationController
   def create
     authorize! :create, @vhost = @apache.vhosts.build(permitted_params)
     if @vhost.save
-        redirect_to apache_vhosts_path(@apache), notice: t('flash.vhost.create')
+      @vhost.create_chef_task(:create)
+      redirect_to apache_vhosts_path(@apache), notice: t('flash.vhost.create')
     else
       render :new
     end
@@ -24,6 +25,7 @@ class VhostsController < ApplicationController
 
   def update
     if @vhost.update(permitted_params)
+      @vhost.create_chef_task(:create)
       redirect_to apache_vhosts_path(@apache), notice: t('flash.vhost.update')
     else
       render :edit
@@ -32,6 +34,7 @@ class VhostsController < ApplicationController
 
   def destroy
     @vhost.destroy
+    @vhost.create_chef_task(:destroy)
     redirect_to apache_vhosts_path(@apache), notice: t('flash.vhost.destroy')
   end
 end

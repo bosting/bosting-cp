@@ -1,5 +1,5 @@
 class SystemUser < ActiveRecord::Base
-  include PasswordGenerator
+  include PasswordGenerator, CreateChefTask
 
   belongs_to :user
   belongs_to :system_group

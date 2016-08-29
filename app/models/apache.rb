@@ -1,4 +1,6 @@
 class Apache < ActiveRecord::Base
+  include CreateChefTask
+
   belongs_to :user
   belongs_to :system_user
   belongs_to :system_group
@@ -63,6 +65,7 @@ class Apache < ActiveRecord::Base
   end
 
   def destroy
+    create_chef_task(:destroy)
     user.domains.each(&:destroy) if destroy_domains == '1'
     user.destroy if destroy_user == '1'
     system_user.ftps.each(&:destroy) if destroy_ftps == '1'

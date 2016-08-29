@@ -1,4 +1,6 @@
 class Vhost < ActiveRecord::Base
+  include CreateChefTask
+
   belongs_to :apache
   has_many :vhost_aliases, dependent: :delete_all
   belongs_to :ssl_cert_chain
@@ -35,21 +37,16 @@ class Vhost < ActiveRecord::Base
   end
 
   def to_chef_json(action)
-    server_name = if primary
-                    self.server_name
-                  else
-                    apache.vhosts.where(primary: true).first.server_name
-                  end
     user = apache.system_user.name
     if action == :create
       vhost_hash = serializable_hash
       vhost_hash.keep_if do |key, value|
         %w(directory_index).include?(key)
       end
+      vhost_hash['server_name'] = server_name
+      vhost_hash['server_alias'] = vhost_aliases.map(&:name).join(' ')
       vhost_hash['port'] = apache.port
       vhost_hash['show_indexes'] = indexes
-      vhost_hash['server_alias'] = vhost_aliases.map(&:name).join(' ')
-      vhost_hash['server_name'] = server_name
       vhost_hash['user'] = user
       vhost_hash['group'] = apache.system_group.name
       vhost_hash['ip'] = apache.ip_address.ip

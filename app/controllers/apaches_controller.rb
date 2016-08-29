@@ -16,6 +16,7 @@ class ApachesController < ApplicationController
   def create
     authorize! :create, @apache = Apache.new(permitted_params)
     if @apache.save
+      @apache.create_chef_task(:create)
       redirect_to apaches_path, notice: t('flash.apache.create')
     else
       render :new
@@ -24,6 +25,7 @@ class ApachesController < ApplicationController
 
   def update
     if @apache.update(permitted_params)
+      @apache.create_chef_task(:create)
       redirect_to apaches_path, notice: t('flash.apache.update')
     else
       render :edit

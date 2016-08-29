@@ -21,13 +21,13 @@ describe SystemUsersController do
 
     it "create action should render new template when model is invalid" do
       SystemUser.any_instance.stubs(:valid?).returns(false)
-      post :create, system_user: attributes_for(:system_user)
+      post :create, system_user: params_for(:system_user)
       response.should render_template(:new)
     end
 
     it "create action should redirect when model is valid" do
       SystemUser.any_instance.stubs(:valid?).returns(true)
-      post :create, system_user: attributes_for(:system_user)
+      post :create, system_user: params_for(:system_user)
       response.should redirect_to(system_users_path)
     end
 
@@ -38,13 +38,13 @@ describe SystemUsersController do
 
     it "update action should render edit template when model is invalid" do
       SystemUser.any_instance.stubs(:valid?).returns(false)
-      put :update, id: SystemUser.first, system_user: attributes_for(:system_user)
+      put :update, id: SystemUser.first, system_user: params_for(:system_user)
       response.should render_template(:edit)
     end
 
     it "update action should redirect when model is valid" do
       SystemUser.any_instance.stubs(:valid?).returns(true)
-      put :update, id: SystemUser.first, system_user: attributes_for(:system_user)
+      put :update, id: SystemUser.first, system_user: params_for(:system_user)
       response.should redirect_to(system_users_path)
     end
 
