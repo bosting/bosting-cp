@@ -159,12 +159,10 @@ describe Apache do
                       system_user: create(:system_user, name: 'site'),
                       system_group: create(:system_group, name: 'www'),
                       ip_address: create(:ip_address, ip: '10.0.0.4'),
-                      apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5'),
-                      vhosts: [create(:vhost, server_name: 'site.com', primary: true)])
+                      apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5'))
       expect(JSON.parse(apache.to_chef_json(:create))).to(
           match_json_expression(
               {
-                  "name":"site.com",
                   "server_admin":"admin@bosting.net",
                   "user":"site",
                   "group":"www",

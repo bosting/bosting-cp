@@ -78,7 +78,6 @@ class Apache < ActiveRecord::Base
     apache_hash.keep_if do |key, value|
       %w(server_admin port min_spare_servers max_spare_servers start_servers max_clients).include?(key)
     end
-    apache_hash['name'] = vhosts.where(primary: true).first.server_name
     apache_hash['user'] = system_user.name
     apache_hash['group'] = system_group.name
     apache_hash['ip'] = ip_address.ip
