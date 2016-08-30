@@ -52,6 +52,7 @@ describe Vhost do
                   "group":"www",
                   "server_alias":"www.site.com www2.site.com",
                   "directory_index":"index.php index.html index.htm",
+                  "apache_version":"22",
                   "php_version":"5",
                   "show_indexes":false,
                   "type":"vhost",
