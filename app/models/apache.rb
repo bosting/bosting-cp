@@ -94,7 +94,7 @@ class Apache < ActiveRecord::Base
       { user: system_user_name, action: 'destroy' }
     else
       raise ArgumentError, "Unknown action specified: #{action}"
-    end.to_json
+    end.merge('type' => 'apache').to_json
   end
 
   protected

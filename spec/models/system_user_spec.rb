@@ -20,6 +20,7 @@ describe SystemUser do
                   "group":"webuser",
                   "uid":1001,
                   "shell":"/usr/local/bin/bash",
+                  "type":"system_user",
                   "action":"create"
               }
           )
@@ -33,6 +34,7 @@ describe SystemUser do
           match_json_expression(
               {
                   "name":"site2",
+                  "type":"system_user",
                   "action":"destroy"
               }
           )

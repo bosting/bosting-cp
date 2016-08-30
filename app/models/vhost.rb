@@ -57,7 +57,7 @@ class Vhost < ActiveRecord::Base
       { user: user, server_name: server_name, action: 'destroy' }
     else
       raise ArgumentError, "Unknown action specified: #{action}"
-    end.to_json
+    end.merge('type' => 'vhost').to_json
   end
 
   protected

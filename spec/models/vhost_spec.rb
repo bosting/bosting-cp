@@ -54,6 +54,7 @@ describe Vhost do
                   "directory_index":"index.php index.html index.htm",
                   "php_version":"5",
                   "show_indexes":false,
+                  "type":"vhost",
                   "action":"create"
               }
           )
@@ -76,6 +77,7 @@ describe Vhost do
               {
                   "server_name":"www3.site.com",
                   "user":"site2",
+                  "type":"vhost",
                   "action":"destroy"
               }
           )

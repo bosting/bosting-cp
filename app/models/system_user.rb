@@ -47,7 +47,7 @@ class SystemUser < ActiveRecord::Base
       { name: name, action: 'destroy' }
     else
       raise ArgumentError, "Unknown action specified: #{action}"
-    end.to_json
+    end.merge('type' => 'system_user').to_json
   end
 
   private

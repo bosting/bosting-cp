@@ -174,6 +174,7 @@ describe Apache do
                   "min_spare_servers":1,
                   "max_spare_servers":2,
                   "max_clients":4,
+                  "type":"apache",
                   "action":["create","enable","start","reload"]
               }
           )
@@ -191,6 +192,7 @@ describe Apache do
           match_json_expression(
               {
                   "user":"site",
+                  "type":"apache",
                   "action":"destroy"
               }
           )
