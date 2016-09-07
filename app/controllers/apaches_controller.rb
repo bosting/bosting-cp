@@ -47,7 +47,7 @@ class ApachesController < ApplicationController
   def before_destroy
     @apache.destroy_domains = true
     @apache.destroy_ftps = true
-    @apache.destroy_user = true
+    @apache.destroy_user = false
     @apache.destroy_system_user = true
     @apache.destroy_mysql_users = true
     @apache.destroy_pgsql_users = true
