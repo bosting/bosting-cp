@@ -25,6 +25,7 @@ gem 'nested_form'
 gem 'public_suffix'
 gem 'redis'
 gem 'hiredis'
+gem 'active_attr'
 
 gem 'net-ssh', require: false
 gem 'ssh-exec', github: 'sekrett/ssh-exec', require: false

@@ -1,8 +1,21 @@
 class QuickRegistration
-  include ActiveModel::Model, PasswordGenerator
+  include ActiveAttr::Model, PasswordGenerator
 
-  attr_accessor :domain, :top_domain, :sub_domain, :ns1_ip_address, :ns2_ip_address, :user, :login, :email, :apache_variation,
-                :ip_address, :with_ssh, :with_ftp, :with_mysql, :with_pgsql, :with_email
+  attribute :domain
+  attribute :top_domain
+  attribute :sub_domain
+  attribute :ns1_ip_address
+  attribute :ns2_ip_address
+  attribute :user
+  attribute :login
+  attribute :email
+  attribute :apache_variation
+  attribute :ip_address
+  attribute :with_ssh, type: Boolean
+  attribute :with_ftp, type: Boolean
+  attribute :with_mysql, type: Boolean
+  attribute :with_pgsql, type: Boolean
+  attribute :with_email, type: Boolean
 
   validates_presence_of :domain, :ns1_ip_address, :ns2_ip_address, :login, :apache_variation, :ip_address
   validate :user_selected_or_new, :uniqueness
@@ -103,10 +116,10 @@ class QuickRegistration
       end
     end
 
-    errors.add(:with_mysql, :taken) if with_mysql == '1' && (MysqlUser.where(login: login).exists? || MysqlDb.where(db_name: login).exists?)
-    errors.add(:with_pgsql, :taken) if with_pgsql == '1' && (PgsqlUser.where(login: login).exists? || PgsqlDb.where(db_name: login).exists?)
-    errors.add(:login, :taken) if with_ssh == '1' && SystemUser.where(name: login).exists?
-    errors.add(:with_ftp, :taken) if with_ftp == '1' && Ftp.where(user: login).exists?
+    errors.add(:with_mysql, :taken) if with_mysql && (MysqlUser.where(login: login).exists? || MysqlDb.where(db_name: login).exists?)
+    errors.add(:with_pgsql, :taken) if with_pgsql && (PgsqlUser.where(login: login).exists? || PgsqlDb.where(db_name: login).exists?)
+    errors.add(:login, :taken) if with_ssh && SystemUser.where(name: login).exists?
+    errors.add(:with_ftp, :taken) if with_ftp && Ftp.where(user: login).exists?
     errors.add(:email, :taken) if user.blank? && User.where(email: email).exists?
   end
 end
