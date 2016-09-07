@@ -112,6 +112,22 @@ describe Apache do
     expect(Apache.active.where(id: apache.id).size).to eq(0)
   end
 
+  describe 'port' do
+    it 'should be 2000 if it is the first apache' do
+      Apache.stubs(:maximum).returns(nil)
+      apache = build(:apache)
+      apache.set_defaults
+      apache.port.should == 2000
+    end
+
+    it 'should be higher than maximum' do
+      Apache.stubs(:maximum).returns(2005)
+      apache = build(:apache)
+      apache.set_defaults
+      apache.port.should == 2006
+    end
+  end
+
   describe 'Apache variation' do
     describe 'change' do
       it 'should be changed if changed' do

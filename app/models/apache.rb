@@ -48,7 +48,7 @@ class Apache < ActiveRecord::Base
 
   def set_defaults
     self.system_group = SystemGroup.find_by_name('nogroup')
-    self.port = 1 + Apache.maximum(:port).to_i
+    self.port = [2000, 1 + Apache.maximum(:port).to_i].max
     self.min_spare_servers = 1
     self.max_spare_servers = 1
     self.start_servers = 1
