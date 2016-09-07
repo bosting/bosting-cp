@@ -73,7 +73,7 @@ module LayoutHelper
   end
 
   def link_to_new(controller, parent_object = nil)
-    content_tag(:div, class: 'col-xs-12') do
+    content_tag(:div) do
       link_to t("actions.#{controller}.create"), [:new, parent_object, controller].compact, class: 'btn btn-new btn-primary'
     end
   end

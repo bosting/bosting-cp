@@ -1,15 +1,15 @@
 - title t('headers.apaches')
 - breadcrumb :apaches
 
-.clearfix
-.col-md-6.col-sm-10
-  .panel.panel-default
-    .panel-body
-      = form_tag apaches_path, method: :get, class: 'form-inline' do
-        .form-group
-          %label{for:'domain'} Поиск по домену:
-          = text_field_tag :domain, params[:domain], class: 'form-control'
-          = submit_tag 'Найти', name: nil, class: 'btn btn-default'
+.row
+  .col-md-6.col-sm-10
+    .panel.panel-default
+      .panel-body
+        = form_tag apaches_path, method: :get, class: 'form-inline' do
+          .form-group
+            %label{for:'domain'} Поиск по домену:
+            = text_field_tag :domain, params[:domain], class: 'form-control'
+            = submit_tag 'Найти', name: nil, class: 'btn btn-default'
 
 - if can? :create, Apache
   = link_to_new(:apache)
