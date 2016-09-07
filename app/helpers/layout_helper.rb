@@ -88,7 +88,7 @@ module LayoutHelper
 
   def link_to_destroy(path)
     link_to(admin_icon(:destroy), path, 'data-confirm': t('site.confirm'), method: :delete,
-            class: 'btn btn-danger', title: t('site.delete'))#, 'data-toggle': 'tooltip')
+            class: 'btn btn-danger', title: t('site.destroy'), 'data-toggle': 'tooltip')
   end
 
   def active_class(controller)

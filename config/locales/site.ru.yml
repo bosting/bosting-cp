@@ -10,7 +10,7 @@ ru:
     logout: Выход
 
     edit: Редактировать
-    delete: Удалить
+    destroy: Удалить
     published: Опубликовано
     publish: Опубликовать
     synchronize: Cинхронизировать
