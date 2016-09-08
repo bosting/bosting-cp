@@ -191,7 +191,7 @@ describe Apache do
                   "max_spare_servers":2,
                   "max_clients":4,
                   "type":"apache",
-                  "action":["create","enable","start","reload"]
+                  "action":"create"
               }
           )
       )
@@ -220,7 +220,7 @@ describe Apache do
                   "max_spare_servers":2,
                   "max_clients":4,
                   "type":"apache",
-                  "action":["create","enable","start","reload"]
+                  "action":"create"
               }
           )
       )

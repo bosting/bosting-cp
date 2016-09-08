@@ -89,7 +89,7 @@ class Apache < ActiveRecord::Base
       apache_hash['ip'] = apache_variation.ip
       apache_hash['apache_version'] = apache_variation.apache_version.sub('.', '')
       apache_hash['php_version'] = apache_variation.php_version.sub('.', '')
-      apache_hash['action'] = ['create', 'enable', 'start', 'reload']
+      apache_hash['action'] = 'create'
       apache_hash
     elsif action == :destroy
       { user: system_user_name, action: 'destroy' }
