@@ -9,6 +9,22 @@ describe SystemUser do
     create(:system_user, new_password: 'test').hashed_password.should be_present
   end
 
+  describe 'uid' do
+    it 'should be 2000 if it is the first system user' do
+      SystemUser.stubs(:maximum).returns(nil)
+      system_user = build(:system_user)
+      system_user.set_defaults
+      system_user.uid.should == 2000
+    end
+
+    it 'should be higher than maximum' do
+      SystemUser.stubs(:maximum).returns(2005)
+      system_user = build(:system_user)
+      system_user.set_defaults
+      system_user.uid.should == 2006
+    end
+  end
+
   describe 'JSON for Chef' do
     specify 'create action' do
       system_user = create(:system_user, name: 'site', uid: 1001, system_group: create(:system_group, name: 'webuser'),

@@ -20,7 +20,7 @@ class SystemUser < ActiveRecord::Base
   scope :is_deleted, -> { where(is_deleted: true) }
 
   def set_defaults(nologin = false)
-    self.uid = 1 + SystemUser.maximum(:uid).to_i
+    self.uid = [2000, 1 + SystemUser.maximum(:uid).to_i].max
     self.system_group = SystemGroup.find_by_name('webuser')
     self.system_user_shell = if nologin
                                SystemUserShell.get_nologin_shell
