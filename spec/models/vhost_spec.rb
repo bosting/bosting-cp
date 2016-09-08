@@ -47,6 +47,7 @@ describe Vhost do
               {
                   "server_name":"site.com",
                   "ip":"10.0.0.4",
+                  "external_ip":"10.37.132.10",
                   "port":2200,
                   "user":"site",
                   "group":"www",
@@ -79,6 +80,7 @@ describe Vhost do
               {
                   "server_name":"www3.site.com",
                   "ip":"10.0.0.6",
+                  "external_ip":"10.37.132.10",
                   "port":2201,
                   "user":"site2",
                   "group":"www",
