@@ -76,7 +76,8 @@ class Apache < ActiveRecord::Base
     vhosts.update_all is_deleted: true
   end
 
-  def to_chef_json(action)
+  def to_chef_json(action, apache_variation = nil)
+    apache_variation = self.apache_variation if apache_variation.nil?
     system_user_name = system_user.name
     if action == :create
       apache_hash = serializable_hash

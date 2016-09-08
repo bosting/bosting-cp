@@ -33,7 +33,7 @@ class SystemUser < ActiveRecord::Base
     update_attribute :is_deleted, true
   end
 
-  def to_chef_json(action)
+  def to_chef_json(action, apache_variation = nil)
     if action == :create
       system_user_hash = serializable_hash
       system_user_hash.keep_if do |key, value|

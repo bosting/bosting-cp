@@ -62,7 +62,7 @@ describe Vhost do
       )
     end
 
-    specify 'destroy action' do
+    specify 'create action with different apache variation' do
       vhost = create(:vhost, server_name: 'www3.site.com', primary: true,
                      directory_index: 'index.php index.html index.htm', indexes: false, vhost_aliases:
                          [create(:vhost_alias, name: 'www4.site.com'), create(:vhost_alias, name: 'www5.site.com')])
@@ -73,11 +73,43 @@ describe Vhost do
              ip_address: create(:ip_address, ip: '10.0.0.4'),
              apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5'),
              vhosts: [vhost])
-      expect(JSON.parse(vhost.to_chef_json(:destroy))).to(
+      apache_variation = create(:apache_variation, apache_version: '2.4', php_version: '7.0')
+      expect(JSON.parse(vhost.to_chef_json(:create, apache_variation))).to(
           match_json_expression(
               {
                   "server_name":"www3.site.com",
+                  "ip":"10.0.0.4",
+                  "port":2201,
                   "user":"site2",
+                  "group":"www",
+                  "server_alias":"www4.site.com www5.site.com",
+                  "directory_index":"index.php index.html index.htm",
+                  "apache_version":"24",
+                  "php_version":"7",
+                  "show_indexes":false,
+                  "type":"vhost",
+                  "action":"create"
+              }
+          )
+      )
+    end
+
+    specify 'destroy action' do
+      vhost = create(:vhost, server_name: 'www6.site.com', primary: true,
+                     directory_index: 'index.php index.html index.htm', indexes: false, vhost_aliases:
+                         [create(:vhost_alias, name: 'www7.site.com'), create(:vhost_alias, name: 'www8.site.com')])
+      create(:apache, server_admin: 'admin@bosting.net', port: 2202, start_servers: 1, min_spare_servers: 1,
+             max_spare_servers: 2, max_clients: 4,
+             system_user: create(:system_user, name: 'site3'),
+             system_group: create(:system_group, name: 'www'),
+             ip_address: create(:ip_address, ip: '10.0.0.4'),
+             apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5'),
+             vhosts: [vhost])
+      expect(JSON.parse(vhost.to_chef_json(:destroy))).to(
+          match_json_expression(
+              {
+                  "server_name":"www6.site.com",
+                  "user":"site3",
                   "type":"vhost",
                   "action":"destroy"
               }
