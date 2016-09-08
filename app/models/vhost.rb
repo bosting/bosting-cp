@@ -45,7 +45,7 @@ class Vhost < ActiveRecord::Base
         %w(directory_index).include?(key)
       end
       vhost_hash['server_name'] = server_name
-      vhost_hash['server_alias'] = vhost_aliases.map(&:name).join(' ')
+      vhost_hash['server_aliases'] = vhost_aliases.map(&:name)
       vhost_hash['port'] = apache.port
       vhost_hash['show_indexes'] = indexes
       vhost_hash['user'] = user
