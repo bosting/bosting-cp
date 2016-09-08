@@ -174,8 +174,8 @@ describe Apache do
                       max_spare_servers: 2, max_clients: 4,
                       system_user: create(:system_user, name: 'site'),
                       system_group: create(:system_group, name: 'www'),
-                      ip_address: create(:ip_address, ip: '10.0.0.4'),
-                      apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5'))
+                      ip_address: create(:ip_address, ip: '10.37.132.10'),
+                      apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'))
       expect(JSON.parse(apache.to_chef_json(:create))).to(
           match_json_expression(
               {
@@ -202,16 +202,16 @@ describe Apache do
                       max_spare_servers: 2, max_clients: 4,
                       system_user: create(:system_user, name: 'site'),
                       system_group: create(:system_group, name: 'www'),
-                      ip_address: create(:ip_address, ip: '10.0.0.4'),
-                      apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5'))
-      apache_variation = create(:apache_variation, apache_version: '2.4', php_version: '7.0')
+                      ip_address: create(:ip_address, ip: '10.37.132.10'),
+                      apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'))
+      apache_variation = create(:apache_variation, apache_version: '2.4', php_version: '7.0', ip: '10.0.0.6')
       expect(JSON.parse(apache.to_chef_json(:create, apache_variation))).to(
           match_json_expression(
               {
                   "server_admin":"admin@bosting.net",
                   "user":"site",
                   "group":"www",
-                  "ip":"10.0.0.4",
+                  "ip":"10.0.0.6",
                   "port":2201,
                   "apache_version":"24",
                   "php_version":"70",
@@ -231,8 +231,8 @@ describe Apache do
                       max_spare_servers: 2, max_clients: 4,
                       system_user: create(:system_user, name: 'site'),
                       system_group: create(:system_group, name: 'www'),
-                      ip_address: create(:ip_address, ip: '10.0.0.4'),
-                      apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5'))
+                      ip_address: create(:ip_address, ip: '10.37.132.10'),
+                      apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'))
       expect(JSON.parse(apache.to_chef_json(:destroy))).to(
           match_json_expression(
               {

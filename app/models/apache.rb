@@ -86,7 +86,7 @@ class Apache < ActiveRecord::Base
       end
       apache_hash['user'] = system_user_name
       apache_hash['group'] = system_group.name
-      apache_hash['ip'] = ip_address.ip
+      apache_hash['ip'] = apache_variation.ip
       apache_hash['apache_version'] = apache_variation.apache_version.sub('.', '')
       apache_hash['php_version'] = apache_variation.php_version.sub('.', '')
       apache_hash['action'] = ['create', 'enable', 'start', 'reload']
