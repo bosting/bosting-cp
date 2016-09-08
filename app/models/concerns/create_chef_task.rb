@@ -6,7 +6,8 @@ module CreateChefTask
       ApacheVariation.all.each do |av|
         run_chef_client(to_chef_json(action, av), av.name)
       end
-    else
+    end
+    if [SystemUser, SystemGroup, Domain, Apache, Vhost, MysqlUser, MysqlDb, PgsqlUser, PgsqlDb].include?(self.class)
       run_chef_client(to_chef_json(action))
     end
   end
