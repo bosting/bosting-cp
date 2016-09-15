@@ -24,6 +24,21 @@ class MysqlUser < ActiveRecord::Base
     self.login
   end
 
+  def to_chef_json(action)
+    if action == :create
+      mysql_user_hash = serializable_hash
+      mysql_user_hash.keep_if do |key, value|
+        %w(login hashed_password).include?(key)
+      end
+      mysql_user_hash['action'] = 'create'
+      mysql_user_hash
+    elsif action == :destroy
+      { login: login, action: 'destroy' }
+    else
+      raise ArgumentError, "Unknown action specified: #{action}"
+    end.merge('type' => 'mysql_user').to_json
+  end
+
   private
   def hash_new_password
     self.hashed_password = '*' + Digest::SHA1.hexdigest([Digest::SHA1.hexdigest(new_password)].pack("H*")).upcase if new_password
