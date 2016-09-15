@@ -21,14 +21,15 @@ describe MysqlUser do
     build(:mysql_user_with_a_rails_server_and_a_new_password).should be_valid
   end
 
-  it 'should hash new password' do
-    create(:mysql_user, new_password: 'test').hashed_password.should == '*94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29'
-  end
+  describe 'password hashing' do
+    it 'should hash new password' do
+      create(:mysql_user, new_password: 'test').hashed_password.should == '*94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29'
+    end
 
-  it 'should leave old hash' do
-    mysql_user = create(:mysql_user, new_password: 'test')
-    mysql_user.save
-    mysql_user.hashed_password.should == '*94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29'
+    it 'should not change old hash' do
+      mysql_user = create(:mysql_user, new_password: 'test')
+      expect{ mysql_user.save }.not_to change{ mysql_user.hashed_password }
+    end
   end
 
   it 'should mark as deleted the mysql user and all mysql dbs' do

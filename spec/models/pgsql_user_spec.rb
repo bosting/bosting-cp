@@ -27,11 +27,9 @@ describe PgsqlUser do
       create(:pgsql_user, apache: apache, login: 'login', new_password: 'test').hashed_password.should == 'md5eacdbf8d9847a76978bd515fae200a2a'
     end
 
-    it 'should leave old hash' do
-      apache = create(:apache, system_user: create(:system_user, name: 'login2'))
-      pgsql_user = create(:pgsql_user, apache: apache, login: 'login2', new_password: 'test')
-      pgsql_user.save
-      pgsql_user.hashed_password.should == 'md5124653cf9d6a29a3d4b5f264b1105dec'
+    it 'should not change old hash' do
+      pgsql_user = create(:pgsql_user, new_password: 'test')
+      expect{ pgsql_user.save }.not_to change{ pgsql_user.hashed_password }
     end
   end
 
