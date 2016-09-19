@@ -17,7 +17,8 @@ class PgsqlUsersController < ApplicationController
     authorize! :create, @pgsql_user = PgsqlUser.new(permitted_params)
     load_permitted_servers
     if @pgsql_user.save
-        redirect_to pgsql_users_path, notice: t('flash.pgsql_user.create')
+      @pgsql_user.create_chef_task(:create)
+      redirect_to pgsql_users_path, notice: t('flash.pgsql_user.create')
     else
       render :new
     end
@@ -26,6 +27,7 @@ class PgsqlUsersController < ApplicationController
   def update
     @pgsql_user = PgsqlUser.find(params[:id])
     if @pgsql_user.update(permitted_params)
+      @pgsql_user.create_chef_task(:create)
       redirect_to pgsql_users_path, notice: t('flash.pgsql_user.update')
     else
       render :edit

@@ -17,6 +17,7 @@ class MysqlUsersController < ApplicationController
     authorize! :create, @mysql_user = MysqlUser.new(permitted_params)
     load_permitted_servers
     if @mysql_user.save
+      @mysql_user.create_chef_task(:create)
       redirect_to mysql_users_path, notice: t('flash.mysql_user.create')
     else
       render :new
@@ -25,6 +26,7 @@ class MysqlUsersController < ApplicationController
 
   def update
     if @mysql_user.update(permitted_params)
+      @mysql_user.create_chef_task(:create)
       redirect_to mysql_users_path, notice: t('flash.mysql_user.update')
     else
       render :edit

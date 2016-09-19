@@ -15,7 +15,8 @@ class PgsqlDbsController < ApplicationController
   def create
     authorize! :create, @pgsql_db = @pgsql_user.pgsql_dbs.build(permitted_params)
     if @pgsql_db.save
-        redirect_to pgsql_user_pgsql_dbs_path, notice: t('flash.pgsql_db.create')
+      @pgsql_db.create_chef_task(:create)
+      redirect_to pgsql_user_pgsql_dbs_path, notice: t('flash.pgsql_db.create')
     else
       render :new
     end
@@ -24,6 +25,7 @@ class PgsqlDbsController < ApplicationController
   def update
     @pgsql_db = PgsqlDb.find(params[:id])
     if @pgsql_db.update(permitted_params)
+      @pgsql_user.create_chef_task(:create)
       redirect_to pgsql_user_pgsql_dbs_path, notice: t('flash.pgsql_db.update')
     else
       render :edit

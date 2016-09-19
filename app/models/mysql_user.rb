@@ -1,5 +1,5 @@
 class MysqlUser < ActiveRecord::Base
-  include DbLoginValidation
+  include DbLoginValidation, CreateChefTask
 
   belongs_to :apache
   belongs_to :rails_server

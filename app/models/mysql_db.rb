@@ -1,5 +1,5 @@
 class MysqlDb < ActiveRecord::Base
-  include DbNameValidation
+  include DbNameValidation, CreateChefTask
 
   belongs_to :mysql_user
 

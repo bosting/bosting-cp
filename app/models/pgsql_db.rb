@@ -1,5 +1,5 @@
 class PgsqlDb < ActiveRecord::Base
-  include DbNameValidation
+  include DbNameValidation, CreateChefTask
 
   belongs_to :pgsql_user
 
