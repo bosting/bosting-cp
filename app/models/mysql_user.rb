@@ -40,7 +40,8 @@ class MysqlUser < ActiveRecord::Base
 
   def do_create_db
     if create_db
-      mysql_dbs.create(db_name: login)
+      mysql_db = mysql_dbs.create(db_name: login)
+      mysql_db.create_chef_task(:create)
     end
   end
 end

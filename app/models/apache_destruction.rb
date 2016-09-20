@@ -21,12 +21,19 @@ class ApacheDestruction
     apache.user.domains.each(&:destroy) if destroy_domains
     apache.user.destroy if destroy_user
     apache.system_user.ftps.each(&:destroy) if destroy_ftps
-    apache.system_user.destroy if destroy_system_user
+    if destroy_system_user
+      apache.system_user.destroy
+      apache.system_user.create_chef_task(:destroy)
+    end
     %w(mysql pgsql).each do |sql|
       if attributes["destroy_#{sql}_users"]
         apache.public_send("#{sql}_users").each do |sql_user|
-          sql_user.public_send("#{sql}_dbs").each(&:destroy)
+          sql_user.public_send("#{sql}_dbs").each do |db|
+            db.destroy
+            db.create_chef_task(:destroy)
+          end
           sql_user.destroy
+          sql_user.create_chef_task(:destroy)
         end
       end
     end

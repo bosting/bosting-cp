@@ -52,10 +52,12 @@ class QuickRegistration
     apache.ip_address_id = ip_address
     apache.set_defaults
     apache.save!
+    apache.create_chef_task(:create)
 
     vhost = apache.vhosts.build(server_name: self.domain, primary: true)
     vhost.set_defaults
     vhost.save!
+    vhost.create_chef_task(:create)
 
     if self.domain == self.top_domain
       domain.dns_records.create!(origin: 'www', ip_address_id: ip_address, dns_record_type: type_a)
@@ -69,12 +71,18 @@ class QuickRegistration
 
     if with_mysql
       mysql_password = generate_random_password
-      MysqlUser.create!(login: login, apache: apache, create_db: true, new_password: mysql_password)
+      mysql_user = MysqlUser.create!(login: login, apache: apache, new_password: mysql_password)
+      mysql_user.create_chef_task(:create)
+      mysql_db = MysqlDb.create!(db_name: login, mysql_user: mysql_user)
+      mysql_db.create_chef_task(:create)
     end
 
     if with_pgsql
       pgsql_password = generate_random_password
-      PgsqlUser.create!(login: login, apache: apache, create_db: true, new_password: pgsql_password)
+      pgsql_user = PgsqlUser.create!(login: login, apache: apache, new_password: pgsql_password)
+      pgsql_user.create_chef_task(:create)
+      pgsql_db = PgsqlDb.create!(db_name: login, pgsql_user: pgsql_user)
+      pgsql_db.create_chef_task(:create)
     end
 
     if with_email

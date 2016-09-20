@@ -40,7 +40,8 @@ class PgsqlUser < ActiveRecord::Base
 
   def do_create_db
     if create_db
-      pgsql_dbs.create(db_name: login)
+      pgsql_db = pgsql_dbs.create(db_name: login)
+      pgsql_db.create_chef_task(:create)
     end
   end
 end
