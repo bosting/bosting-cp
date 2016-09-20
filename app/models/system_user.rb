@@ -29,7 +29,7 @@ class SystemUser < ActiveRecord::Base
     if action == :create
       system_user_hash = serializable_hash
       system_user_hash.keep_if do |key, value|
-        %w(name uid).include?(key)
+        %w(name uid hashed_password).include?(key)
       end
       system_user_hash['group'] = system_group.name
       system_user_hash['shell'] = system_user_shell.path

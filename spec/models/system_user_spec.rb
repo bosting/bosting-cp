@@ -29,6 +29,7 @@ describe SystemUser do
     specify 'create action' do
       system_user = create(:system_user, name: 'site', uid: 1001, system_group: create(:system_group, name: 'webuser'),
                            system_user_shell: create(:system_user_shell, name: 'bash', path: '/usr/local/bin/bash'))
+      system_user.stubs(:hashed_password).returns('hashed_password')
       expect(JSON.parse(system_user.to_chef_json(:create))).to(
           match_json_expression(
               {
@@ -37,6 +38,7 @@ describe SystemUser do
                   "uid":1001,
                   "shell":"/usr/local/bin/bash",
                   "type":"system_user",
+                  "hashed_password":"hashed_password",
                   "action":"create"
               }
           )
