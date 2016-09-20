@@ -18,6 +18,10 @@ class ApacheDestruction
   end
 
   def destroy_dependencies(apache)
+    apache.vhosts.each do |vhost|
+      vhost.destroy
+      vhost.create_chef_task(:destroy)
+    end
     apache.user.domains.each(&:destroy) if destroy_domains
     apache.user.destroy if destroy_user
     apache.system_user.ftps.each(&:destroy) if destroy_ftps
