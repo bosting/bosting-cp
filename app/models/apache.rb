@@ -59,6 +59,7 @@ class Apache < ActiveRecord::Base
   def to_chef_json(action, apache_variation = nil)
     apache_variation = self.apache_variation if apache_variation.nil?
     system_user_name = system_user.name
+    apache_version = apache_variation.apache_version.sub('.', '')
     if action == :create
       apache_hash = serializable_hash
       apache_hash.keep_if do |key, value|
@@ -67,7 +68,6 @@ class Apache < ActiveRecord::Base
       apache_hash['user'] = system_user_name
       apache_hash['group'] = system_group.name
       apache_hash['ip'] = apache_variation.ip
-      apache_hash['apache_version'] = apache_variation.apache_version.sub('.', '')
       apache_hash['php_version'] = apache_variation.php_version.sub('.', '')
       apache_hash['action'] = 'create'
       apache_hash
@@ -75,6 +75,6 @@ class Apache < ActiveRecord::Base
       { user: system_user_name, action: 'destroy' }
     else
       raise ArgumentError, "Unknown action specified: #{action}"
-    end.merge('type' => 'apache').to_json
+    end.merge('type' => 'apache', 'apache_version' => apache_version).to_json
   end
 end

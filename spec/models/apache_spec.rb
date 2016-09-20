@@ -116,6 +116,7 @@ describe Apache do
           match_json_expression(
               {
                   "user":"site",
+                  "apache_version":"22",
                   "type":"apache",
                   "action":"destroy"
               }
