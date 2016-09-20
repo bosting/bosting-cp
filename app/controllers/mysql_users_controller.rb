@@ -34,6 +34,7 @@ class MysqlUsersController < ApplicationController
 
   def destroy
     @mysql_user.destroy
+    @mysql_user.create_chef_task(:destroy)
     redirect_to mysql_users_path, notice: t('flash.mysql_user.destroy')
   end
 

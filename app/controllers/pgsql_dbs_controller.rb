@@ -33,6 +33,7 @@ class PgsqlDbsController < ApplicationController
 
   def destroy
     @pgsql_db.destroy
+    @pgsql_db.create_chef_task(:create)
     redirect_to pgsql_user_pgsql_dbs_path, notice: t('flash.pgsql_db.destroy')
   end
 end
