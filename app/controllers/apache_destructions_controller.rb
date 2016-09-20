@@ -7,9 +7,9 @@ class ApacheDestructionsController < ApplicationController
   end
 
   def create
-    @apache.create_chef_task(:destroy)
     @apache_destruction.destroy_dependencies(@apache)
     @apache.destroy
+    @apache.create_chef_task(:destroy)
 
     redirect_to apaches_path, flash: t('flash.apache_destruction.create')
   end
