@@ -40,6 +40,7 @@ class QuickRegistration
     domain = Domain.find_or_initialize_by(name: self.top_domain)
     if domain.new_record?
       domain.set_defaults
+      domain.user = user
       domain.ns1_ip_address_id = ns1_ip_address
       domain.ns2_ip_address_id = ns2_ip_address
       domain.save!
