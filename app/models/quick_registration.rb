@@ -35,6 +35,7 @@ class QuickRegistration
     system_user = SystemUser.new(name: login, user: user, new_password: ssh_password)
     system_user.set_defaults(!with_ssh)
     system_user.save!
+    system_user.create_chef_task(:create)
 
     domain = Domain.find_or_initialize_by(name: self.top_domain)
     if domain.new_record?
