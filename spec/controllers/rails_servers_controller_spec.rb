@@ -48,7 +48,7 @@ describe RailsServersController do
       response.should redirect_to(rails_servers_path)
     end
 
-    it "destroy action should mark model as deleted and redirect to index action" do
+    it "destroy action should destroy model and redirect to index action" do
       rails_server = RailsServer.first
       delete :destroy, id: rails_server
       response.should redirect_to(rails_servers_path)

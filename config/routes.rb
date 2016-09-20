@@ -7,8 +7,8 @@ Rails.application.routes.draw do
 
   scope except: :show do
     resources :edit_users
-    resources :apaches do
-      member { get :before_destroy }
+    resources :apaches, except: [:show, :destroy] do
+      resource :apache_destruction, only: [:new, :create]
       resources :vhosts
     end
     resources :rails_servers

@@ -3,7 +3,7 @@ class ApachesController < ApplicationController
 
   def index
     @apaches = Apache.search domain: params[:domain]
-    @can_destroy = can? :destroy, Apache
+    @can_destroy = can?(:new, ApacheDestruction)
   end
 
   def new
@@ -30,26 +30,5 @@ class ApachesController < ApplicationController
     else
       render :edit
     end
-  end
-
-  def destroy
-    params = permitted_params
-    @apache.destroy_domains = params['destroy_domains']
-    @apache.destroy_ftps = params['destroy_ftps']
-    @apache.destroy_user = params['destroy_user']
-    @apache.destroy_system_user = params['destroy_system_user']
-    @apache.destroy_mysql_users = params['destroy_mysql_users']
-    @apache.destroy_pgsql_users = params['destroy_pgsql_users']
-    @apache.destroy
-    redirect_to apaches_path, notice: t('flash.apache.destroy')
-  end
-
-  def before_destroy
-    @apache.destroy_domains = true
-    @apache.destroy_ftps = true
-    @apache.destroy_user = false
-    @apache.destroy_system_user = true
-    @apache.destroy_mysql_users = true
-    @apache.destroy_pgsql_users = true
   end
 end

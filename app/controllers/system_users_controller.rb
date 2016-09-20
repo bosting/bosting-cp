@@ -2,7 +2,6 @@ class SystemUsersController < ApplicationController
   load_and_authorize_resource except: :create
 
   def index
-    @system_users = @system_users.not_deleted
     @can_destroy = can? :destroy, SystemUser
   end
 

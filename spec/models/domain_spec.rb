@@ -23,30 +23,4 @@ describe Domain do
     domain.save
     domain.serial.should == '2008090142'
   end
-
-  it "should set updated if active" do
-    domain = create(:domain, active: true)
-    domain.update_column(:updated, false)
-    domain.updated.should be_falsey
-    domain.save!
-    domain.updated.should be_truthy
-  end
-
-  it "should not set updated if not active" do
-    domain = create(:domain, active: false)
-    domain.update_column(:updated, false)
-    domain.updated.should be_falsey
-    domain.save!
-    domain.updated.should be_falsey
-  end
-
-  it 'should mark as deleted the domain and all dns records' do
-    domain = create(:domain)
-    dns_record1 = create(:dns_record, domain: domain)
-    dns_record2 = create(:dns_record, domain: domain)
-    domain.destroy
-    domain.reload.is_deleted.should be_truthy
-    dns_record1.reload.is_deleted.should be_truthy
-    dns_record2.reload.is_deleted.should be_truthy
-  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615124221) do
+ActiveRecord::Schema.define(version: 20160919141545) do
 
   create_table "apache_variations", force: :cascade do |t|
     t.string   "name",           limit: 255
@@ -29,44 +29,28 @@ ActiveRecord::Schema.define(version: 20160615124221) do
   add_index "apache_variations", ["position"], name: "index_apache_variations_on_position", unique: true, using: :btree
 
   create_table "apaches", force: :cascade do |t|
-    t.integer  "user_id",                  limit: 4
-    t.integer  "system_user_id",           limit: 4
-    t.integer  "system_group_id",          limit: 4
-    t.integer  "ip_address_id",            limit: 4
-    t.integer  "port",                     limit: 4
-    t.integer  "min_spare_servers",        limit: 4
-    t.integer  "max_spare_servers",        limit: 4
-    t.integer  "start_servers",            limit: 4
-    t.integer  "max_clients",              limit: 4
-    t.string   "server_admin",             limit: 255
-    t.integer  "apache_variation_id",      limit: 4
-    t.boolean  "active",                                 default: true,  null: false
-    t.text     "custom_config",            limit: 65535
+    t.integer  "user_id",             limit: 4
+    t.integer  "system_user_id",      limit: 4
+    t.integer  "system_group_id",     limit: 4
+    t.integer  "ip_address_id",       limit: 4
+    t.integer  "port",                limit: 4
+    t.integer  "min_spare_servers",   limit: 4
+    t.integer  "max_spare_servers",   limit: 4
+    t.integer  "start_servers",       limit: 4
+    t.integer  "max_clients",         limit: 4
+    t.string   "server_admin",        limit: 255
+    t.integer  "apache_variation_id", limit: 4
+    t.boolean  "active",                            default: true,  null: false
+    t.text     "custom_config",       limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "updated",                                default: false, null: false
-    t.boolean  "is_deleted",                             default: false, null: false
-    t.boolean  "av_changed",                             default: false, null: false
-    t.integer  "apache_variation_prev_id", limit: 4
-    t.boolean  "skip_nginx",                             default: false, null: false
+    t.boolean  "skip_nginx",                        default: false, null: false
   end
 
   add_index "apaches", ["active"], name: "index_apaches_on_skip", using: :btree
-  add_index "apaches", ["is_deleted"], name: "index_apaches_on_is_deleted", using: :btree
   add_index "apaches", ["port"], name: "index_apaches_on_port", unique: true, using: :btree
   add_index "apaches", ["system_user_id"], name: "index_apaches_on_system_user_id", unique: true, using: :btree
-  add_index "apaches", ["updated"], name: "index_apaches_on_updated", using: :btree
   add_index "apaches", ["user_id"], name: "index_apaches_on_user_id", using: :btree
-
-  create_table "delete_tasks", force: :cascade do |t|
-    t.string   "name",                limit: 255
-    t.integer  "delete_task_type_id", limit: 4
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.string   "parent_object_name",  limit: 255
-  end
-
-  add_index "delete_tasks", ["delete_task_type_id"], name: "index_delete_tasks_on_delete_task_type_id", using: :btree
 
   create_table "dns_record_types", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -86,11 +70,9 @@ ActiveRecord::Schema.define(version: 20160615124221) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "dns_record_type_id", limit: 4
-    t.boolean  "is_deleted",                     default: false, null: false
   end
 
   add_index "dns_records", ["domain_id"], name: "index_dns_records_on_domain_id", using: :btree
-  add_index "dns_records", ["is_deleted"], name: "index_dns_records_on_is_deleted", using: :btree
 
   create_table "domains", force: :cascade do |t|
     t.string   "name",              limit: 255
@@ -100,18 +82,14 @@ ActiveRecord::Schema.define(version: 20160615124221) do
     t.integer  "ns2_ip_address_id", limit: 4
     t.integer  "registrar_id",      limit: 4
     t.date     "expires_on"
-    t.boolean  "updated",                       default: false, null: false
-    t.boolean  "active",                        default: true,  null: false
+    t.boolean  "active",                        default: true, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "serial",            limit: 255
-    t.boolean  "is_deleted",                    default: false, null: false
   end
 
   add_index "domains", ["active"], name: "index_domains_on_active", using: :btree
-  add_index "domains", ["is_deleted"], name: "index_domains_on_is_deleted", using: :btree
   add_index "domains", ["name"], name: "index_domains_on_name", unique: true, using: :btree
-  add_index "domains", ["updated"], name: "index_domains_on_updated", using: :btree
   add_index "domains", ["user_id"], name: "index_domains_on_user_id", using: :btree
 
   create_table "email_aliases", force: :cascade do |t|
@@ -165,61 +143,49 @@ ActiveRecord::Schema.define(version: 20160615124221) do
 
   create_table "mysql_dbs", force: :cascade do |t|
     t.string   "db_name",       limit: 255
-    t.integer  "size",          limit: 4,   default: 0,     null: false
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.integer  "size",          limit: 4,   default: 0, null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "mysql_user_id", limit: 4
-    t.boolean  "is_deleted",                default: false, null: false
-    t.boolean  "updated",                   default: true,  null: false
   end
 
   add_index "mysql_dbs", ["db_name"], name: "index_mysql_dbs_on_db_name", unique: true, using: :btree
-  add_index "mysql_dbs", ["is_deleted"], name: "index_mysql_dbs_on_is_deleted", using: :btree
   add_index "mysql_dbs", ["mysql_user_id"], name: "index_mysql_dbs_on_mysql_user_id", using: :btree
-  add_index "mysql_dbs", ["updated"], name: "index_mysql_dbs_on_updated", using: :btree
 
   create_table "mysql_users", force: :cascade do |t|
     t.string   "login",           limit: 255
     t.integer  "apache_id",       limit: 4
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.string   "hashed_password", limit: 255
-    t.boolean  "is_deleted",                  default: false, null: false
     t.integer  "rails_server_id", limit: 4
   end
 
   add_index "mysql_users", ["apache_id"], name: "index_mysql_users_on_apache_id", using: :btree
   add_index "mysql_users", ["hashed_password"], name: "index_mysql_users_on_hashed_password", using: :btree
-  add_index "mysql_users", ["is_deleted"], name: "index_mysql_users_on_is_deleted", using: :btree
   add_index "mysql_users", ["login"], name: "index_mysql_users_on_login", unique: true, using: :btree
 
   create_table "pgsql_dbs", force: :cascade do |t|
     t.string   "db_name",       limit: 255
     t.integer  "pgsql_user_id", limit: 4
-    t.boolean  "is_deleted",                default: false, null: false
-    t.boolean  "updated",                   default: true,  null: false
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   add_index "pgsql_dbs", ["db_name"], name: "index_pgsql_dbs_on_db_name", unique: true, using: :btree
-  add_index "pgsql_dbs", ["is_deleted"], name: "index_pgsql_dbs_on_is_deleted", using: :btree
   add_index "pgsql_dbs", ["pgsql_user_id"], name: "index_pgsql_dbs_on_pgsql_user_id", using: :btree
-  add_index "pgsql_dbs", ["updated"], name: "index_pgsql_dbs_on_updated", using: :btree
 
   create_table "pgsql_users", force: :cascade do |t|
     t.string   "login",           limit: 255
     t.string   "hashed_password", limit: 255
     t.integer  "apache_id",       limit: 4
-    t.boolean  "is_deleted",                  default: false, null: false
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "rails_server_id", limit: 4
   end
 
   add_index "pgsql_users", ["apache_id"], name: "index_pgsql_users_on_apache_id", using: :btree
   add_index "pgsql_users", ["hashed_password"], name: "index_pgsql_users_on_hashed_password", using: :btree
-  add_index "pgsql_users", ["is_deleted"], name: "index_pgsql_users_on_is_deleted", using: :btree
   add_index "pgsql_users", ["login"], name: "index_pgsql_users_on_login", unique: true, using: :btree
 
   create_table "pureftpd", force: :cascade do |t|
@@ -312,18 +278,14 @@ ActiveRecord::Schema.define(version: 20160615124221) do
     t.integer  "system_group_id",      limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "updated",                          default: false, null: false
-    t.boolean  "is_deleted",                       default: false, null: false
     t.integer  "user_id",              limit: 4
     t.integer  "system_user_shell_id", limit: 4
     t.string   "hashed_password",      limit: 255
   end
 
   add_index "system_users", ["hashed_password"], name: "index_system_users_on_hashed_password", using: :btree
-  add_index "system_users", ["is_deleted"], name: "index_system_users_on_is_deleted", using: :btree
   add_index "system_users", ["name"], name: "index_system_users_on_name", unique: true, using: :btree
   add_index "system_users", ["uid"], name: "index_system_users_on_uid", unique: true, using: :btree
-  add_index "system_users", ["updated"], name: "index_system_users_on_updated", using: :btree
   add_index "system_users", ["user_id"], name: "index_system_users_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -370,7 +332,6 @@ ActiveRecord::Schema.define(version: 20160615124221) do
     t.string   "directory_index",   limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_deleted",                      default: false, null: false
     t.boolean  "active",                          default: true,  null: false
     t.boolean  "skip_nginx",                      default: false, null: false
     t.boolean  "ssl",                             default: false, null: false
@@ -383,7 +344,6 @@ ActiveRecord::Schema.define(version: 20160615124221) do
 
   add_index "vhosts", ["active"], name: "index_vhosts_on_active", using: :btree
   add_index "vhosts", ["apache_id"], name: "index_vhosts_on_apache_id", using: :btree
-  add_index "vhosts", ["is_deleted"], name: "index_vhosts_on_is_deleted", using: :btree
   add_index "vhosts", ["server_name"], name: "index_vhosts_on_server_name", unique: true, using: :btree
 
 end

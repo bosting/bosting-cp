@@ -15,10 +15,6 @@ describe PgsqlDb do
     expect(build(:pgsql_db, pgsql_user: pgsql_user, db_name: 'db_uniq')).not_to be_valid
   end
 
-  it "should be updated" do
-    expect(create(:pgsql_db_with_similar_name).updated).to be_truthy
-  end
-
   it "should validate db name" do
     system_user = create(:system_user, name: 'haribol')
     apache = create(:apache, system_user: system_user)

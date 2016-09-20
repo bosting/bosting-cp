@@ -63,12 +63,11 @@ describe MysqlUsersController do
       response.should redirect_to(mysql_users_path)
     end
 
-    it "destroy action should mark model as deleted and redirect to index action" do
+    it "destroy action should destroy model and redirect to index action" do
       mysql_user = MysqlUser.first
       delete :destroy, id: mysql_user
       response.should redirect_to(mysql_users_path)
-      MysqlUser.exists?(mysql_user.id).should be_truthy
-      mysql_user.reload.is_deleted.should be_truthy
+      MysqlUser.exists?(mysql_user.id).should be_falsey
     end
   end
 end

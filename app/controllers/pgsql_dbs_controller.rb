@@ -3,7 +3,6 @@ class PgsqlDbsController < ApplicationController
   load_and_authorize_resource :pgsql_db, through: :pgsql_user, except: :create
 
   def index
-    @pgsql_dbs = @pgsql_dbs.not_deleted
   end
 
   def new

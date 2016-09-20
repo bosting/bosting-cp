@@ -48,12 +48,11 @@ describe SystemUsersController do
       response.should redirect_to(system_users_path)
     end
 
-    it "destroy action should mark model as deleted and redirect to index action" do
+    it "destroy action should destroy model and redirect to index action" do
       system_user = SystemUser.first
       delete :destroy, id: system_user
       response.should redirect_to(system_users_path)
-      SystemUser.exists?(system_user.id).should be_truthy
-      system_user.reload.is_deleted.should be_truthy
+      SystemUser.exists?(system_user.id).should be_falsey
     end
   end
 end

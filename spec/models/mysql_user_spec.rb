@@ -32,16 +32,6 @@ describe MysqlUser do
     end
   end
 
-  it 'should mark as deleted the mysql user and all mysql dbs' do
-    mysql_user = create(:mysql_user_with_new_password)
-    mysql_db1 = create(:mysql_db_with_similar_name, mysql_user: mysql_user)
-    mysql_db2 = create(:mysql_db_with_similar_name, mysql_user: mysql_user)
-    mysql_user.destroy
-    mysql_user.reload.is_deleted.should be_truthy
-    mysql_db1.reload.is_deleted.should be_truthy
-    mysql_db2.reload.is_deleted.should be_truthy
-  end
-
   it 'should create a db with the same name' do
     system_user = create(:system_user, name: 'new_user')
     apache = create(:apache, system_user: system_user)

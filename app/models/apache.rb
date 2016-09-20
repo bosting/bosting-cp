@@ -15,16 +15,8 @@ class Apache < ActiveRecord::Base
             :start_servers, :max_clients, :server_admin, :apache_variation, presence: true
   validates :port, :system_user_id, uniqueness: true
 
-  attr_accessor :destroy_user, :destroy_ftps, :destroy_system_user,
-                :destroy_mysql_users, :destroy_pgsql_users, :destroy_domains
-
-  before_save :set_updated, :set_av_changed
-
-  scope :active, -> { uniq.joins(:vhosts).where(active: true, is_deleted: false, vhosts: { active: true, is_deleted: false }) }
-  scope :not_deleted, -> { where(is_deleted: false) }
-  scope :is_deleted, -> { where(is_deleted: true) }
+  scope :active, -> { uniq.joins(:vhosts).where(active: true, vhosts: { active: true }) }
   scope :ordered, -> { joins(:system_user).order('`system_users`.`name` ASC') }
-  scope :updated, -> { where(updated: true) }
   scope :find_domain, ->(*name) do
     name = name.first
     if name.to_s.strip != ""
@@ -36,10 +28,10 @@ class Apache < ActiveRecord::Base
   end
 
   def self.search options
-    select('`apaches`.`id`, `apaches`.`active`, `apaches`.`updated`, `system_users`.`name` AS `system_user_name`, `apache_variations`.`description` AS `apache_variation_name`').
+    select('`apaches`.`id`, `apaches`.`active`, `system_users`.`name` AS `system_user_name`, `apache_variations`.`description` AS `apache_variation_name`').
         joins('LEFT OUTER JOIN `system_users` ON `apaches`.`system_user_id` = `system_users`.`id`').
         joins('LEFT OUTER JOIN `apache_variations` ON `apaches`.`apache_variation_id` = `apache_variations`.`id`').
-        not_deleted.order('`system_user_name`').find_domain(options[:domain])
+        order('`system_user_name`').find_domain(options[:domain])
   end
 
   def name
@@ -64,18 +56,6 @@ class Apache < ActiveRecord::Base
     end
   end
 
-  def destroy
-    create_chef_task(:destroy)
-    user.domains.each(&:destroy) if destroy_domains == '1'
-    user.destroy if destroy_user == '1'
-    system_user.ftps.each(&:destroy) if destroy_ftps == '1'
-    system_user.destroy if destroy_system_user == '1'
-    mysql_users.each(&:destroy) if destroy_mysql_users == '1'
-    pgsql_users.each(&:destroy) if destroy_pgsql_users == '1'
-    update_attribute :is_deleted, true
-    vhosts.update_all is_deleted: true
-  end
-
   def to_chef_json(action, apache_variation = nil)
     apache_variation = self.apache_variation if apache_variation.nil?
     system_user_name = system_user.name
@@ -96,17 +76,5 @@ class Apache < ActiveRecord::Base
     else
       raise ArgumentError, "Unknown action specified: #{action}"
     end.merge('type' => 'apache').to_json
-  end
-
-  protected
-  def set_updated
-    self.updated = true if active?
-  end
-
-  def set_av_changed
-    if apache_variation_id_changed? and !new_record?
-      self.av_changed = true
-      self.apache_variation_prev_id = apache_variation_id_was
-    end
   end
 end

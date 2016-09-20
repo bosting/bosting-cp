@@ -53,8 +53,7 @@ describe PgsqlDbsController do
       pgsql_db = PgsqlDb.first
       delete :destroy, pgsql_user_id: @pgsql_user.id, id: pgsql_db
       response.should redirect_to(pgsql_user_pgsql_dbs_path)
-      PgsqlDb.exists?(pgsql_db.id).should be_truthy
-      pgsql_db.reload.is_deleted.should be_truthy
+      PgsqlDb.exists?(pgsql_db.id).should be_falsey
     end
   end
 end

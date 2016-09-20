@@ -32,4 +32,4 @@
       %td= apache.system_user_name
       %td= apache.apache_variation_name
       - if @can_destroy
-        %td.btn-col= link_to admin_icon(:destroy), before_destroy_apache_path(apache), class: 'btn btn-danger', title: t('site.destroy'), 'data-toggle': 'tooltip'
+        %td.btn-col= link_to admin_icon(:destroy), new_apache_apache_destruction_path(apache), class: 'btn btn-danger', title: t('site.destroy'), 'data-toggle': 'tooltip'

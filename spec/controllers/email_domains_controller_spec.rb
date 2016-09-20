@@ -53,7 +53,7 @@ describe EmailDomainsController do
       response.should redirect_to(email_domains_path)
     end
 
-    it "destroy action should mark model as deleted and redirect to index action" do
+    it "destroy action should destroy model and redirect to index action" do
       email_domain = EmailDomain.first
       delete :destroy, id: email_domain
       response.should redirect_to(email_domains_path)

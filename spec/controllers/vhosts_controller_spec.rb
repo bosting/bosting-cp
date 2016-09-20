@@ -49,12 +49,11 @@ describe VhostsController do
       response.should redirect_to(apache_vhosts_path(@apache))
     end
 
-    it "destroy action should mark model as deleted and redirect to index action" do
+    it "destroy action should destroy model and redirect to index action" do
       vhost = Vhost.first
       delete :destroy, id: vhost, apache_id: @apache.id
       response.should redirect_to(apache_vhosts_path(@apache))
-      Vhost.exists?(vhost.id).should be_truthy
-      vhost.reload.is_deleted.should be_truthy
+      Vhost.exists?(vhost.id).should be_falsey
     end
   end
 end

@@ -52,12 +52,11 @@ describe DomainsController do
       response.should redirect_to(domains_path)
     end
 
-    it "destroy action should mark model as deleted and redirect to index action" do
+    it "destroy action should destroy model and redirect to index action" do
       domain = Domain.first
       delete :destroy, id: domain
       response.should redirect_to(domains_path)
-      Domain.exists?(domain.id).should be_truthy
-      domain.reload.is_deleted.should be_truthy
+      Domain.exists?(domain.id).should be_falsey
     end
   end
 end

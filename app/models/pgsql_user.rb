@@ -13,12 +13,6 @@ class PgsqlUser < ActiveRecord::Base
   after_save :do_create_db
 
   default_scope { order(:login) }
-  scope :not_deleted, -> { where(is_deleted: false) }
-
-  def destroy
-    update_attribute :is_deleted, true
-    pgsql_dbs.update_all is_deleted: true
-  end
 
   def name
     self.login

@@ -3,7 +3,6 @@ class PgsqlUsersController < ApplicationController
   before_action :load_permitted_servers, only: [:new, :edit, :update]
 
   def index
-    @pgsql_users = @pgsql_users.not_deleted
   end
 
   def new

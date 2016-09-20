@@ -2,7 +2,7 @@ class DomainsController < ApplicationController
   load_and_authorize_resource except: :create
 
   def index
-    @domains = @domains.not_deleted.includes(:ns1_ip_address, :ns2_ip_address)
+    @domains = @domains.includes(:ns1_ip_address, :ns2_ip_address)
     @can_destroy = can? :destroy, Domain
   end
 

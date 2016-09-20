@@ -51,19 +51,5 @@ describe ApachesController do
       post :create, apache: params_for(:apache)
       response.should redirect_to(apaches_path)
     end
-
-    it "before destroy action should render its template" do
-      apache = Apache.first
-      get :before_destroy, id: apache
-      response.should render_template(:before_destroy)
-    end
-
-    it "destroy action should mark model as deleted and redirect to index action" do
-      apache = Apache.first
-      delete :destroy, id: apache, apache: { something: 'something' }
-      response.should redirect_to(apaches_path)
-      Apache.exists?(apache.id).should be_truthy
-      apache.reload.is_deleted.should be_truthy
-    end
   end
 end

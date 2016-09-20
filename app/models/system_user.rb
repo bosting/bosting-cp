@@ -13,11 +13,7 @@ class SystemUser < ActiveRecord::Base
   validates :name, :uid, uniqueness: true
 
   attr_accessor :new_password
-  before_save :set_updated, :hash_new_password
-
-  scope :updated, -> { where(updated: true) }
-  scope :not_deleted, -> { where(is_deleted: false) }
-  scope :is_deleted, -> { where(is_deleted: true) }
+  before_save :hash_new_password
 
   def set_defaults(nologin = false)
     self.uid = [2000, 1 + SystemUser.maximum(:uid).to_i].max
@@ -27,10 +23,6 @@ class SystemUser < ActiveRecord::Base
                              else
                                SystemUserShell.get_default_shell
                              end
-  end
-
-  def destroy
-    update_attribute :is_deleted, true
   end
 
   def to_chef_json(action, apache_variation = nil)
@@ -51,10 +43,6 @@ class SystemUser < ActiveRecord::Base
   end
 
   private
-  def set_updated
-    self.updated = true
-  end
-
   def hash_new_password
     self.hashed_password = new_password.crypt('$6$' + generate_random_password(16)) if new_password.present?
   end

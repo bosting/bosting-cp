@@ -1,0 +1,26 @@
+ru:
+  headers:
+    apache_destruction: Удаление апача
+
+  activerecord:
+    attributes:
+      apache_destruction:
+        destroy_user: Удалить пользователя
+        destroy_domains: Удалить домены
+        destroy_ftps: Удалить ftp логины
+        destroy_system_user: Удалить системного пользователя
+        destroy_mysql_users: Удалить все базы и всех пользователей MySQL
+        destroy_pgsql_users: Удалить все базы и всех пользователей PgSQL
+
+  actions:
+    apache_destruction: &apache_destruction
+      new: Удалить апач
+
+  flash:
+    apache_destruction:
+      create: Апач удален
+
+#  helpers:
+#    submit:
+#      apache_destruction:
+#        <<: *apache_destruction

@@ -3,7 +3,6 @@ class VhostsController < ApplicationController
   load_and_authorize_resource :vhost, through: :apache, except: :create
 
   def index
-    @vhosts = @vhosts.not_deleted
   end
 
   def new

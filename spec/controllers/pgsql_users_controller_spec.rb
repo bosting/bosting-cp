@@ -63,12 +63,11 @@ describe PgsqlUsersController do
       response.should redirect_to(pgsql_users_path)
     end
 
-    it "destroy action should mark model as deleted and redirect to index action" do
+    it "destroy action should destroy model and redirect to index action" do
       pgsql_user = PgsqlUser.first
       delete :destroy, id: pgsql_user
       response.should redirect_to(pgsql_users_path)
-      PgsqlUser.exists?(pgsql_user.id).should be_truthy
-      pgsql_user.reload.is_deleted.should be_truthy
+      PgsqlUser.exists?(pgsql_user.id).should be_falsey
     end
   end
 end

@@ -3,7 +3,6 @@ class MysqlDbsController < ApplicationController
   load_and_authorize_resource :mysql_db, through: :mysql_user, except: :create
 
   def index
-    @mysql_dbs = @mysql_dbs.not_deleted
   end
 
   def new

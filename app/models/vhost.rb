@@ -13,12 +13,7 @@ class Vhost < ActiveRecord::Base
   validates :ssl_port, uniqueness: { scope: :ssl_ip_address_id }, if: :ssl
   validates :ssl_ip_address, :ssl_port, :ssl_key, :ssl_certificate, presence: true, if: :ssl
 
-  before_save :set_updated
-  before_destroy :set_updated
-
-  scope :active, -> { where(active: true, is_deleted: false) }
-  scope :not_deleted, -> { where(is_deleted: false) }
-  scope :is_deleted, -> { where(is_deleted: true) }
+  scope :active, -> { where(active: true) }
 
   def set_defaults
     if self.apache.vhosts.size == 0
@@ -30,10 +25,6 @@ class Vhost < ActiveRecord::Base
 
   def name
     self.server_name
-  end
-
-  def destroy
-    update_attribute :is_deleted, true
   end
 
   def to_chef_json(action, apache_variation = nil)
@@ -61,10 +52,5 @@ class Vhost < ActiveRecord::Base
     else
       raise ArgumentError, "Unknown action specified: #{action}"
     end.merge('type' => 'vhost').to_json
-  end
-
-  protected
-  def set_updated
-    apache.update_attribute(:updated, true) if apache.active?
   end
 end

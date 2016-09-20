@@ -15,10 +15,6 @@ describe MysqlDb do
     expect(build(:mysql_db, mysql_user: mysql_user, db_name: 'db_uniq')).not_to be_valid
   end
 
-  it "should be updated" do
-    expect(create(:mysql_db_with_similar_name).updated).to be_truthy
-  end
-
   it "should validate db name" do
     system_user = create(:system_user, name: 'haribol')
     apache = create(:apache, system_user: system_user)

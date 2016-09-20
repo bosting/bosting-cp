@@ -53,8 +53,7 @@ describe MysqlDbsController do
       mysql_db = MysqlDb.first
       delete :destroy, mysql_user_id: @mysql_user.id, id: mysql_db
       response.should redirect_to(mysql_user_mysql_dbs_path)
-      MysqlDb.exists?(mysql_db.id).should be_truthy
-      mysql_db.reload.is_deleted.should be_truthy
+      MysqlDb.exists?(mysql_db.id).should be_falsey
     end
   end
 end

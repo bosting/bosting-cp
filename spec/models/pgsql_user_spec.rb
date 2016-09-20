@@ -33,16 +33,6 @@ describe PgsqlUser do
     end
   end
 
-  it 'should mark as deleted the pgsql user and all pgsql dbs' do
-    pgsql_user = create(:pgsql_user_with_new_password)
-    pgsql_db1 = create(:pgsql_db_with_similar_name, pgsql_user: pgsql_user)
-    pgsql_db2 = create(:pgsql_db_with_similar_name, pgsql_user: pgsql_user)
-    pgsql_user.destroy
-    pgsql_user.reload.is_deleted.should be_truthy
-    pgsql_db1.reload.is_deleted.should be_truthy
-    pgsql_db2.reload.is_deleted.should be_truthy
-  end
-
   it 'should create a db with the same name' do
     system_user = create(:system_user, name: 'new_user')
     apache = create(:apache, system_user: system_user)

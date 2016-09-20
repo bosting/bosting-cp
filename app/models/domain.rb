@@ -7,24 +7,16 @@ class Domain < ActiveRecord::Base
   belongs_to :ns2_ip_address, class_name: 'IpAddress', foreign_key: :ns2_ip_address_id
 
   default_scope { order(:name) }
-  scope :active, -> { where(active: true, is_deleted: false) }
-  scope :not_deleted, -> { where(is_deleted: false) }
-  scope :is_deleted, -> { where(is_deleted: true) }
-  scope :updated, -> { where(updated: true) }
+  scope :active, -> { where(active: true) }
 
   validates :name, :email, :ns1_ip_address_id, :ns2_ip_address_id, presence: true
   validates :name, uniqueness: true
 
-  before_save :set_updated, :set_serial
+  before_save :set_serial
   after_save :do_add_default_records, :do_add_default_mx_records, :do_add_gmail_mx_records
 
   def set_defaults
     self.email = "hostmaster@#{Setting.get('server_domain')}"
-  end
-
-  def destroy
-    update_attribute :is_deleted, true
-    dns_records.update_all is_deleted: true
   end
 
   def self.ensure_dot(domain_name)
@@ -36,10 +28,6 @@ class Domain < ActiveRecord::Base
   end
 
   protected
-  def set_updated
-    self.updated = true if active?
-  end
-
   def set_serial
     now = Time.now
     new_serial = Time.new.strftime('%Y%m%d' + (4*now.hour + now.min/15).to_s)
@@ -51,8 +39,8 @@ class Domain < ActiveRecord::Base
     if add_default_records == '1'
       type_a = DnsRecordType.find_by_name('A')
       www_server_ip = IpAddress.find_by(name: Setting.get('server_domain'))
-      dns_records.create!(origin: '@', dns_record_type: type_a, ip_address: www_server_ip, skip_set_updated: true)
-      dns_records.create!(origin: 'www', dns_record_type: type_a, ip_address: www_server_ip, skip_set_updated: true)
+      dns_records.create!(origin: '@', dns_record_type: type_a, ip_address: www_server_ip)
+      dns_records.create!(origin: 'www', dns_record_type: type_a, ip_address: www_server_ip)
     end
   end
 
@@ -60,7 +48,7 @@ class Domain < ActiveRecord::Base
     if add_default_mx_records == '1'
       type_mx = DnsRecordType.find_by_name('MX')
       value = Domain.ensure_dot(Setting.get('default_mx'))
-      dns_records.create!(origin: '@', dns_record_type: type_mx, value: value, mx_priority: 10, skip_set_updated: true)
+      dns_records.create!(origin: '@', dns_record_type: type_mx, value: value, mx_priority: 10)
     end
   end
 
@@ -74,7 +62,7 @@ class Domain < ActiveRecord::Base
           %w(alt3.aspmx.l.google.com. 10),
           %w(alt4.aspmx.l.google.com. 10)
       ].each do |value, mx_priority|
-        dns_records.create!(origin: '@', dns_record_type: type_mx, value: value, mx_priority: mx_priority, skip_set_updated: true)
+        dns_records.create!(origin: '@', dns_record_type: type_mx, value: value, mx_priority: mx_priority)
       end
     end
   end

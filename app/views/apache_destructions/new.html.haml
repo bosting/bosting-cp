@@ -1,0 +1,15 @@
+- title t('headers.apache_destruction')
+
+= link_to_back apaches_path
+
+.row
+  .col-md-6.col-sm-10.col-xs-12
+    = form_wrapper("Удалить #{@apache.name}?", 'danger') do
+      = simple_form_for [@apache, @apache_destruction], url: apache_apache_destruction_path(@apache) do |f|
+        = f.input :destroy_domains, label: t('activerecord.attributes.apache_destruction.destroy_domains'), as: :boolean
+        = f.input :destroy_ftps, label: t('activerecord.attributes.apache_destruction.destroy_ftps'), as: :boolean
+        = f.input :destroy_user, label: t('activerecord.attributes.apache_destruction.destroy_user'), as: :boolean
+        = f.input :destroy_system_user, label: t('activerecord.attributes.apache_destruction.destroy_system_user'), as: :boolean
+        = f.input :destroy_mysql_users, label: t('activerecord.attributes.apache_destruction.destroy_mysql_users'), as: :boolean
+        = f.input :destroy_pgsql_users, label: t('activerecord.attributes.apache_destruction.destroy_pgsql_users'), as: :boolean
+        = f.button :submit, t('actions.apache_destruction.new'), class: 'btn-danger'
