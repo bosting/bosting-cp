@@ -29,6 +29,7 @@ class Vhost < ActiveRecord::Base
 
   def to_chef_json(action, apache_variation = nil)
     apache_variation = self.apache.apache_variation if apache_variation.nil?
+    apache_version = apache_variation.apache_version.sub('.', '')
     user = apache.system_user.name
     if action == :create
       vhost_hash = serializable_hash
@@ -43,7 +44,6 @@ class Vhost < ActiveRecord::Base
       vhost_hash['group'] = apache.system_group.name
       vhost_hash['ip'] = apache_variation.ip
       vhost_hash['external_ip'] = apache.ip_address.ip
-      vhost_hash['apache_version'] = apache_variation.apache_version.sub('.', '')
       vhost_hash['php_version'] = apache_variation.php_version[0]
       vhost_hash['action'] = 'create'
       vhost_hash
@@ -51,6 +51,6 @@ class Vhost < ActiveRecord::Base
       { user: user, server_name: server_name, action: 'destroy' }
     else
       raise ArgumentError, "Unknown action specified: #{action}"
-    end.merge('type' => 'vhost').to_json
+    end.merge('type' => 'vhost', 'apache_version' => apache_version).to_json
   end
 end

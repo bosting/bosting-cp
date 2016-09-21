@@ -112,6 +112,32 @@ describe Vhost do
               {
                   "server_name":"www6.site.com",
                   "user":"site3",
+                  "apache_version":"22",
+                  "type":"vhost",
+                  "action":"destroy"
+              }
+          )
+      )
+    end
+
+    specify 'destroy action with different apache variation' do
+      vhost = create(:vhost, server_name: 'www9.site.com', primary: true,
+                     directory_index: 'index.php index.html index.htm', indexes: false, vhost_aliases:
+                         [create(:vhost_alias, name: 'www10.site.com'), create(:vhost_alias, name: 'www11.site.com')])
+      create(:apache, server_admin: 'admin@bosting.net', port: 2203, start_servers: 1, min_spare_servers: 1,
+             max_spare_servers: 2, max_clients: 4,
+             system_user: create(:system_user, name: 'site4'),
+             system_group: create(:system_group, name: 'www'),
+             ip_address: create(:ip_address, ip: '10.37.132.10'),
+             apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'),
+             vhosts: [vhost])
+      apache_variation = create(:apache_variation, apache_version: '2.4', php_version: '7.0', ip: '10.0.0.6')
+      expect(JSON.parse(vhost.to_chef_json(:destroy, apache_variation))).to(
+          match_json_expression(
+              {
+                  "server_name":"www9.site.com",
+                  "user":"site4",
+                  "apache_version":"24",
                   "type":"vhost",
                   "action":"destroy"
               }
