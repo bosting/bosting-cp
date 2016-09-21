@@ -122,7 +122,26 @@ describe Apache do
               }
           )
       )
+    end
 
+    specify 'destroy action with different apache variation' do
+      apache = create(:apache, server_admin: 'admin@bosting.net', port: 2203, start_servers: 1, min_spare_servers: 1,
+                      max_spare_servers: 2, max_clients: 4,
+                      system_user: create(:system_user, name: 'site'),
+                      system_group: create(:system_group, name: 'www'),
+                      ip_address: create(:ip_address, ip: '10.37.132.10'),
+                      apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'))
+      apache_variation = create(:apache_variation, apache_version: '2.4', php_version: '7.0', ip: '10.0.0.6')
+      expect(JSON.parse(apache.to_chef_json(:destroy, apache_variation))).to(
+          match_json_expression(
+              {
+                  "user":"site",
+                  "apache_version":"24",
+                  "type":"apache",
+                  "action":"destroy"
+              }
+          )
+      )
     end
   end
 end
