@@ -13,6 +13,14 @@ describe Apache do
     build(:apache).should be_valid
   end
 
+  it "should not be valid if port is too low" do
+    expect(build(:apache, port: 4000)).not_to be_valid
+  end
+
+  it "should not be valid if port is too high" do
+    expect(build(:apache, port: 65100)).not_to be_valid
+  end
+
   it 'should collect all server names' do
     apache = create(:apache)
     vhost1 = create(:vhost, server_name: 'host1.example.com', apache: apache)
@@ -32,24 +40,24 @@ describe Apache do
   end
 
   describe 'port' do
-    it 'should be 2000 if it is the first apache' do
+    it 'should be 5000 if it is the first apache' do
       Apache.stubs(:maximum).returns(nil)
       apache = build(:apache)
       apache.set_defaults
-      apache.port.should == 2000
+      apache.port.should == 5000
     end
 
     it 'should be higher than maximum' do
-      Apache.stubs(:maximum).returns(2005)
+      Apache.stubs(:maximum).returns(5005)
       apache = build(:apache)
       apache.set_defaults
-      apache.port.should == 2006
+      apache.port.should == 5006
     end
   end
 
   describe 'JSON for Chef' do
     specify 'create action' do
-      apache = create(:apache, server_admin: 'admin@bosting.net', port: 2200, start_servers: 1, min_spare_servers: 1,
+      apache = create(:apache, server_admin: 'admin@bosting.net', port: 5200, start_servers: 1, min_spare_servers: 1,
                       max_spare_servers: 2, max_clients: 4,
                       system_user: create(:system_user, name: 'site'),
                       system_group: create(:system_group, name: 'www'),
@@ -62,7 +70,7 @@ describe Apache do
                   "user":"site",
                   "group":"www",
                   "ip":"10.0.0.4",
-                  "port":2200,
+                  "port":5200,
                   "apache_version":"22",
                   "php_version":"55",
                   "start_servers":1,
@@ -77,7 +85,7 @@ describe Apache do
     end
 
     specify 'create action with different apache variation' do
-      apache = create(:apache, server_admin: 'admin@bosting.net', port: 2201, start_servers: 1, min_spare_servers: 1,
+      apache = create(:apache, server_admin: 'admin@bosting.net', port: 5201, start_servers: 1, min_spare_servers: 1,
                       max_spare_servers: 2, max_clients: 4,
                       system_user: create(:system_user, name: 'site'),
                       system_group: create(:system_group, name: 'www'),
@@ -91,7 +99,7 @@ describe Apache do
                   "user":"site",
                   "group":"www",
                   "ip":"10.0.0.6",
-                  "port":2201,
+                  "port":5201,
                   "apache_version":"24",
                   "php_version":"70",
                   "start_servers":1,
@@ -106,7 +114,7 @@ describe Apache do
     end
 
     specify 'destroy action' do
-      apache = create(:apache, server_admin: 'admin@bosting.net', port: 2202, start_servers: 1, min_spare_servers: 1,
+      apache = create(:apache, server_admin: 'admin@bosting.net', port: 5202, start_servers: 1, min_spare_servers: 1,
                       max_spare_servers: 2, max_clients: 4,
                       system_user: create(:system_user, name: 'site'),
                       system_group: create(:system_group, name: 'www'),
@@ -125,7 +133,7 @@ describe Apache do
     end
 
     specify 'destroy action with different apache variation' do
-      apache = create(:apache, server_admin: 'admin@bosting.net', port: 2203, start_servers: 1, min_spare_servers: 1,
+      apache = create(:apache, server_admin: 'admin@bosting.net', port: 5203, start_servers: 1, min_spare_servers: 1,
                       max_spare_servers: 2, max_clients: 4,
                       system_user: create(:system_user, name: 'site'),
                       system_group: create(:system_group, name: 'www'),

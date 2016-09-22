@@ -1,6 +1,9 @@
 class Apache < ActiveRecord::Base
   include CreateChefTask
 
+  MINIMUM_PORT = 5000
+  MAXIMUM_PORT = 65000
+
   belongs_to :user
   belongs_to :system_user
   belongs_to :system_group
@@ -14,6 +17,7 @@ class Apache < ActiveRecord::Base
   validates :user, :system_user, :system_group, :ip_address, :port, :min_spare_servers, :max_spare_servers,
             :start_servers, :max_clients, :server_admin, :apache_variation, presence: true
   validates :port, :system_user_id, uniqueness: true
+  validates :port, numericality: { greater_than_or_equal_to: MINIMUM_PORT, less_than_or_equal_to: MAXIMUM_PORT }
 
   scope :active, -> { uniq.joins(:vhosts).where(active: true, vhosts: { active: true }) }
   scope :ordered, -> { joins(:system_user).order('`system_users`.`name` ASC') }
@@ -40,7 +44,7 @@ class Apache < ActiveRecord::Base
 
   def set_defaults
     self.system_group = SystemGroup.find_by_name('nogroup')
-    self.port = [2000, 1 + Apache.maximum(:port).to_i].max
+    self.port = [MINIMUM_PORT, 1 + Apache.maximum(:port).to_i].max
     self.min_spare_servers = 1
     self.max_spare_servers = 1
     self.start_servers = 1

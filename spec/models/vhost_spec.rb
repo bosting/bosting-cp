@@ -35,7 +35,7 @@ describe Vhost do
       vhost = create(:vhost, server_name: 'site.com', primary: true,
                      directory_index: 'index.php index.html index.htm', indexes: false, vhost_aliases:
                          [create(:vhost_alias, name: 'www.site.com'), create(:vhost_alias, name: 'www2.site.com')])
-      create(:apache, server_admin: 'admin@bosting.net', port: 2200, start_servers: 1, min_spare_servers: 1,
+      create(:apache, server_admin: 'admin@bosting.net', port: 5200, start_servers: 1, min_spare_servers: 1,
              max_spare_servers: 2, max_clients: 4,
              system_user: create(:system_user, name: 'site'),
              system_group: create(:system_group, name: 'www'),
@@ -48,7 +48,7 @@ describe Vhost do
                   "server_name":"site.com",
                   "ip":"10.0.0.4",
                   "external_ip":"10.37.132.10",
-                  "port":2200,
+                  "port":5200,
                   "user":"site",
                   "group":"www",
                   "server_aliases":["www.site.com", "www2.site.com"],
@@ -67,7 +67,7 @@ describe Vhost do
       vhost = create(:vhost, server_name: 'www3.site.com', primary: true,
                      directory_index: 'index.php index.html index.htm', indexes: false, vhost_aliases:
                          [create(:vhost_alias, name: 'www4.site.com'), create(:vhost_alias, name: 'www5.site.com')])
-      create(:apache, server_admin: 'admin@bosting.net', port: 2201, start_servers: 1, min_spare_servers: 1,
+      create(:apache, server_admin: 'admin@bosting.net', port: 5201, start_servers: 1, min_spare_servers: 1,
              max_spare_servers: 2, max_clients: 4,
              system_user: create(:system_user, name: 'site2'),
              system_group: create(:system_group, name: 'www'),
@@ -81,7 +81,7 @@ describe Vhost do
                   "server_name":"www3.site.com",
                   "ip":"10.0.0.6",
                   "external_ip":"10.37.132.10",
-                  "port":2201,
+                  "port":5201,
                   "user":"site2",
                   "group":"www",
                   "server_aliases":["www4.site.com", "www5.site.com"],
@@ -100,7 +100,7 @@ describe Vhost do
       vhost = create(:vhost, server_name: 'www6.site.com', primary: true,
                      directory_index: 'index.php index.html index.htm', indexes: false, vhost_aliases:
                          [create(:vhost_alias, name: 'www7.site.com'), create(:vhost_alias, name: 'www8.site.com')])
-      create(:apache, server_admin: 'admin@bosting.net', port: 2202, start_servers: 1, min_spare_servers: 1,
+      create(:apache, server_admin: 'admin@bosting.net', port: 5202, start_servers: 1, min_spare_servers: 1,
              max_spare_servers: 2, max_clients: 4,
              system_user: create(:system_user, name: 'site3'),
              system_group: create(:system_group, name: 'www'),
@@ -124,7 +124,7 @@ describe Vhost do
       vhost = create(:vhost, server_name: 'www9.site.com', primary: true,
                      directory_index: 'index.php index.html index.htm', indexes: false, vhost_aliases:
                          [create(:vhost_alias, name: 'www10.site.com'), create(:vhost_alias, name: 'www11.site.com')])
-      create(:apache, server_admin: 'admin@bosting.net', port: 2203, start_servers: 1, min_spare_servers: 1,
+      create(:apache, server_admin: 'admin@bosting.net', port: 5203, start_servers: 1, min_spare_servers: 1,
              max_spare_servers: 2, max_clients: 4,
              system_user: create(:system_user, name: 'site4'),
              system_group: create(:system_group, name: 'www'),

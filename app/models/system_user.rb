@@ -11,12 +11,13 @@ class SystemUser < ActiveRecord::Base
 
   validates :name, :uid, :user, :system_group, :system_user_shell, presence: true
   validates :name, :uid, uniqueness: true
+  validates :uid, numericality: { greater_than_or_equal_to: Apache::MINIMUM_PORT, less_than_or_equal_to: Apache::MAXIMUM_PORT }
 
   attr_accessor :new_password
   before_save :hash_new_password
 
   def set_defaults(nologin = false)
-    self.uid = [2000, 1 + SystemUser.maximum(:uid).to_i].max
+    self.uid = [Apache::MINIMUM_PORT, 1 + SystemUser.maximum(:uid).to_i].max
     self.system_group = SystemGroup.find_by_name('webuser')
     self.system_user_shell = if nologin
                                SystemUserShell.get_nologin_shell
