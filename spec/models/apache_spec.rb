@@ -1,14 +1,6 @@
 require 'spec_helper'
 
 describe Apache do
-  before(:all) do
-    create(:system_group, name: 'webuser')
-    create_system_user_shells
-    create_apache_variations
-  end
-  before(:each) { create(:system_user) }
-  after(:each) { SystemUser.delete_all }
-
   it "should be valid" do
     build(:apache).should be_valid
   end
@@ -56,19 +48,21 @@ describe Apache do
   end
 
   describe 'JSON for Chef' do
+    before(:all) { @system_group = create(:system_group, name: 'nogroup') }
+
     specify 'create action' do
       apache = create(:apache, server_admin: 'admin@bosting.net', port: 5200, start_servers: 1, min_spare_servers: 1,
                       max_spare_servers: 2, max_clients: 4,
-                      system_user: create(:system_user, name: 'site'),
-                      system_group: create(:system_group, name: 'www'),
+                      system_user: create(:system_user, name: 'site1'),
+                      system_group: @system_group,
                       ip_address: create(:ip_address, ip: '10.37.132.10'),
                       apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'))
       expect(JSON.parse(apache.to_chef_json(:create))).to(
           match_json_expression(
               {
                   "server_admin":"admin@bosting.net",
-                  "user":"site",
-                  "group":"www",
+                  "user":"site1",
+                  "group":"nogroup",
                   "ip":"10.0.0.4",
                   "port":5200,
                   "apache_version":"22",
@@ -87,8 +81,8 @@ describe Apache do
     specify 'create action with different apache variation' do
       apache = create(:apache, server_admin: 'admin@bosting.net', port: 5201, start_servers: 1, min_spare_servers: 1,
                       max_spare_servers: 2, max_clients: 4,
-                      system_user: create(:system_user, name: 'site'),
-                      system_group: create(:system_group, name: 'www'),
+                      system_user: create(:system_user, name: 'site2'),
+                      system_group: @system_group,
                       ip_address: create(:ip_address, ip: '10.37.132.10'),
                       apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'))
       apache_variation = create(:apache_variation, apache_version: '2.4', php_version: '7.0', ip: '10.0.0.6')
@@ -96,8 +90,8 @@ describe Apache do
           match_json_expression(
               {
                   "server_admin":"admin@bosting.net",
-                  "user":"site",
-                  "group":"www",
+                  "user":"site2",
+                  "group":"nogroup",
                   "ip":"10.0.0.6",
                   "port":5201,
                   "apache_version":"24",
@@ -116,14 +110,14 @@ describe Apache do
     specify 'destroy action' do
       apache = create(:apache, server_admin: 'admin@bosting.net', port: 5202, start_servers: 1, min_spare_servers: 1,
                       max_spare_servers: 2, max_clients: 4,
-                      system_user: create(:system_user, name: 'site'),
-                      system_group: create(:system_group, name: 'www'),
+                      system_user: create(:system_user, name: 'site3'),
+                      system_group: @system_group,
                       ip_address: create(:ip_address, ip: '10.37.132.10'),
                       apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'))
       expect(JSON.parse(apache.to_chef_json(:destroy))).to(
           match_json_expression(
               {
-                  "user":"site",
+                  "user":"site3",
                   "apache_version":"22",
                   "type":"apache",
                   "action":"destroy"
@@ -135,15 +129,15 @@ describe Apache do
     specify 'destroy action with different apache variation' do
       apache = create(:apache, server_admin: 'admin@bosting.net', port: 5203, start_servers: 1, min_spare_servers: 1,
                       max_spare_servers: 2, max_clients: 4,
-                      system_user: create(:system_user, name: 'site'),
-                      system_group: create(:system_group, name: 'www'),
+                      system_user: create(:system_user, name: 'site4'),
+                      system_group: @system_group,
                       ip_address: create(:ip_address, ip: '10.37.132.10'),
                       apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'))
       apache_variation = create(:apache_variation, apache_version: '2.4', php_version: '7.0', ip: '10.0.0.6')
       expect(JSON.parse(apache.to_chef_json(:destroy, apache_variation))).to(
           match_json_expression(
               {
-                  "user":"site",
+                  "user":"site4",
                   "apache_version":"24",
                   "type":"apache",
                   "action":"destroy"
