@@ -41,7 +41,7 @@ class Vhost < ActiveRecord::Base
       vhost_hash['port'] = apache.port
       vhost_hash['show_indexes'] = indexes
       vhost_hash['user'] = user
-      vhost_hash['group'] = apache.system_group.name
+      vhost_hash['group'] = apache.system_user.system_group.name
       vhost_hash['ip'] = apache_variation.ip
       vhost_hash['external_ip'] = apache.ip_address.ip
       vhost_hash['php_version'] = apache_variation.php_version[0]

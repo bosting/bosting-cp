@@ -31,14 +31,19 @@ describe Vhost do
   end
 
   describe 'JSON for Chef' do
+    before(:all) do
+      @webuser_group = create(:system_group, name: 'webuser')
+      @nogroup = create(:system_group, name: 'nogroup')
+    end
+
     specify 'create action' do
       vhost = create(:vhost, server_name: 'site.com', primary: true,
                      directory_index: 'index.php index.html index.htm', indexes: false, vhost_aliases:
                          [create(:vhost_alias, name: 'www.site.com'), create(:vhost_alias, name: 'www2.site.com')])
       create(:apache, server_admin: 'admin@bosting.net', port: 5200, start_servers: 1, min_spare_servers: 1,
              max_spare_servers: 2, max_clients: 4,
-             system_user: create(:system_user, name: 'site'),
-             system_group: create(:system_group, name: 'www'),
+             system_user: create(:system_user, name: 'site', system_group: @webuser_group),
+             system_group: @nogroup,
              ip_address: create(:ip_address, ip: '10.37.132.10'),
              apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'),
              vhosts: [vhost])
@@ -50,7 +55,7 @@ describe Vhost do
                   "external_ip":"10.37.132.10",
                   "port":5200,
                   "user":"site",
-                  "group":"www",
+                  "group":"webuser",
                   "server_aliases":["www.site.com", "www2.site.com"],
                   "directory_index":"index.php index.html index.htm",
                   "apache_version":"22",
@@ -69,8 +74,8 @@ describe Vhost do
                          [create(:vhost_alias, name: 'www4.site.com'), create(:vhost_alias, name: 'www5.site.com')])
       create(:apache, server_admin: 'admin@bosting.net', port: 5201, start_servers: 1, min_spare_servers: 1,
              max_spare_servers: 2, max_clients: 4,
-             system_user: create(:system_user, name: 'site2'),
-             system_group: create(:system_group, name: 'www'),
+             system_user: create(:system_user, name: 'site2', system_group: @webuser_group),
+             system_group: @nogroup,
              ip_address: create(:ip_address, ip: '10.37.132.10'),
              apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'),
              vhosts: [vhost])
@@ -83,7 +88,7 @@ describe Vhost do
                   "external_ip":"10.37.132.10",
                   "port":5201,
                   "user":"site2",
-                  "group":"www",
+                  "group":"webuser",
                   "server_aliases":["www4.site.com", "www5.site.com"],
                   "directory_index":"index.php index.html index.htm",
                   "apache_version":"24",
@@ -102,8 +107,8 @@ describe Vhost do
                          [create(:vhost_alias, name: 'www7.site.com'), create(:vhost_alias, name: 'www8.site.com')])
       create(:apache, server_admin: 'admin@bosting.net', port: 5202, start_servers: 1, min_spare_servers: 1,
              max_spare_servers: 2, max_clients: 4,
-             system_user: create(:system_user, name: 'site3'),
-             system_group: create(:system_group, name: 'www'),
+             system_user: create(:system_user, name: 'site3', system_group: @webuser_group),
+             system_group: @nogroup,
              ip_address: create(:ip_address, ip: '10.37.132.10'),
              apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'),
              vhosts: [vhost])
@@ -126,8 +131,8 @@ describe Vhost do
                          [create(:vhost_alias, name: 'www10.site.com'), create(:vhost_alias, name: 'www11.site.com')])
       create(:apache, server_admin: 'admin@bosting.net', port: 5203, start_servers: 1, min_spare_servers: 1,
              max_spare_servers: 2, max_clients: 4,
-             system_user: create(:system_user, name: 'site4'),
-             system_group: create(:system_group, name: 'www'),
+             system_user: create(:system_user, name: 'site4', system_group: @webuser_group),
+             system_group: @nogroup,
              ip_address: create(:ip_address, ip: '10.37.132.10'),
              apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'),
              vhosts: [vhost])
