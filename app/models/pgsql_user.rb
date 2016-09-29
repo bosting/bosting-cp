@@ -35,7 +35,7 @@ class PgsqlUser < ActiveRecord::Base
 
   private
   def hash_new_password
-    self.hashed_password = 'md5' + Digest::MD5.hexdigest(new_password + login) if new_password
+    self.hashed_password = 'md5' + Digest::MD5.hexdigest(new_password + login) if new_password.present?
   end
 
   def do_create_db

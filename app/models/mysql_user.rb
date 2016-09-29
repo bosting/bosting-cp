@@ -35,7 +35,7 @@ class MysqlUser < ActiveRecord::Base
 
   private
   def hash_new_password
-    self.hashed_password = '*' + Digest::SHA1.hexdigest([Digest::SHA1.hexdigest(new_password)].pack("H*")).upcase if new_password
+    self.hashed_password = '*' + Digest::SHA1.hexdigest([Digest::SHA1.hexdigest(new_password)].pack("H*")).upcase if new_password.present?
   end
 
   def do_create_db
