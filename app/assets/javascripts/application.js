@@ -18,4 +18,12 @@
 
 $(document).on('turbolinks:load', function () {
     $('[data-toggle="tooltip"]').tooltip();
+
+    $('#quick_registration_user').change(function () {
+        if ($('#quick_registration_user :selected').val() == '')
+            $('div.quick_registration_email').show();
+        else
+            $('div.quick_registration_email').hide();
+
+    });
 });
