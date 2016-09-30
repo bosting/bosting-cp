@@ -36,7 +36,7 @@ describe SystemUser do
   describe 'JSON for Chef' do
     before(:all) { @system_group = create(:system_group, name: 'webuser') }
 
-    it 'create action' do
+    specify 'create action' do
       system_user = create(:system_user, name: 'site', uid: 5001, system_group: @system_group,
                            system_user_shell: create(:system_user_shell, name: 'bash', path: '/usr/local/bin/bash'))
       system_user.stubs(:hashed_password).returns('hashed_password')
@@ -55,7 +55,7 @@ describe SystemUser do
       )
     end
 
-    it 'destroy action' do
+    specify 'destroy action' do
       system_user = create(:system_user, name: 'site2', uid: 5002, system_group: @system_group,
                            system_user_shell: create(:system_user_shell, name: 'bash', path: '/usr/local/bin/bash'))
       expect(JSON.parse(system_user.to_chef_json(:destroy))).to(
