@@ -47,8 +47,9 @@ describe SystemUser do
                   "group":"webuser",
                   "uid":5001,
                   "shell":"/usr/local/bin/bash",
-                  "type":"system_user",
+                  "chroot_directory":"",
                   "hashed_password":"hashed_password",
+                  "type":"system_user",
                   "action":"create"
               }
           )
@@ -62,8 +63,53 @@ describe SystemUser do
           match_json_expression(
               {
                   "name":"site2",
+                  "chroot_directory":"",
                   "type":"system_user",
                   "action":"destroy"
+              }
+          )
+      )
+    end
+
+    it 'should add chroot directory if apache is present' do
+      system_user = create(:system_user, name: 'site3', uid: 5003, system_group: @system_group,
+                           system_user_shell: create(:system_user_shell, name: 'bash', path: '/usr/local/bin/bash'))
+      system_user.stubs(:hashed_password).returns('hashed_password')
+      apache_variation = create(:apache_variation, name: 'apache22_php56')
+      create(:apache, system_user: system_user, apache_variation: apache_variation)
+      expect(JSON.parse(system_user.to_chef_json(:create))).to(
+          match_json_expression(
+              {
+                  "name":"site3",
+                  "group":"webuser",
+                  "uid":5003,
+                  "shell":"/usr/local/bin/bash",
+                  "chroot_directory":"/usr/jails/apache22_php56",
+                  "hashed_password":"hashed_password",
+                  "type":"system_user",
+                  "action":"create"
+              }
+          )
+      )
+    end
+
+    it 'should set nologin shell if inside apache variation' do
+      system_user = create(:system_user, name: 'site4', uid: 5004, system_group: @system_group,
+                           system_user_shell: create(:system_user_shell, name: 'bash', path: '/usr/local/bin/bash'))
+      system_user.stubs(:hashed_password).returns('hashed_password')
+      apache_variation = create(:apache_variation, name: 'apache22_php56')
+      create(:apache, system_user: system_user, apache_variation: apache_variation)
+      expect(JSON.parse(system_user.to_chef_json(:create, apache_variation))).to(
+          match_json_expression(
+              {
+                  "name":"site4",
+                  "group":"webuser",
+                  "uid":5004,
+                  "shell":"/sbin/nologin",
+                  "chroot_directory":"",
+                  "hashed_password":"hashed_password",
+                  "type":"system_user",
+                  "action":"create"
               }
           )
       )

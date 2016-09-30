@@ -27,20 +27,34 @@ class SystemUser < ActiveRecord::Base
   end
 
   def to_chef_json(action, apache_variation = nil)
+    chroot_directory = if apache_variation.present?
+                         ''
+                       else
+                         apache = Apache.where(system_user_id: self.id).first
+                         if apache.present?
+                           '/usr/jails/' + apache.apache_variation.name
+                         else
+                           ''
+                         end
+                       end
     if action == :create
       system_user_hash = serializable_hash
       system_user_hash.keep_if do |key, value|
         %w(name uid hashed_password).include?(key)
       end
       system_user_hash['group'] = system_group.name
-      system_user_hash['shell'] = system_user_shell.path
+      system_user_hash['shell'] = if apache_variation.present?
+                                    '/sbin/nologin'
+                                  else
+                                    system_user_shell.path
+                                  end
       system_user_hash['action'] = 'create'
       system_user_hash
     elsif action == :destroy
       { name: name, action: 'destroy' }
     else
       raise ArgumentError, "Unknown action specified: #{action}"
-    end.merge('type' => 'system_user').to_json
+    end.merge('chroot_directory' => chroot_directory, 'type' => 'system_user').to_json
   end
 
   private
