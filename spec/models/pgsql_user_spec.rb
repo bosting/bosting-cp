@@ -28,7 +28,7 @@ describe PgsqlUser do
     end
 
     it 'should not change old hash' do
-      pgsql_user = create(:pgsql_user, new_password: 'test')
+      pgsql_user = create(:pgsql_user_with_new_password)
       expect{ pgsql_user.save }.not_to change{ pgsql_user.hashed_password }
     end
   end
