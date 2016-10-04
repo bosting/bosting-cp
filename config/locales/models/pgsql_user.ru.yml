@@ -1,7 +1,7 @@
 ru:
   headers:
-    pgsql_user: PgSQL
-    pgsql_users: PgSQL
+    pgsql_user: PostgreSQL
+    pgsql_users: PostgreSQL
 
   activerecord:
     attributes:
@@ -14,15 +14,15 @@ ru:
 
   actions:
     pgsql_user: &pgsql_user
-      create: Создать пользователя PgSQL
-      edit: Редактировать пользователя PgSQL
-      update: Сохранить пользователя PgSQL
+      create: Создать пользователя PostgreSQL
+      edit: Редактировать пользователя PostgreSQL
+      update: Сохранить пользователя PostgreSQL
 
   flash:
     pgsql_user:
-      create: PgSQL пользователь создан
-      update: PgSQL пользователь обновлен
-      destroy: PgSQL пользователь удален
+      create: PostgreSQL пользователь создан
+      update: PostgreSQL пользователь обновлен
+      destroy: PostgreSQL пользователь удален
 
   helpers:
     submit:

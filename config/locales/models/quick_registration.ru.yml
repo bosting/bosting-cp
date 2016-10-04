@@ -13,7 +13,7 @@ ru:
         with_ssh: Создать SSH
         with_ftp: Создать FTP
         with_mysql: Создать MySQL базу
-        with_pgsql: Создать Postgres базу
+        with_pgsql: Создать PostgreSQL базу
         with_email: С почтой
 
   actions:
