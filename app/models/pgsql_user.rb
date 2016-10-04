@@ -3,7 +3,7 @@ class PgsqlUser < ActiveRecord::Base
 
   belongs_to :apache
   belongs_to :rails_server
-  has_many :pgsql_dbs
+  has_many :pgsql_dbs, dependent: :destroy
 
   validates :login, presence: true, uniqueness: true
 
@@ -16,6 +16,12 @@ class PgsqlUser < ActiveRecord::Base
 
   def name
     self.login
+  end
+
+  def destroy_with_tasks
+    self.pgsql_dbs.each { |pgsql_db| pgsql_db.create_chef_task(:destroy) }
+    self.create_chef_task(:destroy)
+    destroy
   end
 
   def to_chef_json(action)

@@ -3,7 +3,7 @@ class MysqlUser < ActiveRecord::Base
 
   belongs_to :apache
   belongs_to :rails_server
-  has_many :mysql_dbs
+  has_many :mysql_dbs, dependent: :destroy
 
   validates :login, presence: true, uniqueness: true
 
@@ -16,6 +16,12 @@ class MysqlUser < ActiveRecord::Base
 
   def name
     self.login
+  end
+
+  def destroy_with_tasks
+    self.mysql_dbs.each { |mysql_db| mysql_db.create_chef_task(:destroy) }
+    self.create_chef_task(:destroy)
+    destroy
   end
 
   def to_chef_json(action)
