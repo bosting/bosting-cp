@@ -25,8 +25,8 @@ class Apache < ActiveRecord::Base
     if name.to_s.strip != ""
       name = "%#{name}%"
       joins('LEFT OUTER JOIN `vhosts` ON `vhosts`.`apache_id` = `apaches`.`id`').
-      joins('LEFT OUTER JOIN `vhost_aliases` ON `vhost_aliases`.`vhost_id` = `vhosts`.`id`').
-      where("`vhosts`.`server_name` LIKE ? OR `vhost_aliases`.`name` LIKE ?", name, name).uniq
+          joins('LEFT OUTER JOIN `vhost_aliases` ON `vhost_aliases`.`vhost_id` = `vhosts`.`id`').
+          where("`vhosts`.`server_name` LIKE ? OR `vhost_aliases`.`name` LIKE ?", name, name).uniq
     end
   end
 
@@ -81,14 +81,28 @@ class Apache < ActiveRecord::Base
     end.merge('type' => 'apache', 'apache_version' => apache_version).to_json
   end
 
-  def create_crontab_migration
+  def create_all_chef_tasks(is_update_action)
+    create_chef_task(:create)
     av_change = previous_changes[:apache_variation_id]
     if av_change.present?
-      cm = CrontabMigration.new(
-          system_user.name,
-          ApacheVariation.find(av_change.first).name,
-          ApacheVariation.find(av_change.last).name)
-      cm.create_chef_task(:move)
+      create_dependent_tasks
+      if is_update_action
+        create_crontab_migration(av_change.first, av_change.last)
+      end
     end
+  end
+
+  protected
+  def create_dependent_tasks
+    system_user.create_chef_task(:create)
+    vhosts.each { |vhost| vhost.create_chef_task(:create) }
+  end
+
+  def create_crontab_migration(av_old_id, av_new_id)
+    cm = CrontabMigration.new(
+        system_user.name,
+        ApacheVariation.find(av_old_id).name,
+        ApacheVariation.find(av_new_id).name)
+    cm.create_chef_task(:move)
   end
 end
