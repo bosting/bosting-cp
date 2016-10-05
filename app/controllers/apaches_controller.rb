@@ -26,6 +26,7 @@ class ApachesController < ApplicationController
   def update
     if @apache.update(permitted_params)
       @apache.create_chef_task(:create)
+      @apache.create_crontab_migration
       redirect_to apaches_path, notice: t('flash.apache.update')
     else
       render :edit

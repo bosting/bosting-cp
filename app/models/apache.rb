@@ -80,4 +80,15 @@ class Apache < ActiveRecord::Base
       raise ArgumentError, "Unknown action specified: #{action}"
     end.merge('type' => 'apache', 'apache_version' => apache_version).to_json
   end
+
+  def create_crontab_migration
+    av_change = previous_changes[:apache_variation_id]
+    if av_change.present?
+      cm = CrontabMigration.new(
+          system_user.name,
+          ApacheVariation.find(av_change.first).name,
+          ApacheVariation.find(av_change.last).name)
+      cm.create_chef_task(:move)
+    end
+  end
 end

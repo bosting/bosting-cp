@@ -7,7 +7,7 @@ module CreateChefTask
         run_chef_client(to_chef_json(action, av), av.name)
       end
     end
-    if [SystemUser, SystemGroup, Domain, Apache, Vhost, MysqlUser, MysqlDb, PgsqlUser, PgsqlDb].include?(self.class)
+    if [SystemUser, SystemGroup, Domain, Apache, Vhost, MysqlUser, MysqlDb, PgsqlUser, PgsqlDb, CrontabMigration].include?(self.class)
       run_chef_client(to_chef_json(action))
     end
   end
