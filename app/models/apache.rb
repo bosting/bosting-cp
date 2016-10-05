@@ -9,7 +9,6 @@ class Apache < ActiveRecord::Base
   belongs_to :system_group
   belongs_to :ip_address
   belongs_to :apache_variation
-  belongs_to :apache_variation_prev, class_name: 'ApacheVariation'
   has_many :vhosts, dependent: :delete_all
   has_many :mysql_users
   has_many :pgsql_users
