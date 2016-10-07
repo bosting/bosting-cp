@@ -3,7 +3,7 @@
 = link_to_back ftps_path
 
 = form_wrapper(t("actions.ftp.#{action}")) do
-  = permitted_form_for(@ftp) do |f|
+  = permitted_form_for(@ftp, options_for_horizontal_form) do |f|
     = f.error_notification
     = f.input :User
     = f.input :new_password, required: @ftp.new_record?

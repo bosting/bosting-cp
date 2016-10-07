@@ -3,7 +3,7 @@
 = link_to_back system_user_shells_path
 
 = form_wrapper(t("actions.system_user_shell.#{action}")) do
-  = permitted_form_for(@system_user_shell) do |f|
+  = permitted_form_for(@system_user_shell, options_for_horizontal_form) do |f|
     = f.error_notification
     = f.input :name
     = f.input :path

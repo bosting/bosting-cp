@@ -3,7 +3,7 @@
 = link_to_back pgsql_user_pgsql_dbs_path
 
 = form_wrapper(t("actions.pgsql_db.#{action}")) do
-  = permitted_form_for([@pgsql_user, @pgsql_db]) do |f|
+  = permitted_form_for([@pgsql_user, @pgsql_db], options_for_horizontal_form) do |f|
     = f.error_notification
     = f.input :db_name
     = f.button :submit

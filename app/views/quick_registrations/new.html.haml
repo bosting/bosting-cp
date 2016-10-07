@@ -4,7 +4,7 @@
 = link_to_back root_path
 
 = form_wrapper(t('actions.quick_registration.create')) do
-  = permitted_form_for(@quick_registration) do |f|
+  = permitted_form_for(@quick_registration, options_for_horizontal_form) do |f|
     = f.error_notification
     = f.input :domain, label: t('activerecord.attributes.quick_registration.domain')
     = f.input :ns1_ip_address, label: t('activerecord.attributes.quick_registration.ns1_ip_address'), collection: IpAddress.get_collection, selected: IpAddress.get_default_ns1_ip_id

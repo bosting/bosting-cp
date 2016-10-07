@@ -15,6 +15,6 @@ module TabsHelper
 
   def tab_pane(name, active = nil, &block)
     active = active ? ' active in' : ''
-    content_tag(:div, capture(&block), id: name, class: 'tab-pane fade' + active, role: 'tabpanel')
+    content_tag(:div, capture(&block), id: name, class: 'tab-pane' + active, role: 'tabpanel')
   end
 end

@@ -3,7 +3,7 @@
 = link_to_back domain_dns_records_path(@domain)
 
 = form_wrapper(t("actions.dns_record.#{action}")) do
-  = permitted_form_for([@domain, @dns_record]) do |f|
+  = permitted_form_for([@domain, @dns_record], options_for_horizontal_form) do |f|
     = f.error_notification
     = f.input :origin
     = f.association :dns_record_type

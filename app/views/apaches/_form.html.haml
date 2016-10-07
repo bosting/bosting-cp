@@ -3,7 +3,7 @@
 = link_to_back apaches_path
 
 = form_wrapper(t("actions.apache.#{action}")) do
-  = permitted_form_for(@apache) do |f|
+  = permitted_form_for(@apache, options_for_horizontal_form) do |f|
     = f.error_notification
     = tabs_block do
       = tab_presentation 'main', 'Основное', true

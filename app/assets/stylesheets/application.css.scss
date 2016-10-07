@@ -63,7 +63,22 @@ body {
 }
 
 .tab-pane {
-  padding: 20px 0;
+  padding-top: 20px;
+  padding-right: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+
+  fieldset {
+    padding-left: 15px;
+    padding-bottom: 15px;
+  }
+
+  legend {
+    margin-bottom: 10px;
+  }
 }
 
 form {
@@ -79,25 +94,18 @@ form {
   }
 }
 
-fieldset {
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-}
-
 legend {
-  width: auto;
-  border-bottom: none;
-  margin-bottom: 0;
-  padding: 0 3px;
+  font-size: 18px;
 }
 
 .add_nested_fields {
   padding-top: 5px;
   display: block;
+}
+
+.help-block {
+  margin-bottom: 0;
+  font-size: 13px;
 }
 
 #vhost_ssl_certificate, #ssl_cert_chain_certificate, #vhost_ssl_key {

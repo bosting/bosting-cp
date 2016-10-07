@@ -3,7 +3,7 @@
 = link_to_back system_groups_path
 
 = form_wrapper(t("actions.system_group.#{action}")) do
-  = permitted_form_for(@system_group) do |f|
+  = permitted_form_for(@system_group, options_for_horizontal_form) do |f|
     = f.error_notification
     = f.input :gid
     = f.input :name

@@ -3,7 +3,7 @@
 = link_to_back domains_path
 
 = form_wrapper(t("actions.domain.#{action}")) do
-  = permitted_form_for(@domain) do |f|
+  = permitted_form_for(@domain, options_for_horizontal_form) do |f|
     = f.error_notification
     = f.input :name
     = f.input :email

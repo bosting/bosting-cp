@@ -3,7 +3,7 @@
 = link_to_back ssl_cert_chains_path
 
 = form_wrapper(t("actions.ssl_cert_chain.#{action}")) do
-  = permitted_form_for(@ssl_cert_chain) do |f|
+  = permitted_form_for(@ssl_cert_chain, options_for_horizontal_form) do |f|
     = f.error_notification
     = f.input :name
     = f.input :certificate

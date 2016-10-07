@@ -3,7 +3,7 @@
 = link_to_back email_domain_email_users_path(@email_domain)
 
 = form_wrapper(t("actions.email_user.#{action}")) do
-  = permitted_form_for([@email_domain, @email_user], wrapper: :vertical_input_group) do |f|
+  = permitted_form_for([@email_domain, @email_user], options_for_horizontal_form.merge(wrapper: :horizontal_input_group)) do |f|
     = f.error_notification
     = f.input :username do
       = f.input_field :username, class: 'form-control'

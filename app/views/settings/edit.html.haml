@@ -3,7 +3,7 @@
 = link_to_back settings_path
 
 = form_wrapper(t('actions.setting.edit')) do
-  = permitted_form_for(@setting) do |f|
+  = permitted_form_for(@setting, options_for_horizontal_form) do |f|
     = f.error_notification
     = f.input :value
     = f.button :submit

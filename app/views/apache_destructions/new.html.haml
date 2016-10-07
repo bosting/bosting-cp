@@ -5,7 +5,7 @@
 .row
   .col-md-6.col-sm-10.col-xs-12
     = form_wrapper("Удалить #{@apache.name}?", 'danger') do
-      = simple_form_for [@apache, @apache_destruction], url: apache_apache_destruction_path(@apache) do |f|
+      = simple_form_for([@apache, @apache_destruction], url: apache_apache_destruction_path(@apache)) do |f|
         = f.input :destroy_domains, label: t('activerecord.attributes.apache_destruction.destroy_domains'), as: :boolean
         = f.input :destroy_ftps, label: t('activerecord.attributes.apache_destruction.destroy_ftps'), as: :boolean
         = f.input :destroy_user, label: t('activerecord.attributes.apache_destruction.destroy_user'), as: :boolean

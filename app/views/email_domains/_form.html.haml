@@ -3,7 +3,7 @@
 = link_to_back email_domains_path
 
 = form_wrapper(t("actions.email_domain.#{action}")) do
-  = permitted_form_for(@email_domain) do |f|
+  = permitted_form_for(@email_domain, options_for_horizontal_form) do |f|
     = f.error_notification
     = f.input :name
     = f.association :user

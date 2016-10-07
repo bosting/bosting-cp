@@ -3,7 +3,7 @@
 = link_to_back mysql_user_mysql_dbs_path
 
 = form_wrapper(t("actions.mysql_db.#{action}")) do
-  = permitted_form_for([@mysql_user, @mysql_db]) do |f|
+  = permitted_form_for([@mysql_user, @mysql_db], options_for_horizontal_form) do |f|
     = f.error_notification
     = f.input :db_name
     = f.button :submit
