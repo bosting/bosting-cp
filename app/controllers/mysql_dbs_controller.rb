@@ -32,7 +32,7 @@ class MysqlDbsController < ApplicationController
 
   def destroy
     @mysql_db.destroy
-    @mysql_db.create_chef_task(:create)
+    @mysql_db.create_chef_task(:destroy)
     redirect_to mysql_user_mysql_dbs_path, notice: t('flash.mysql_db.destroy')
   end
 end
