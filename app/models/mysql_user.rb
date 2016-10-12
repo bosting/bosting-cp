@@ -45,7 +45,7 @@ class MysqlUser < ActiveRecord::Base
   end
 
   def do_create_db
-    if create_db
+    if create_db == '1'
       mysql_db = mysql_dbs.create!(db_name: login)
       mysql_db.create_chef_task(:create)
     end
