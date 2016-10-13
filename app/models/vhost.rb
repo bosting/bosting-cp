@@ -39,6 +39,7 @@ class Vhost < ActiveRecord::Base
       vhost_hash['server_name'] = server_name
       vhost_hash['server_aliases'] = vhost_aliases.map(&:name)
       vhost_hash['port'] = apache.port
+      vhost_hash['apache_variation'] = apache_variation.name
       vhost_hash['show_indexes'] = indexes
       vhost_hash['user'] = user
       vhost_hash['group'] = apache.system_user.system_group.name

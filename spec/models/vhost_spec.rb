@@ -45,7 +45,7 @@ describe Vhost do
              system_user: create(:system_user, name: 'site', system_group: @webuser_group),
              system_group: @nogroup,
              ip_address: create(:ip_address, ip: '10.37.132.10'),
-             apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'),
+             apache_variation: create(:apache_variation, name: 'apache22_php55', apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'),
              vhosts: [vhost])
       expect(JSON.parse(vhost.to_chef_json(:create))).to(
           match_json_expression(
@@ -54,6 +54,7 @@ describe Vhost do
                   "ip":"10.0.0.4",
                   "external_ip":"10.37.132.10",
                   "port":5200,
+                  "apache_variation":"apache22_php55",
                   "user":"site",
                   "group":"webuser",
                   "server_aliases":["www.site.com", "www2.site.com"],
@@ -77,9 +78,9 @@ describe Vhost do
              system_user: create(:system_user, name: 'site2', system_group: @webuser_group),
              system_group: @nogroup,
              ip_address: create(:ip_address, ip: '10.37.132.10'),
-             apache_variation: create(:apache_variation, apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'),
+             apache_variation: create(:apache_variation, name: 'apache22_php55', apache_version: '2.2', php_version: '5.5', ip: '10.0.0.4'),
              vhosts: [vhost])
-      apache_variation = create(:apache_variation, apache_version: '2.4', php_version: '7.0', ip: '10.0.0.6')
+      apache_variation = create(:apache_variation, name: 'apache24_php70', apache_version: '2.4', php_version: '7.0', ip: '10.0.0.6')
       expect(JSON.parse(vhost.to_chef_json(:create, apache_variation))).to(
           match_json_expression(
               {
@@ -87,6 +88,7 @@ describe Vhost do
                   "ip":"10.0.0.6",
                   "external_ip":"10.37.132.10",
                   "port":5201,
+                  "apache_variation":"apache24_php70",
                   "user":"site2",
                   "group":"webuser",
                   "server_aliases":["www4.site.com", "www5.site.com"],
