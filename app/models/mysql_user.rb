@@ -26,10 +26,7 @@ class MysqlUser < ActiveRecord::Base
 
   def to_chef_json(action)
     if action == :create
-      mysql_user_hash = serializable_hash
-      mysql_user_hash.keep_if do |key, value|
-        %w(login hashed_password).include?(key)
-      end
+      mysql_user_hash = serializable_hash.slice(*%w(login hashed_password))
       mysql_user_hash['action'] = 'create'
       mysql_user_hash
     elsif action == :destroy

@@ -32,10 +32,7 @@ class Vhost < ActiveRecord::Base
     apache_version = apache_variation.apache_version.sub('.', '')
     user = apache.system_user.name
     if action == :create
-      vhost_hash = serializable_hash
-      vhost_hash.keep_if do |key, value|
-        %w(directory_index).include?(key)
-      end
+      vhost_hash = serializable_hash.slice(*%w(directory_index))
       vhost_hash['server_name'] = server_name
       vhost_hash['server_aliases'] = vhost_aliases.map(&:name)
       vhost_hash['port'] = apache.port

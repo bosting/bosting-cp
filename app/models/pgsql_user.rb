@@ -26,10 +26,7 @@ class PgsqlUser < ActiveRecord::Base
 
   def to_chef_json(action)
     if action == :create
-      pgsql_user_hash = serializable_hash
-      pgsql_user_hash.keep_if do |key, value|
-        %w(login hashed_password).include?(key)
-      end
+      pgsql_user_hash = serializable_hash.slice(*%w(login hashed_password))
       pgsql_user_hash['action'] = 'create'
       pgsql_user_hash
     elsif action == :destroy

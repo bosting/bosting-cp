@@ -38,10 +38,7 @@ class SystemUser < ActiveRecord::Base
                          end
                        end
     if action == :create
-      system_user_hash = serializable_hash
-      system_user_hash.keep_if do |key, value|
-        %w(name uid hashed_password).include?(key)
-      end
+      system_user_hash = serializable_hash.slice(*%w(name uid hashed_password))
       system_user_hash['group'] = system_group.name
       system_user_hash['shell'] = if apache_variation.present?
                                     '/sbin/nologin'

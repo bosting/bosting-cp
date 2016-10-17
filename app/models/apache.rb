@@ -64,10 +64,7 @@ class Apache < ActiveRecord::Base
     system_user_name = system_user.name
     apache_version = apache_variation.apache_version.sub('.', '')
     if action == :create
-      apache_hash = serializable_hash
-      apache_hash.keep_if do |key, value|
-        %w(server_admin port min_spare_servers max_spare_servers start_servers max_clients).include?(key)
-      end
+      apache_hash = serializable_hash.slice(*%w(server_admin port min_spare_servers max_spare_servers start_servers max_clients))
       apache_hash['user'] = system_user_name
       apache_hash['group'] = system_group.name
       apache_hash['ip'] = apache_variation.ip

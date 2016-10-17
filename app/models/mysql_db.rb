@@ -14,10 +14,7 @@ class MysqlDb < ActiveRecord::Base
 
   def to_chef_json(action)
     if action == :create
-      mysql_db_hash = serializable_hash
-      mysql_db_hash.keep_if do |key, value|
-        %w(db_name).include?(key)
-      end
+      mysql_db_hash = serializable_hash.slice(*%w(db_name))
       mysql_db_hash['action'] = 'create'
       mysql_db_hash
     elsif action == :destroy
