@@ -55,7 +55,7 @@ class PermittedFormBuilder < SimpleForm::FormBuilder
 
   def check_attr_permission collection, attribute_name
     return false if collection.nil?
-    collection == :all or collection.include?(attribute_name) or collection.include?("#{attribute_name}_id")
+    collection == :all || collection.include?(attribute_name) || collection.include?("#{attribute_name}_id")
   end
 
   def get_options

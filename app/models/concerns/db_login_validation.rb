@@ -9,7 +9,7 @@ module DbLoginValidation
   end
 
   def db_login_is_similar_to_web_server_name
-    if apache.present? or rails_server.present?
+    if apache.present? || rails_server.present?
       user_name = apache ? apache.system_user.name : rails_server.name
       unless login.match /^#{user_name}/
         errors.add(:login, I18n.t('errors.db_login_not_similar', login: user_name))
@@ -18,7 +18,7 @@ module DbLoginValidation
   end
 
   def apache_or_rails_server_is_present
-    if apache.nil? and rails_server.nil?
+    if apache.nil? && rails_server.nil?
       errors.add(:apache, I18n.t('errors.apache_or_rails_server_required'))
     end
   end
