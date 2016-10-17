@@ -1,11 +1,11 @@
 # coding: utf-8
 
 module ControllerMacros
-  def login_user model_class = nil
+  def login_user(model_class = nil)
     before(:each) { self.sign_in_user(create(:user), model_class) }
   end
 
-  def login_admin_user model_class = nil
+  def login_admin_user(model_class = nil)
     before(:each) { self.sign_in_user(create(:admin_user), model_class) }
   end
 

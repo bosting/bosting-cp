@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Vhost do
-  it "should be valid" do
+  it 'should be valid' do
     build(:vhost).should be_valid
   end
 

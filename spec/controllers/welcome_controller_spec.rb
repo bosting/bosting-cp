@@ -6,7 +6,7 @@ describe WelcomeController do
   context 'as admin' do
     login_admin_user
 
-    it "index action should render index template" do
+    it 'index action should render index template' do
       get :index
       response.should render_template(:index)
     end

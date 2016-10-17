@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe MysqlUser do
-  it "should be valid with a new password" do
+  it 'should be valid with a new password' do
     create(:mysql_user_with_new_password).should be_valid
   end
 
-  it "should be not valid without a new password" do
+  it 'should be not valid without a new password' do
     build(:mysql_user).should_not be_valid
   end
 

@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe PgsqlUser do
-  it "should be valid with a new password" do
+  it 'should be valid with a new password' do
     create(:pgsql_user_with_new_password).should be_valid
   end
 
-  it "should be not valid without a new password" do
+  it 'should be not valid without a new password' do
     build(:pgsql_user).should_not be_valid
   end
 

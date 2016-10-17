@@ -3,11 +3,11 @@ require 'spec_helper'
 describe MysqlDb do
   before(:each) { MysqlDb.delete_all }
 
-  it "should be valid" do
+  it 'should be valid' do
     expect(create(:mysql_db_with_similar_name)).to be_valid
   end
 
-  it "should be unique" do
+  it 'should be unique' do
     system_user = create(:system_user, name: 'db_uniq')
     apache = create(:apache, system_user: system_user)
     mysql_user = create(:mysql_user_with_new_password, login: 'db_uniq', apache: apache)
@@ -15,7 +15,7 @@ describe MysqlDb do
     expect(build(:mysql_db, mysql_user: mysql_user, db_name: 'db_uniq')).not_to be_valid
   end
 
-  it "should validate db name" do
+  it 'should validate db name' do
     system_user = create(:system_user, name: 'haribol')
     apache = create(:apache, system_user: system_user)
     mysql_user = create(:mysql_user_with_new_password, login: 'haribol', apache: apache)

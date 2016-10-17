@@ -51,7 +51,7 @@ class PermittedParams < Struct.new(:params, :current_user)
 
   private
   def add_fields_on_create(fields, on_create)
-    fields << on_create if ['new', 'create'].include?(params[:action])
+    fields << on_create if %w(new create).include?(params[:action])
     fields.flatten
   end
 end

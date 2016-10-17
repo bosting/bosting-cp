@@ -10,7 +10,7 @@ class CrontabMigration
   end
 
   def to_chef_json(action, apache_variation = nil)
-    { 'user' => @user, 'source_jail' => @source_jail, 'destination_jail' => @destination_jail,
-      'type' => 'crontab_migration', 'action' => action }.to_json
+    { user: @user, source_jail: @source_jail, destination_jail: @destination_jail,
+      type: 'crontab_migration', action: action }.to_json
   end
 end

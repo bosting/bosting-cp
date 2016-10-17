@@ -26,11 +26,11 @@ class Apache < ActiveRecord::Base
       name = "%#{name}%"
       joins('LEFT OUTER JOIN `vhosts` ON `vhosts`.`apache_id` = `apaches`.`id`').
           joins('LEFT OUTER JOIN `vhost_aliases` ON `vhost_aliases`.`vhost_id` = `vhosts`.`id`').
-          where("`vhosts`.`server_name` LIKE ? OR `vhost_aliases`.`name` LIKE ?", name, name).uniq
+          where('`vhosts`.`server_name` LIKE ? OR `vhost_aliases`.`name` LIKE ?', name, name).uniq
     end
   end
 
-  def self.search options
+  def self.search(options)
     select('`apaches`.`id`, `apaches`.`active`, `system_users`.`name` AS `system_user_name`, `apache_variations`.`description` AS `apache_variation_name`').
         joins('LEFT OUTER JOIN `system_users` ON `apaches`.`system_user_id` = `system_users`.`id`').
         joins('LEFT OUTER JOIN `apache_variations` ON `apaches`.`apache_variation_id` = `apache_variations`.`id`').

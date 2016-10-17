@@ -1,15 +1,15 @@
 require 'spec_helper'
 
 describe Apache do
-  it "should be valid" do
+  it 'should be valid' do
     build(:apache).should be_valid
   end
 
-  it "should not be valid if port is too low" do
+  it 'should not be valid if port is too low' do
     expect(build(:apache, port: 4000)).not_to be_valid
   end
 
-  it "should not be valid if port is too high" do
+  it 'should not be valid if port is too high' do
     expect(build(:apache, port: 65100)).not_to be_valid
   end
 

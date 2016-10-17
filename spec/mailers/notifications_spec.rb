@@ -1,7 +1,7 @@
-require "spec_helper"
+require 'spec_helper'
 
 describe NotificationsMailer do
-  it "should send support_message" do
+  it 'should send support_message' do
     mail = NotificationsMailer.registration(generate(:email), 'new_login', 'user_password', 'example.com',
                                             'ssh_password', 'ftp_password', 'mysql_password', 'pgsql_password')
     mail.subject.should == 'Хостинг new_login'

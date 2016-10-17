@@ -1,15 +1,15 @@
 require 'spec_helper'
 
 describe SystemUser do
-  it "should be valid" do
+  it 'should be valid' do
     build(:system_user).should be_valid
   end
 
-  it "should not be valid if uid is too low" do
+  it 'should not be valid if uid is too low' do
     expect(build(:system_user, uid: 4000)).not_to be_valid
   end
 
-  it "should not be valid if uid is too high" do
+  it 'should not be valid if uid is too high' do
     expect(build(:system_user, uid: 65200)).not_to be_valid
   end
 

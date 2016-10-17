@@ -9,46 +9,46 @@ describe EditUsersController do
   context 'as admin user' do
     login_admin_user
 
-    it "index action should render index template" do
+    it  do
       get :index
       response.should render_template(:index)
     end
 
-    it "new action should render new template" do
+    it 'new action should render new template' do
       get :new
       response.should render_template(:new)
     end
 
-    it "create action should render new template when model is invalid" do
+    it 'create action should render new template when model is invalid' do
       EditUser.any_instance.stubs(:valid?).returns(false)
       post :create, edit_user: attributes_for(:edit_user)
       response.should render_template(:new)
     end
 
-    it "create action should redirect when model is valid" do
+    it 'create action should redirect when model is valid' do
       EditUser.any_instance.stubs(:valid?).returns(true)
       post :create, edit_user: attributes_for(:edit_user)
       response.should redirect_to(edit_users_path)
     end
 
-    it "edit action should render edit template" do
+    it 'edit action should render edit template' do
       get :edit, id: EditUser.first
       response.should render_template(:edit)
     end
 
-    it "update action should render edit template when model is invalid" do
+    it 'update action should render edit template when model is invalid' do
       EditUser.any_instance.stubs(:valid?).returns(false)
       put :update, id: EditUser.first, edit_user: attributes_for(:edit_user)
       response.should render_template(:edit)
     end
 
-    it "update action should redirect when model is valid" do
+    it 'update action should redirect when model is valid' do
       EditUser.any_instance.stubs(:valid?).returns(true)
       put :update, id: EditUser.first, edit_user: attributes_for(:edit_user)
       response.should redirect_to(edit_users_path)
     end
 
-    it "destroy action should destroy model and redirect to index action" do
+    it 'destroy action should destroy model and redirect to index action' do
       edit_user = EditUser.first
       delete :destroy, id: edit_user
       response.should redirect_to(edit_users_path)

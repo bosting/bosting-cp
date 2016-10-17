@@ -10,46 +10,46 @@ describe MysqlDbsController do
   context 'as user' do
     login_user Apache
 
-    it "index action should render index template" do
+    it 'index action should render index template' do
       get :index, mysql_user_id: @mysql_user.id
       response.should render_template(:index)
     end
 
-    it "new action should render new template" do
+    it 'new action should render new template' do
       get :new, mysql_user_id: @mysql_user.id
       response.should render_template(:new)
     end
 
-    it "create action should render new template when model is invalid" do
+    it 'create action should render new template when model is invalid' do
       MysqlDb.any_instance.stubs(:valid?).returns(false)
       post :create, mysql_user_id: @mysql_user.id, mysql_db: attributes_for(:mysql_db)
       response.should render_template(:new)
     end
 
-    it "create action should redirect when model is valid" do
+    it 'create action should redirect when model is valid' do
       MysqlDb.any_instance.stubs(:valid?).returns(true)
       post :create, mysql_user_id: @mysql_user.id, mysql_db: attributes_for(:mysql_db)
       response.should redirect_to(mysql_user_mysql_dbs_path)
     end
 
-    it "edit action should render edit template" do
+    it 'edit action should render edit template' do
       get :edit, mysql_user_id: @mysql_user.id, id: MysqlDb.first
       response.should render_template(:edit)
     end
 
-    it "update action should render edit template when model is invalid" do
+    it 'update action should render edit template when model is invalid' do
       MysqlDb.any_instance.stubs(:valid?).returns(false)
       put :update, mysql_user_id: @mysql_user.id, id: MysqlDb.first, mysql_db: attributes_for(:mysql_db)
       response.should render_template(:edit)
     end
 
-    it "update action should redirect when model is valid" do
+    it 'update action should redirect when model is valid' do
       MysqlDb.any_instance.stubs(:valid?).returns(true)
       put :update, mysql_user_id: @mysql_user.id, id: MysqlDb.first, mysql_db: attributes_for(:mysql_db)
       response.should redirect_to(mysql_user_mysql_dbs_path)
     end
 
-    it "destroy action should destroy model and redirect to index action" do
+    it 'destroy action should destroy model and redirect to index action' do
       mysql_db = MysqlDb.first
       delete :destroy, mysql_user_id: @mysql_user.id, id: mysql_db
       response.should redirect_to(mysql_user_mysql_dbs_path)

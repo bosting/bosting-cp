@@ -35,12 +35,12 @@ class PermittedFormBuilder < SimpleForm::FormBuilder
     end
   end
 
-  def editable_field? attribute_name
+  def editable_field?(attribute_name)
     field_permission(attribute_name) == :editable
   end
 
   private
-  def field_permission attribute_name
+  def field_permission(attribute_name)
     if check_attr_permission(get_options[:editable_attributes], attribute_name)
       :editable
     elsif check_attr_permission(get_options[:readonly_attributes], attribute_name)
@@ -48,12 +48,12 @@ class PermittedFormBuilder < SimpleForm::FormBuilder
     end
   end
 
-  def extract_value attribute
+  def extract_value(attribute)
     method = SimpleForm.collection_label_methods.find { |m| attribute.respond_to?(m) }
     attribute.send(method)
   end
 
-  def check_attr_permission collection, attribute_name
+  def check_attr_permission(collection, attribute_name)
     return false if collection.nil?
     collection == :all || collection.include?(attribute_name) || collection.include?("#{attribute_name}_id")
   end

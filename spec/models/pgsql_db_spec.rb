@@ -7,7 +7,7 @@ describe PgsqlDb do
     expect(create(:pgsql_db_with_similar_name)).to be_valid
   end
 
-  it "should be unique" do
+  it 'should be unique' do
     system_user = create(:system_user, name: 'db_uniq')
     apache = create(:apache, system_user: system_user)
     pgsql_user = create(:pgsql_user_with_new_password, login: 'db_uniq', apache: apache)
@@ -15,7 +15,7 @@ describe PgsqlDb do
     expect(build(:pgsql_db, pgsql_user: pgsql_user, db_name: 'db_uniq')).not_to be_valid
   end
 
-  it "should validate db name" do
+  it 'should validate db name' do
     system_user = create(:system_user, name: 'haribol')
     apache = create(:apache, system_user: system_user)
     pgsql_user = create(:pgsql_user_with_new_password, login: 'haribol', apache: apache)

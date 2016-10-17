@@ -13,9 +13,9 @@ class ApplicationController < ActionController::Base
     @permitted_params.permitted_params
   end
 
-  def permitted_attributes model_name
+  def permitted_attributes(model_name)
     memoize_permitted_params
-    @permitted_params.permitted_attributes model_name
+    @permitted_params.permitted_attributes(model_name)
   end
   helper_method :permitted_attributes
 end

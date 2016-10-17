@@ -16,15 +16,15 @@ module PermittedFormForHelper
   end
 
   private
-  def editable_attributes_from_object object
+  def editable_attributes_from_object(object)
     permitted_attributes(get_model_name(object))[0]
   end
 
-  def readonly_attributes_from_object object
+  def readonly_attributes_from_object(object)
     permitted_attributes(get_model_name(object))[1]
   end
 
-  def get_model_name object
+  def get_model_name(object)
     (object.class == Array ? object.last : object).class.to_s.underscore.to_sym
   end
 end
