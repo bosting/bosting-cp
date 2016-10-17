@@ -22,7 +22,7 @@ class Apache < ActiveRecord::Base
   scope :ordered, -> { joins(:system_user).order('`system_users`.`name` ASC') }
   scope :find_domain, ->(*name) do
     name = name.first
-    if name.to_s.strip != ""
+    if name.present?
       name = "%#{name}%"
       joins('LEFT OUTER JOIN `vhosts` ON `vhosts`.`apache_id` = `apaches`.`id`').
           joins('LEFT OUTER JOIN `vhost_aliases` ON `vhost_aliases`.`vhost_id` = `vhosts`.`id`').
