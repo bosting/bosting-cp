@@ -44,6 +44,14 @@ describe MysqlUsersController do
       MysqlUser.any_instance.stubs(:valid?).returns(true)
       post :create, mysql_user: params_for(:mysql_user)
       response.should redirect_to(mysql_users_path)
+      MysqlUser.last.mysql_dbs.should == []
+    end
+
+    it 'should create a db with the same name' do
+      MysqlUser.any_instance.stubs(:valid?).returns(true)
+      post :create, mysql_user: params_for(:mysql_user, merge_attrs: { create_db: '1' })
+      response.should redirect_to(mysql_users_path)
+      MysqlUser.last.mysql_dbs.first.should be_an_kind_of(MysqlDb)
     end
 
     it 'edit action should render edit template' do

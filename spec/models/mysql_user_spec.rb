@@ -32,13 +32,6 @@ describe MysqlUser do
     end
   end
 
-  it 'should create a db with the same name' do
-    system_user = create(:system_user, name: 'new_user')
-    apache = create(:apache, system_user: system_user)
-    mysql_user = create(:mysql_user_with_new_password, login: 'new_user', create_db: '1', apache: apache)
-    mysql_user.mysql_dbs.first.db_name.should == 'new_user'
-  end
-
   it 'should validate the user name to be similar to apache name' do
     system_user = create(:system_user, name: 'mysql')
     apache = create(:apache, system_user: system_user)

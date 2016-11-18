@@ -16,7 +16,7 @@ class MysqlUsersController < ApplicationController
     authorize! :create, @mysql_user = MysqlUser.new(permitted_params)
     load_permitted_servers
     if @mysql_user.save
-      @mysql_user.create_chef_task(:create)
+      @mysql_user.create_all_chef_tasks(:create)
       redirect_to mysql_users_path, notice: t('flash.mysql_user.create')
     else
       render :new
@@ -25,7 +25,7 @@ class MysqlUsersController < ApplicationController
 
   def update
     if @mysql_user.update(permitted_params)
-      @mysql_user.create_chef_task(:create)
+      @mysql_user.create_all_chef_tasks(:create)
       redirect_to mysql_users_path, notice: t('flash.mysql_user.update')
     else
       render :edit
@@ -33,7 +33,8 @@ class MysqlUsersController < ApplicationController
   end
 
   def destroy
-    @mysql_user.destroy_with_tasks
+    @mysql_user.destroy
+    @mysql_user.create_all_chef_tasks(:destroy)
     redirect_to mysql_users_path, notice: t('flash.mysql_user.destroy')
   end
 

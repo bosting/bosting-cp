@@ -30,11 +30,13 @@ class PermittedParams < Struct.new(:params, :current_user)
         when :ftp
           [[:Dir, :User, :new_password, :system_user_id], []]
         when :mysql_user
-          [add_fields_on_create([:new_password], [:login, :apache_id]), [:login, :apache_id]]
+          [add_fields_on_create([:new_password], [:login, :apache_id, :rails_server_id, :create_db]),
+           [:login, :apache_id, :rails_server_id]]
         when :mysql_db
           [add_fields_on_create([], :db_name), [:db_name]]
         when :pgsql_user
-          [add_fields_on_create([:new_password], :login), [:login]]
+          [add_fields_on_create([:new_password], [:login, :apache_id, :rails_server_id, :create_db]),
+           [:login, :apache_id, :rails_server_id]]
         when :pgsql_db
           [add_fields_on_create([], :db_name), [:db_name]]
         when :email_domain

@@ -44,6 +44,14 @@ describe PgsqlUsersController do
       PgsqlUser.any_instance.stubs(:valid?).returns(true)
       post :create, pgsql_user: params_for(:pgsql_user)
       response.should redirect_to(pgsql_users_path)
+      PgsqlUser.last.pgsql_dbs.should == []
+    end
+
+    it 'should create a db with the same name' do
+      PgsqlUser.any_instance.stubs(:valid?).returns(true)
+      post :create, pgsql_user: params_for(:pgsql_user, merge_attrs: { create_db: '1' })
+      response.should redirect_to(pgsql_users_path)
+      PgsqlUser.last.pgsql_dbs.first.should be_an_kind_of(PgsqlDb)
     end
 
     it 'edit action should render edit template' do

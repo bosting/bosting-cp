@@ -10,7 +10,6 @@ class PgsqlUser < ActiveRecord::Base
   attr_accessor :new_password, :create_db
 
   before_save :hash_new_password
-  after_save :do_create_db
 
   default_scope { order(:login) }
 
@@ -18,10 +17,17 @@ class PgsqlUser < ActiveRecord::Base
     self.login
   end
 
-  def destroy_with_tasks
-    self.pgsql_dbs.each { |pgsql_db| pgsql_db.create_chef_task(:destroy) }
-    self.create_chef_task(:destroy)
-    destroy
+  def create_all_chef_tasks(action)
+    case action
+      when :create
+        create_chef_task(:create)
+        create_db_with_same_name if create_db == '1'
+      when :destroy
+        pgsql_dbs.each { |pgsql_db| pgsql_db.create_chef_task(:destroy) }
+        create_chef_task(:destroy)
+      else
+        raise ArgumentError, "Unknown task: #{action}"
+    end
   end
 
   def to_chef_json(action)
@@ -41,10 +47,8 @@ class PgsqlUser < ActiveRecord::Base
     self.hashed_password = 'md5' + Digest::MD5.hexdigest(new_password + login) if new_password.present?
   end
 
-  def do_create_db
-    if create_db == '1'
-      pgsql_db = pgsql_dbs.create!(db_name: login)
-      pgsql_db.create_chef_task(:create)
-    end
+  def create_db_with_same_name
+    pgsql_db = pgsql_dbs.create!(db_name: login)
+    pgsql_db.create_chef_task(:create)
   end
 end

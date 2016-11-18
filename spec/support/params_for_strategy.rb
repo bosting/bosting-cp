@@ -1,7 +1,10 @@
 module ParamsForStrategy
-  def params_for(factory_name)
+  def params_for(factory_name, options = {})
+    factory_attrs = options[:factory_attrs] || {}
+    merge_attrs   = options[:merge_attrs]   || {}
+
     exclude_params = %w(id slug position created_at updated_at)
-    f = FactoryGirl.build(factory_name)
+    f = FactoryGirl.build(factory_name, factory_attrs)
 
     params = f.attributes.except(*exclude_params).dup.with_indifferent_access
 
@@ -19,7 +22,7 @@ module ParamsForStrategy
       end
     end
 
-    params
+    params.merge(merge_attrs)
   end
 end
 
