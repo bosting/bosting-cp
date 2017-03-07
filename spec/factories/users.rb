@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :user do
     email
     password 'password'
-    password_confirmation { |u| u.password }
+    password_confirmation(&:password)
 
     factory :admin_user do
       is_admin true

@@ -30,6 +30,8 @@ gem 'active_attr'
 gem 'net-ssh', require: false
 gem 'ssh-exec', github: 'sekrett/ssh-exec', require: false
 
+gem 'rubocop', require: false
+
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 group :production do

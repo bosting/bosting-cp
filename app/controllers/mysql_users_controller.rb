@@ -39,6 +39,7 @@ class MysqlUsersController < ApplicationController
   end
 
   private
+
   def load_permitted_servers
     @apaches = if current_user.is_admin?
                  if @mysql_user.try(:apache).nil?

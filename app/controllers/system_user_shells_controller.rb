@@ -13,7 +13,7 @@ class SystemUserShellsController < ApplicationController
   def create
     authorize! :create, @system_user_shell = SystemUserShell.new(permitted_params)
     if @system_user_shell.save
-        redirect_to system_user_shells_path, notice: t('flash.system_user_shell.create')
+      redirect_to system_user_shells_path, notice: t('flash.system_user_shell.create')
     else
       render :new
     end

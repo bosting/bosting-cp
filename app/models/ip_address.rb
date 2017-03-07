@@ -6,7 +6,7 @@ class IpAddress < ActiveRecord::Base
   validates :name, :position, uniqueness: true
 
   def to_label
-    self.name + " [#{self.ip}]"
+    name + " [#{ip}]"
   end
 
   def self.get_default_apache_ip_id
@@ -22,6 +22,6 @@ class IpAddress < ActiveRecord::Base
   end
 
   def self.get_collection
-    select([:id, :name, :ip]).map{ |ip| [ip.to_label, ip.id] }
+    select([:id, :name, :ip]).map { |ip| [ip.to_label, ip.id] }
   end
 end

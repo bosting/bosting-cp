@@ -16,7 +16,7 @@ class DomainsController < ApplicationController
   def create
     authorize! :create, @domain = Domain.new(permitted_params)
     if @domain.save
-        redirect_to domains_path, notice: t('flash.domain.create')
+      redirect_to domains_path, notice: t('flash.domain.create')
     else
       render :new
     end

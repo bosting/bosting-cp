@@ -36,27 +36,23 @@ describe MysqlDb do
 
     specify 'create action' do
       expect(JSON.parse(@mysql_db.to_chef_json(:create))).to(
-          match_json_expression(
-              {
-                  "db_name":@db_name,
-                  "mysql_user":@login,
-                  "type":"mysql_db",
-                  "action":"create"
-              }
-          )
+        match_json_expression(
+          "db_name": @db_name,
+          "mysql_user": @login,
+          "type": 'mysql_db',
+          "action": 'create'
+        )
       )
     end
 
     specify 'destroy action' do
       expect(JSON.parse(@mysql_db.to_chef_json(:destroy))).to(
-          match_json_expression(
-              {
-                  "db_name":@db_name,
-                  "mysql_user":@login,
-                  "type":"mysql_db",
-                  "action":"destroy"
-              }
-          )
+        match_json_expression(
+          "db_name": @db_name,
+          "mysql_user": @login,
+          "type": 'mysql_db',
+          "action": 'destroy'
+        )
       )
     end
   end

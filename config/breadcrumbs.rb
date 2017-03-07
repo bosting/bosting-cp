@@ -3,7 +3,7 @@ crumb :root do
 end
 
 %w(apache domain edit_user email_domain ftp ip_address mysql_db mysql_user pgsql_db pgsql_user rails_server registrar
-  setting ssl_cert_chain system_group system_user system_user_shell ).each do |object|
+   setting ssl_cert_chain system_group system_user system_user_shell ).each do |object|
   plural_name = object.pluralize
 
   crumb plural_name.to_sym do

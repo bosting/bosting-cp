@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :rails_server do
-    name "MyString"
+    name 'MyString'
     hostname 'the-domain.com'
     user
   end

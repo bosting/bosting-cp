@@ -17,9 +17,10 @@ class Ftp < ActiveRecord::Base
     self.User.presence
   end
 
-  protected
+  private
+
   def set_uid_and_md5
-    self.Uid = self.system_user.uid if self.system_user.present?
+    self.Uid = system_user.uid if system_user.present?
     self.PASSWORD = Digest::MD5.hexdigest(new_password) if new_password.present?
   end
 

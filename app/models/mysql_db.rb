@@ -9,12 +9,12 @@ class MysqlDb < ActiveRecord::Base
   default_scope { order(:db_name) }
 
   def name
-    self.db_name
+    db_name
   end
 
   def to_chef_json(action)
     if action == :create
-      mysql_db_hash = serializable_hash.slice(*%w(db_name))
+      mysql_db_hash = serializable_hash.slice('db_name')
       mysql_db_hash['action'] = 'create'
       mysql_db_hash
     elsif action == :destroy

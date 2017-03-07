@@ -1,9 +1,9 @@
 class Setting < ActiveRecord::Base
-  TYPES = { boolean: 1, integer: 2, string: 3 }
+  TYPES = { boolean: 1, integer: 2, string: 3 }.freeze
   default_scope { order(:name) }
 
   validates :name, presence: true, uniqueness: true
-  validates :value, presence: true, if: Proc.new { |s| s.value != false }
+  validates :value, presence: true, if: proc { |s| s.value != false }
 
   def self.get(name)
     return $settings[name] if $settings.key?(name)

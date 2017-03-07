@@ -30,7 +30,7 @@ class SystemUser < ActiveRecord::Base
     chroot_directory = if apache_variation.present?
                          ''
                        else
-                         apache = Apache.where(system_user_id: self.id).first
+                         apache = Apache.where(system_user_id: id).first
                          if apache.present?
                            '/usr/jails/' + apache.apache_variation.name
                          else
@@ -38,7 +38,7 @@ class SystemUser < ActiveRecord::Base
                          end
                        end
     if action == :create
-      system_user_hash = serializable_hash.slice(*%w(name uid hashed_password))
+      system_user_hash = serializable_hash.slice('name', 'uid', 'hashed_password')
       system_user_hash['group'] = system_group.name
       system_user_hash['shell'] = if apache_variation.present?
                                     '/sbin/nologin'
@@ -55,6 +55,7 @@ class SystemUser < ActiveRecord::Base
   end
 
   private
+
   def hash_new_password
     self.hashed_password = new_password.crypt('$6$' + generate_random_password(16)) if new_password.present?
   end

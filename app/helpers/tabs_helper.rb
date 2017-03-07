@@ -1,6 +1,6 @@
 module TabsHelper
   def tabs_block(&block)
-    content_tag(:ul, capture(&block), class: 'nav nav-tabs', role:'tablist')
+    content_tag(:ul, capture(&block), class: 'nav nav-tabs', role: 'tablist')
   end
 
   def tabs_content(&block)

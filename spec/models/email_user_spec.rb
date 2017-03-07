@@ -8,7 +8,7 @@ describe EmailUser do
   it 'should cache full email address' do
     email_domain = create(:email_domain, name: 'example.com')
     email_user = create(:email_user, username: 'john', email_domain: email_domain)
-    email_user.email.should == 'john@example.com'
+    expect(email_user.email).to eq('john@example.com')
   end
 
   it 'should hash new password' do

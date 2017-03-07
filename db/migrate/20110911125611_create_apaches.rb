@@ -4,7 +4,7 @@ class CreateApaches < ActiveRecord::Migration
       t.references :user
       t.references :system_user
       t.references :system_group
-      t.references  :ip_address
+      t.references :ip_address
       t.integer :port
       t.integer :min_spare_servers
       t.integer :max_spare_servers

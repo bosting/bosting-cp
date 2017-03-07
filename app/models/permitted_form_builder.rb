@@ -3,35 +3,35 @@ class PermittedFormBuilder < SimpleForm::FormBuilder
 
   def input(attribute_name, options = {}, &block)
     case field_permission(attribute_name)
-      when :editable
-        super
-      when :readonly
-        super { object[attribute_name].to_s }
+    when :editable
+      super
+    when :readonly
+      super { object[attribute_name].to_s }
     end
   end
 
-  def association(attribute_name, options={}, &block)
+  def association(attribute_name, options = {}, &block)
     case field_permission((attribute_name.to_s + '_id').to_sym)
-      when :editable
-        super
-      when :readonly
-        parent_input(attribute_name, options) do
-          attribute = object.send(attribute_name)
-          if attribute.class == Array
-            attribute.map { |attr| extract_value(attr) }.join(', ')
-          else
-            extract_value(attribute)
-          end
+    when :editable
+      super
+    when :readonly
+      parent_input(attribute_name, options) do
+        attribute = object.send(attribute_name)
+        if attribute.class == Array
+          attribute.map { |attr| extract_value(attr) }.join(', ')
+        else
+          extract_value(attribute)
         end
+      end
     end
   end
 
   def fields_for(attribute_name, *args, &block)
     case field_permission(attribute_name)
-      when :editable
-        super
-      when :readonly
-        super { object.send(attribute_name).map { |attr| extract_value(attr) }.join(' ') }
+    when :editable
+      super
+    when :readonly
+      super { object.send(attribute_name).map { |attr| extract_value(attr) }.join(' ') }
     end
   end
 
@@ -40,6 +40,7 @@ class PermittedFormBuilder < SimpleForm::FormBuilder
   end
 
   private
+
   def field_permission(attribute_name)
     if check_attr_permission(get_options[:editable_attributes], attribute_name)
       :editable
@@ -62,7 +63,7 @@ class PermittedFormBuilder < SimpleForm::FormBuilder
     if @parent_builder
       @parent_builder.options
     else
-      self.options
+      options
     end
   end
 end

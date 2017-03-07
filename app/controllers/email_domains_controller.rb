@@ -14,7 +14,7 @@ class EmailDomainsController < ApplicationController
   def create
     @email_domain = EmailDomain.new(permitted_params)
     if @email_domain.save
-        redirect_to email_domains_path, notice: t('flash.email_domain.create')
+      redirect_to email_domains_path, notice: t('flash.email_domain.create')
     else
       render :new
     end

@@ -30,15 +30,14 @@ class ApacheDestruction
       apache.system_user.create_chef_task(:destroy)
     end
     %w(mysql pgsql).each do |sql|
-      if attributes["destroy_#{sql}_users"]
-        apache.public_send("#{sql}_users").each do |sql_user|
-          sql_user.public_send("#{sql}_dbs").each do |db|
-            db.destroy
-            db.create_chef_task(:destroy)
-          end
-          sql_user.destroy
-          sql_user.create_chef_task(:destroy)
+      next unless attributes["destroy_#{sql}_users"]
+      apache.public_send("#{sql}_users").each do |sql_user|
+        sql_user.public_send("#{sql}_dbs").each do |db|
+          db.destroy
+          db.create_chef_task(:destroy)
         end
+        sql_user.destroy
+        sql_user.create_chef_task(:destroy)
       end
     end
   end

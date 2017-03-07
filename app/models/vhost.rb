@@ -16,23 +16,21 @@ class Vhost < ActiveRecord::Base
   scope :active, -> { where(active: true) }
 
   def set_defaults
-    if self.apache.vhosts.size == 0
-      self.primary = true
-    end
+    self.primary = true if apache.vhosts.empty?
     self.directory_index = Setting.get('directory_index')
     self.ssl_port = 443
   end
 
   def name
-    self.server_name
+    server_name
   end
 
   def to_chef_json(action, apache_variation = nil)
-    apache_variation = self.apache.apache_variation if apache_variation.nil?
+    apache_variation = apache.apache_variation if apache_variation.nil?
     apache_version = apache_variation.apache_version.sub('.', '')
     user = apache.system_user.name
     if action == :create
-      vhost_hash = serializable_hash.slice(*%w(directory_index))
+      vhost_hash = serializable_hash.slice('directory_index')
       vhost_hash['server_name'] = server_name
       vhost_hash['server_aliases'] = vhost_aliases.map(&:name)
       vhost_hash['port'] = apache.port

@@ -6,7 +6,7 @@ class DomainValidator < ActiveModel::EachValidator
               false
             else
               begin
-                URI.parse('http://' + value).kind_of?(URI::HTTP)
+                URI.parse('http://' + value).is_a?(URI::HTTP)
               rescue URI::InvalidURIError
                 false
               end

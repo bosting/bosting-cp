@@ -9,7 +9,7 @@ describe EditUsersController do
   context 'as admin user' do
     login_admin_user
 
-    it  do
+    it do
       get :index
       response.should render_template(:index)
     end

@@ -27,43 +27,45 @@ class Domain < ActiveRecord::Base
     end
   end
 
-  protected
+  private
+
   def set_serial
     now = Time.now
-    new_serial = Time.new.strftime('%Y%m%d' + (4*now.hour + now.min/15).to_s)
+    new_serial = Time.new.strftime('%Y%m%d' + (4 * now.hour + now.min / 15).to_s)
     new_serial = ([new_serial.to_i, serial.to_i].max + 1).to_s if serial.to_i >= new_serial.to_i
     self.serial = new_serial
   end
 
   def do_add_default_records
-    if add_default_records == '1'
-      type_a = DnsRecordType.find_by_name('A')
-      www_server_ip = IpAddress.find_by(name: Setting.get('server_domain'))
-      dns_records.create!(origin: '@', dns_record_type: type_a, ip_address: www_server_ip)
-      dns_records.create!(origin: 'www', dns_record_type: type_a, ip_address: www_server_ip)
-    end
+    return if add_default_records != '1'
+    type_a = DnsRecordType.find_by_name('A')
+    www_server_ip = IpAddress.find_by(name: Setting.get('server_domain'))
+    dns_records.create!(origin: '@', dns_record_type: type_a,
+                        ip_address: www_server_ip)
+    dns_records.create!(origin: 'www', dns_record_type: type_a,
+                        ip_address: www_server_ip)
   end
 
   def do_add_default_mx_records
-    if add_default_mx_records == '1'
-      type_mx = DnsRecordType.find_by_name('MX')
-      value = Domain.ensure_dot(Setting.get('default_mx'))
-      dns_records.create!(origin: '@', dns_record_type: type_mx, value: value, mx_priority: 10)
-    end
+    return if add_default_mx_records != '1'
+    type_mx = DnsRecordType.find_by_name('MX')
+    value = Domain.ensure_dot(Setting.get('default_mx'))
+    dns_records.create!(origin: '@', dns_record_type: type_mx, value: value,
+                        mx_priority: 10)
   end
 
   def do_add_gmail_mx_records
-    if add_gmail_mx_records == '1'
-      type_mx = DnsRecordType.find_by_name('MX')
-      [
-          %w(aspmx.l.google.com. 1),
-          %w(alt1.aspmx.l.google.com. 5),
-          %w(alt2.aspmx.l.google.com. 5),
-          %w(alt3.aspmx.l.google.com. 10),
-          %w(alt4.aspmx.l.google.com. 10)
-      ].each do |value, mx_priority|
-        dns_records.create!(origin: '@', dns_record_type: type_mx, value: value, mx_priority: mx_priority)
-      end
+    return if add_gmail_mx_records != '1'
+    type_mx = DnsRecordType.find_by(name: 'MX')
+    [
+      %w(aspmx.l.google.com. 1),
+      %w(alt1.aspmx.l.google.com. 5),
+      %w(alt2.aspmx.l.google.com. 5),
+      %w(alt3.aspmx.l.google.com. 10),
+      %w(alt4.aspmx.l.google.com. 10)
+    ].each do |value, mx_priority|
+      dns_records.create!(origin: '@', dns_record_type: type_mx, value: value,
+                          mx_priority: mx_priority)
     end
   end
 end

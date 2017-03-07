@@ -14,7 +14,7 @@ class DnsRecordsController < ApplicationController
   def create
     authorize! :create, @dns_record = @domain.dns_records.build(permitted_params)
     if @dns_record.save
-        redirect_to domain_dns_records_path(@domain), notice: t('flash.dns_record.create')
+      redirect_to domain_dns_records_path(@domain), notice: t('flash.dns_record.create')
     else
       render :new
     end

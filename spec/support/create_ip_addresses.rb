@@ -5,6 +5,4 @@ module CreateIpAddresses
   end
 end
 
-if defined?(RSpec)
-  RSpec.configure { |config| config.include CreateIpAddresses }
-end
+RSpec.configure { |config| config.include CreateIpAddresses } if defined?(RSpec)

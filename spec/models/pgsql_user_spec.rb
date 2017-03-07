@@ -24,12 +24,13 @@ describe PgsqlUser do
   describe 'password hashing' do
     it 'should hash new password' do
       apache = create(:apache, system_user: create(:system_user, name: 'login'))
-      create(:pgsql_user, apache: apache, login: 'login', new_password: 'test').hashed_password.should == 'md5eacdbf8d9847a76978bd515fae200a2a'
+      expect(create(:pgsql_user, apache: apache, login: 'login', new_password:
+          'test').hashed_password).to eq('md5eacdbf8d9847a76978bd515fae200a2a')
     end
 
     it 'should not change old hash' do
       pgsql_user = create(:pgsql_user_with_new_password)
-      expect{ pgsql_user.save }.not_to change{ pgsql_user.hashed_password }
+      expect { pgsql_user.save }.not_to change { pgsql_user.hashed_password }
     end
   end
 
@@ -50,26 +51,22 @@ describe PgsqlUser do
 
     specify 'create action' do
       expect(JSON.parse(@pgsql_user.to_chef_json(:create))).to(
-          match_json_expression(
-              {
-                  "login":@login,
-                  "hashed_password":"md5hashedpassword",
-                  "type":"pgsql_user",
-                  "action":"create"
-              }
-          )
+        match_json_expression(
+          "login": @login,
+          "hashed_password": 'md5hashedpassword',
+          "type": 'pgsql_user',
+          "action": 'create'
+        )
       )
     end
 
     specify 'destroy action' do
       expect(JSON.parse(@pgsql_user.to_chef_json(:destroy))).to(
-          match_json_expression(
-              {
-                  "login":@login,
-                  "type":"pgsql_user",
-                  "action":"destroy"
-              }
-          )
+        match_json_expression(
+          "login": @login,
+          "type": 'pgsql_user',
+          "action": 'destroy'
+        )
       )
     end
   end

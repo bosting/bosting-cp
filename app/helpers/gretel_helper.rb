@@ -8,8 +8,6 @@ module GretelHelper
   end
 
   def gretel_url_for_new_or_edit(objects)
-    if [objects].flatten.last.persisted?
-      url_for([:edit, objects].flatten)
-    end
+    url_for([:edit, objects].flatten) if [objects].flatten.last.persisted?
   end
 end

@@ -7,7 +7,7 @@ describe EmailDomain do
 
   it 'should create a hidden catch-all alias' do
     email_domain = create(:email_domain, name: 'example.org')
-    email_domain.email_aliases.count.should == 0
-    email_domain.email_aliases.rewhere(hidden: true).count.should == 1
+    expect(email_domain.email_aliases.count).to eq(0)
+    expect(email_domain.email_aliases.rewhere(hidden: true).count).to eq(1)
   end
 end

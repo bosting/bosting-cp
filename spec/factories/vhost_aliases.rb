@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :vhost_alias do
-    name "MyString"
+    name 'MyString'
     vhost
   end
 end

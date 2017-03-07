@@ -17,10 +17,10 @@ describe Domain do
 
   it 'should set serial' do
     domain = create(:domain)
-    domain.serial.should == '2008090140'
+    expect(domain.serial).to eq('2008090140')
     domain.save
-    domain.serial.should == '2008090141'
+    expect(domain.serial).to eq('2008090141')
     domain.save
-    domain.serial.should == '2008090142'
+    expect(domain.serial).to eq('2008090142')
   end
 end

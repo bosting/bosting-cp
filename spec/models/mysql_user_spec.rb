@@ -23,12 +23,13 @@ describe MysqlUser do
 
   describe 'password hashing' do
     it 'should hash new password' do
-      create(:mysql_user, new_password: 'test').hashed_password.should == '*94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29'
+      expect(create(:mysql_user, new_password: 'test').hashed_password)
+        .to eq('*94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29')
     end
 
     it 'should not change old hash' do
       mysql_user = create(:mysql_user, new_password: 'test')
-      expect{ mysql_user.save }.not_to change{ mysql_user.hashed_password }
+      expect { mysql_user.save }.not_to change { mysql_user.hashed_password }
     end
   end
 
@@ -49,26 +50,22 @@ describe MysqlUser do
 
     specify 'create action' do
       expect(JSON.parse(@mysql_user.to_chef_json(:create))).to(
-          match_json_expression(
-              {
-                  "login":@login,
-                  "hashed_password":"*HASHEDPASSWORD",
-                  "type":"mysql_user",
-                  "action":"create"
-              }
-          )
+        match_json_expression(
+          "login": @login,
+          "hashed_password": '*HASHEDPASSWORD',
+          "type": 'mysql_user',
+          "action": 'create'
+        )
       )
     end
 
     specify 'destroy action' do
       expect(JSON.parse(@mysql_user.to_chef_json(:destroy))).to(
-          match_json_expression(
-              {
-                  "login":@login,
-                  "type":"mysql_user",
-                  "action":"destroy"
-              }
-          )
+        match_json_expression(
+          "login": @login,
+          "type": 'mysql_user',
+          "action": 'destroy'
+        )
       )
     end
   end

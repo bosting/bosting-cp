@@ -36,27 +36,23 @@ describe PgsqlDb do
 
     specify 'create action' do
       expect(JSON.parse(@pgsql_db.to_chef_json(:create))).to(
-          match_json_expression(
-              {
-                  "db_name":@db_name,
-                  "pgsql_user":@login,
-                  "type":"pgsql_db",
-                  "action":"create"
-              }
-          )
+        match_json_expression(
+          "db_name": @db_name,
+          "pgsql_user": @login,
+          "type": 'pgsql_db',
+          "action": 'create'
+        )
       )
     end
 
     specify 'destroy action' do
       expect(JSON.parse(@pgsql_db.to_chef_json(:destroy))).to(
-          match_json_expression(
-              {
-                  "db_name":@db_name,
-                  "pgsql_user":@login,
-                  "type":"pgsql_db",
-                  "action":"destroy"
-              }
-          )
+        match_json_expression(
+          "db_name": @db_name,
+          "pgsql_user": @login,
+          "type": 'pgsql_db',
+          "action": 'destroy'
+        )
       )
     end
   end

@@ -50,7 +50,7 @@ describe IpAddressesController do
 
     it 'destroy action should destroy model and redirect to index action' do
       ip_address = IpAddress.first
-      delete :destroy, :id => ip_address
+      delete :destroy, id: ip_address
       response.should redirect_to(ip_addresses_path)
       IpAddress.exists?(ip_address.id).should be_falsey
     end

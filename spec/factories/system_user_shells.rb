@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :system_user_shell do
-    name "MyString"
-    path "MyString"
+    name 'MyString'
+    path 'MyString'
     is_default false
   end
 end

@@ -13,7 +13,7 @@ class EditUsersController < ApplicationController
   def create
     authorize! :create, @edit_user = EditUser.new(permitted_params)
     if @edit_user.save
-        redirect_to edit_users_path, notice: t('flash.user.create')
+      redirect_to edit_users_path, notice: t('flash.user.create')
     else
       render :new
     end

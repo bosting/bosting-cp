@@ -14,25 +14,25 @@ class MysqlUser < ActiveRecord::Base
   default_scope { order(:login) }
 
   def name
-    self.login
+    login
   end
 
   def create_all_chef_tasks(action)
     case action
-      when :create
-        create_chef_task(:create)
-        create_db_with_same_name if create_db == '1'
-      when :destroy
-        mysql_dbs.each { |mysql_db| mysql_db.create_chef_task(:destroy) }
-        create_chef_task(:destroy)
-      else
-        raise ArgumentError, "Unknown task: #{action}"
+    when :create
+      create_chef_task(:create)
+      create_db_with_same_name if create_db == '1'
+    when :destroy
+      mysql_dbs.each { |mysql_db| mysql_db.create_chef_task(:destroy) }
+      create_chef_task(:destroy)
+    else
+      raise ArgumentError, "Unknown task: #{action}"
     end
   end
 
   def to_chef_json(action)
     if action == :create
-      mysql_user_hash = serializable_hash.slice(*%w(login hashed_password))
+      mysql_user_hash = serializable_hash.slice('login', 'hashed_password')
       mysql_user_hash['action'] = 'create'
       mysql_user_hash
     elsif action == :destroy
@@ -43,8 +43,9 @@ class MysqlUser < ActiveRecord::Base
   end
 
   private
+
   def hash_new_password
-    self.hashed_password = '*' + Digest::SHA1.hexdigest([Digest::SHA1.hexdigest(new_password)].pack("H*")).upcase if new_password.present?
+    self.hashed_password = '*' + Digest::SHA1.hexdigest([Digest::SHA1.hexdigest(new_password)].pack('H*')).upcase if new_password.present?
   end
 
   def create_db_with_same_name

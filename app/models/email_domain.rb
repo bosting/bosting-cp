@@ -5,8 +5,9 @@ class EmailDomain < ActiveRecord::Base
 
   after_create :add_catch_all_alias
 
-  protected
+  private
+
   def add_catch_all_alias
-    self.email_aliases.create!(destination: 'devnull@localhost', hidden: true)
+    email_aliases.create!(destination: 'devnull@localhost', hidden: true)
   end
 end

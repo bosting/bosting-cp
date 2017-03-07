@@ -9,7 +9,7 @@ class ApacheVariation < ActiveRecord::Base
   end
 
   def self.get_collection
-    select([:id, :description]).map{ |av| [av.to_label, av.id] }
+    select([:id, :description]).map { |av| [av.to_label, av.id] }
   end
 
   def to_label

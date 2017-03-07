@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 
-APP_PATH='/home/bosting/bosting-cp'
-BUNDLE_PATH='bundle'
-UNICORN_RAILS_PATH='unicorn_rails'
-RAILS_ENV='production'
+APP_PATH = '/home/bosting/bosting-cp'.freeze
+BUNDLE_PATH = 'bundle'.freeze
+UNICORN_RAILS_PATH = 'unicorn_rails'.freeze
+RAILS_ENV = 'production'.freeze
 
 class Runner
   class << self

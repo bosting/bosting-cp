@@ -7,10 +7,11 @@ class EmailUser < ActiveRecord::Base
   default_scope { order(:email) }
 
   def name
-    self.username
+    username
   end
 
   private
+
   def hash_new_password
     self.password = new_password.crypt('$6$' + generate_random_password(16)) if new_password.present?
   end

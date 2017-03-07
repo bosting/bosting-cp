@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :dns_record_type do
-    name "MyString"
+    name 'MyString'
   end
 end

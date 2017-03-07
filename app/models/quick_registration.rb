@@ -36,7 +36,7 @@ class QuickRegistration
     system_user.set_defaults(!with_ssh)
     system_user.save!
 
-    domain = Domain.find_or_initialize_by(name: self.top_domain)
+    domain = Domain.find_or_initialize_by(name: top_domain)
     if domain.new_record?
       domain.set_defaults
       domain.user = user
@@ -63,7 +63,7 @@ class QuickRegistration
     # System user must belong to apache before creating
     system_user.create_chef_task(:create)
 
-    if self.domain == self.top_domain
+    if self.domain == top_domain
       domain.dns_records.create!(origin: 'www', ip_address_id: ip_address, dns_record_type: type_a)
       vhost.vhost_aliases.create!(name: 'www.' + self.domain)
     end
@@ -97,19 +97,20 @@ class QuickRegistration
   end
 
   private
+
   def extract_top_domain
-    if self.top_domain.blank? || self.sub_domain.blank?
+    if top_domain.blank? || sub_domain.blank?
       self.top_domain = begin
         PublicSuffix.parse(domain).domain
       rescue
         domain.split('.').last(2).join('.')
       end
-      self.sub_domain = domain.sub(/\.?#{self.top_domain}$/, '')
+      self.sub_domain = domain.sub(/\.?#{top_domain}$/, '')
     end
   end
 
   def user_selected_or_new
-    if self.user.blank? && self.email.blank?
+    if user.blank? && email.blank?
       errors.add(:user, 'необходимо выбрать пользователя или создать нового')
     end
   end

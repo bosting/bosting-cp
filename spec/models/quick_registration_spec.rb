@@ -10,19 +10,20 @@ describe QuickRegistration do
   end
   after(:each) do
     User.where(is_admin: false).delete_all
-    [SystemUser, Domain, DnsRecord, Apache, Vhost, VhostAlias, MysqlUser, MysqlDb, PgsqlUser, PgsqlDb, Ftp].each(&:delete_all)
+    [SystemUser, Domain, DnsRecord, Apache, Vhost, VhostAlias, MysqlUser,
+     MysqlDb, PgsqlUser, PgsqlDb, Ftp].each(&:delete_all)
   end
 
   it 'should be valid' do
-    build(:quick_registration).should be_valid
+    expect(build(:quick_registration)).to be_valid
   end
 
   it 'should be valid with user' do
-    build(:quick_registration_with_user).should be_valid
+    expect(build(:quick_registration_with_user)).to be_valid
   end
 
   it 'should not be valid without email' do
-    build(:quick_registration, email: nil).should_not be_valid
+    expect(build(:quick_registration, email: nil)).not_to be_valid
   end
 
   describe 'top domain extraction' do
@@ -30,22 +31,22 @@ describe QuickRegistration do
       it 'should extract 2 level' do
         qr = QuickRegistration.new(domain: 'example.com')
         qr.send(:extract_top_domain)
-        qr.top_domain.should == 'example.com'
-        qr.sub_domain.should be_blank
+        expect(qr.top_domain).to eq('example.com')
+        expect(qr.sub_domain).to be_blank
       end
 
       it 'should extract 3 level' do
         qr = QuickRegistration.new(domain: 'sub.example.com')
         qr.send(:extract_top_domain)
-        qr.top_domain.should == 'example.com'
-        qr.sub_domain.should == 'sub'
+        expect(qr.top_domain).to eq('example.com')
+        expect(qr.sub_domain).to eq('sub')
       end
 
       it 'should extract 4 level' do
         qr = QuickRegistration.new(domain: 'bus.sub.example.com')
         qr.send(:extract_top_domain)
-        qr.top_domain.should == 'example.com'
-        qr.sub_domain.should == 'bus.sub'
+        expect(qr.top_domain).to eq('example.com')
+        expect(qr.sub_domain).to eq('bus.sub')
       end
     end
 
@@ -53,22 +54,22 @@ describe QuickRegistration do
       it 'should extract 2 level' do
         qr = QuickRegistration.new(domain: 'example.com.ru')
         qr.send(:extract_top_domain)
-        qr.top_domain.should == 'example.com.ru'
-        qr.sub_domain.should be_blank
+        expect(qr.top_domain).to eq('example.com.ru')
+        expect(qr.sub_domain).to be_blank
       end
 
       it 'should extract 3 level' do
         qr = QuickRegistration.new(domain: 'sub.example.com.ru')
         qr.send(:extract_top_domain)
-        qr.top_domain.should == 'example.com.ru'
-        qr.sub_domain.should == 'sub'
+        expect(qr.top_domain).to eq('example.com.ru')
+        expect(qr.sub_domain).to eq('sub')
       end
 
       it 'should extract 4 level' do
         qr = QuickRegistration.new(domain: 'bus.sub.example.com.ru')
         qr.send(:extract_top_domain)
-        qr.top_domain.should == 'example.com.ru'
-        qr.sub_domain.should == 'bus.sub'
+        expect(qr.top_domain).to eq('example.com.ru')
+        expect(qr.sub_domain).to eq('bus.sub')
       end
     end
 
@@ -76,48 +77,89 @@ describe QuickRegistration do
       it 'should extract 2 level' do
         qr = QuickRegistration.new(domain: 'example.test')
         qr.send(:extract_top_domain)
-        qr.top_domain.should == 'example.test'
-        qr.sub_domain.should be_blank
+        expect(qr.top_domain).to eq('example.test')
+        expect(qr.sub_domain).to be_blank
       end
 
       it 'should extract 3 level' do
         qr = QuickRegistration.new(domain: 'sub.example.test')
         qr.send(:extract_top_domain)
-        qr.top_domain.should == 'example.test'
-        qr.sub_domain.should == 'sub'
+        expect(qr.top_domain).to eq('example.test')
+        expect(qr.sub_domain).to eq('sub')
       end
 
       it 'should extract 4 level' do
         qr = QuickRegistration.new(domain: 'bus.sub.example.test')
         qr.send(:extract_top_domain)
-        qr.top_domain.should == 'example.test'
-        qr.sub_domain.should == 'bus.sub'
+        expect(qr.top_domain).to eq('example.test')
+        expect(qr.sub_domain).to eq('bus.sub')
       end
     end
   end
 
   describe 'registration process' do
-    subject { -> { build(:quick_registration, domain: 'example.com').process_registration } }
+    subject do
+      lambda do
+        build(:quick_registration, domain: 'example.com')
+          .process_registration
+      end
+    end
 
     it('should create a user') { should change(User, :count).by(1) }
-    it('should create a system user') { should change(SystemUser, :count).by(1) }
-    it('should create a domain') { should change(Domain, :count).by(1) }
-    it('should create an origin and www dns records') { should change(DnsRecord, :count).by(2) }
-    it('should create an apache') { should change(Apache, :count).by(1) }
-    it('should create a vhost') { should change(Vhost, :count).by(1) }
-    it('should create a vhost alias') { should change(VhostAlias, :count).by(1) }
-    it('should not create an ftp') { should change(Ftp, :count).by(0) }
-    it('should not create a mysql user') { should change(MysqlUser, :count).by(0) }
-    it('should not create a mysql db') { should change(MysqlDb, :count).by(0) }
-    it('should not create a pgsql user') { should change(PgsqlUser, :count).by(0) }
-    it('should not create a pgsql db') { should change(PgsqlDb, :count).by(0) }
-    it('should send an email') { should change(ActionMailer::Base.deliveries, :size).by(1) }
+
+    it('should create a system user') do
+      expect(subject).to change(SystemUser, :count).by(1)
+    end
+
+    it('should create a domain') do
+      expect(subject).to change(Domain, :count).by(1)
+    end
+
+    it('should create an origin and www dns records') do
+      expect(subject).to change(DnsRecord, :count).by(2)
+    end
+
+    it('should create an apache') do
+      expect(subject).to change(Apache, :count).by(1)
+    end
+
+    it('should create a vhost') do
+      expect(subject).to change(Vhost, :count).by(1)
+    end
+
+    it('should create a vhost alias') do
+      expect(subject).to change(VhostAlias, :count).by(1)
+    end
+
+    it('should not create an ftp') do
+      expect(subject).to change(Ftp, :count).by(0)
+    end
+
+    it('should not create a mysql user') do
+      expect(subject).to change(MysqlUser, :count).by(0)
+    end
+
+    it('should not create a mysql db') do
+      expect(subject).to change(MysqlDb, :count).by(0)
+    end
+
+    it('should not create a pgsql user') do
+      expect(subject).to change(PgsqlUser, :count).by(0)
+    end
+
+    it('should not create a pgsql db') do
+      expect(subject).to change(PgsqlDb, :count).by(0)
+    end
+
+    it('should send an email') do
+      expect(subject).to change(ActionMailer::Base.deliveries, :size).by(1)
+    end
 
     it 'should add a correct domain and dns record' do
       subject.call
       domain = Domain.last
-      domain.name.should == 'example.com'
-      domain.dns_records.map(&:origin).sort.should == %w(@ www)
+      expect(domain.name).to eq('example.com')
+      expect(domain.dns_records.map(&:origin).sort).to match_array(%w(@ www))
     end
   end
 
@@ -126,7 +168,8 @@ describe QuickRegistration do
       subject { build(:quick_registration, domain: 'example.com') }
 
       it 'should not be valid if domain exists' do
-        create(:domain, name: 'example.com', dns_records: [build(:dns_record, origin: '@')])
+        create(:domain, name: 'example.com', dns_records:
+          [build(:dns_record, origin: '@')])
         should_not be_valid
       end
 
@@ -145,7 +188,8 @@ describe QuickRegistration do
       subject { build(:quick_registration, domain: 'subdomain.example.com') }
 
       it 'should not be valid if domain exists' do
-        create(:domain, name: 'example.com', dns_records: [build(:dns_record, origin: 'subdomain')])
+        create(:domain, name: 'example.com', dns_records:
+          [build(:dns_record, origin: 'subdomain')])
         should_not be_valid
       end
 
@@ -162,34 +206,51 @@ describe QuickRegistration do
   end
 
   describe 'MySQL' do
-    subject { -> { build(:quick_registration, with_mysql: true).process_registration } }
+    subject do
+      lambda do
+        build(:quick_registration, with_mysql: true).process_registration
+      end
+    end
 
-    it('should create a mysql user') { should change(MysqlUser, :count).by(1) }
-    it('should create a mysql db') { should change(MysqlDb, :count).by(1) }
+    it('should create a mysql user') do
+      should change(MysqlUser, :count).by(1)
+    end
+    it('should create a mysql db') do
+      should change(MysqlDb, :count).by(1)
+    end
   end
 
   describe 'PgSQL' do
-    subject { -> { build(:quick_registration, with_pgsql: true).process_registration } }
+    subject do
+      lambda do
+        build(:quick_registration, with_pgsql: true).process_registration
+      end
+    end
 
     it('should create a pgsql user') { should change(PgsqlUser, :count).by(1) }
     it('should create a pgsql db') { should change(PgsqlDb, :count).by(1) }
   end
 
   it 'should create ftp' do
-    expect {
+    expect do
       build(:quick_registration, with_ftp: true).process_registration
-    }.to change(Ftp, :count).by(1)
+    end.to change(Ftp, :count).by(1)
   end
 
   it 'should not create a new user' do
     user = create(:user)
-    expect {
+    expect do
       build(:quick_registration, user: user.id).process_registration
-    }.to change(User, :count).by(0)
+    end.to change(User, :count).by(0)
   end
 
   describe '3rd level domain' do
-    subject { -> { build(:quick_registration, domain: 'subdomain.example.com').process_registration } }
+    subject do
+      lambda do
+        build(:quick_registration, domain: 'subdomain.example.com')
+          .process_registration
+      end
+    end
 
     it('should add a domain') { should change(Domain, :count).by(1) }
     it('should add one dns record') { should change(DnsRecord, :count).by(1) }
@@ -199,25 +260,33 @@ describe QuickRegistration do
     it 'should add a correct domain and dns record' do
       subject.call
       domain = Domain.last
-      domain.name.should == 'example.com'
-      domain.dns_records.map(&:origin).sort.should == ['subdomain']
+      expect(domain.name).to eq('example.com')
+      expect(domain.dns_records.map(&:origin).sort)
+        .to match_array(%w(subdomain))
     end
   end
 
   describe '3rd level domain with existing domain' do
-    subject { -> { build(:quick_registration, domain: 'subdomain.example.com').process_registration } }
+    subject do
+      lambda do
+        build(:quick_registration, domain: 'subdomain.example.com')
+          .process_registration
+      end
+    end
     before(:each) { create(:domain, name: 'example.com') }
 
     it('should not add a domain') { should change(Domain, :count).by(0) }
     it('should add one dns record') { should change(DnsRecord, :count).by(1) }
     it('should not add a vhost') { should change(Vhost, :count).by(1) }
-    it('should add a subdomain alias') { should change(VhostAlias, :count).by(0) }
+    it('should add a subdomain alias') do
+      should change(VhostAlias, :count).by(0)
+    end
 
     it 'should add a correct dns record' do
       subject.call
       dns_record = DnsRecord.last
-      dns_record.domain.should == Domain.last
-      dns_record.origin.should == 'subdomain'
+      expect(dns_record.domain).to eq(Domain.last)
+      expect(dns_record.origin).to eq('subdomain')
     end
   end
 
@@ -225,8 +294,8 @@ describe QuickRegistration do
     build(:quick_registration).process_registration
 
     apache = Apache.last
-    apache.system_user.should == SystemUser.last
+    expect(apache.system_user).to eq(SystemUser.last)
     user = User.last
-    user.apaches.should == [apache]
+    expect(user.apaches).to match_array([apache])
   end
 end

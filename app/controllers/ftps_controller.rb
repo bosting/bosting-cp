@@ -34,6 +34,7 @@ class FtpsController < ApplicationController
   end
 
   private
+
   def load_permitted_system_users
     @system_users = if current_user.is_admin?
                       if %w(new create).include?(params[:action])

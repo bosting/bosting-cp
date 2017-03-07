@@ -1,5 +1,5 @@
 class NotificationsMailer < ActionMailer::Base
-  default from: Proc.new {
+  default from: proc {
     if Rails.env.production?
       Setting.get('email_from')
     else

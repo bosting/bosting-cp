@@ -6,6 +6,6 @@ class DnsRecord < ActiveRecord::Base
   validates :origin, :dns_record_type_id, presence: true
 
   def name
-    self.origin
+    origin
   end
 end

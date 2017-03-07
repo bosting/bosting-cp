@@ -16,6 +16,7 @@ module PermittedFormForHelper
   end
 
   private
+
   def editable_attributes_from_object(object)
     permitted_attributes(get_model_name(object))[0]
   end

@@ -14,6 +14,7 @@ class User < UserBase
   end
 
   private
+
   def set_random_password
     self.password = generate_random_password if with_random_password
   end

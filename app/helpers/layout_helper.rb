@@ -47,28 +47,28 @@ module LayoutHelper
 
   def admin_icon(action)
     case action
-      when :edit
-        glyphicon_tag(:mi, 'edit')
-      when :destroy
-        glyphicon_tag(:fa, 'trash')
-      when :dns_records
-        glyphicon_tag(:mi, 'dns')
-      when :vhosts
-        glyphicon_tag(:mi, 'web')
-      when :external_link
-        glyphicon_tag(:fa, 'external-link', title: t('site.external_link'))
-      when :yes
-        glyphicon_tag(:bs, 'ok-circle', class: 'icon-yes', title: t('site.yes'), 'data-toggle': 'tooltip')
-      when :no
-        glyphicon_tag(:bs, 'remove-circle', class: 'icon-no', title: t('site.no'), 'data-toggle': 'tooltip')
-      when :email_users
-        glyphicon_tag(:mi, 'people')
-      when :mail_aliases
-        glyphicon_tag(:fa, 'share')
-      when :databases
-        glyphicon_tag(:fa, 'database')
-      else
-        raise ArgumentError, 'Unknown icon'
+    when :edit
+      glyphicon_tag(:mi, 'edit')
+    when :destroy
+      glyphicon_tag(:fa, 'trash')
+    when :dns_records
+      glyphicon_tag(:mi, 'dns')
+    when :vhosts
+      glyphicon_tag(:mi, 'web')
+    when :external_link
+      glyphicon_tag(:fa, 'external-link', title: t('site.external_link'))
+    when :yes
+      glyphicon_tag(:bs, 'ok-circle', class: 'icon-yes', title: t('site.yes'), 'data-toggle': 'tooltip')
+    when :no
+      glyphicon_tag(:bs, 'remove-circle', class: 'icon-no', title: t('site.no'), 'data-toggle': 'tooltip')
+    when :email_users
+      glyphicon_tag(:mi, 'people')
+    when :mail_aliases
+      glyphicon_tag(:fa, 'share')
+    when :databases
+      glyphicon_tag(:fa, 'database')
+    else
+      raise ArgumentError, 'Unknown icon'
     end
   end
 
@@ -88,7 +88,7 @@ module LayoutHelper
 
   def link_to_destroy(path)
     link_to(admin_icon(:destroy), path, 'data-confirm': t('site.confirm'), method: :delete,
-            class: 'btn btn-danger', title: t('site.destroy'), 'data-toggle': 'tooltip')
+                                        class: 'btn btn-danger', title: t('site.destroy'), 'data-toggle': 'tooltip')
   end
 
   def active_class(controller)

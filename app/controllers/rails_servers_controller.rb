@@ -13,7 +13,7 @@ class RailsServersController < ApplicationController
   def create
     authorize! :create, @rails_server = RailsServer.new(permitted_params)
     if @rails_server.save
-        redirect_to rails_servers_path, notice: t('flash.rails_server.create')
+      redirect_to rails_servers_path, notice: t('flash.rails_server.create')
     else
       render :new
     end

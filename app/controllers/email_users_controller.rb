@@ -14,7 +14,7 @@ class EmailUsersController < ApplicationController
   def create
     authorize! :create, @email_user = @email_domain.email_users.build(permitted_params)
     if @email_user.save
-        redirect_to email_domain_email_users_path(@email_domain), notice: t('flash.email_user.create')
+      redirect_to email_domain_email_users_path(@email_domain), notice: t('flash.email_user.create')
     else
       render :new
     end

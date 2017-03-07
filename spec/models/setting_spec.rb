@@ -7,16 +7,16 @@ RSpec.describe Setting, type: :model do
 
   it 'should get true value' do
     create(:setting, name: 'true_value', value: true, value_type: Setting::TYPES[:boolean])
-    Setting.get('true_value').should == true
+    expect(Setting.get('true_value')).to be true
   end
 
   it 'should get false value' do
     create(:setting, name: 'false_value', value: false, value_type: Setting::TYPES[:boolean])
-    Setting.get('false_value').should == false
+    expect(Setting.get('false_value')).to be false
   end
 
   it 'should get integer value' do
     create(:setting, name: 'integer_value', value: 1, value_type: Setting::TYPES[:integer])
-    Setting.get('integer_value').should == 1
+    expect(Setting.get('integer_value')).to eq(1)
   end
 end

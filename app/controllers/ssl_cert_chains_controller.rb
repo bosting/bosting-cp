@@ -13,7 +13,7 @@ class SslCertChainsController < ApplicationController
   def create
     @ssl_cert_chain = SslCertChain.new(permitted_params)
     if @ssl_cert_chain.save
-        redirect_to ssl_cert_chains_path, notice: t('flash.ssl_cert_chain.create')
+      redirect_to ssl_cert_chains_path, notice: t('flash.ssl_cert_chain.create')
     else
       render :new
     end

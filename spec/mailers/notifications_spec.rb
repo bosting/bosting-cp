@@ -4,12 +4,12 @@ describe NotificationsMailer do
   it 'should send support_message' do
     mail = NotificationsMailer.registration(generate(:email), 'new_login', 'user_password', 'example.com',
                                             'ssh_password', 'ftp_password', 'mysql_password', 'pgsql_password')
-    mail.subject.should == 'Хостинг new_login'
-    mail.body.encoded.should match('example.com')
-    mail.body.encoded.should match('user_password')
-    mail.body.encoded.should match('ssh_password')
-    mail.body.encoded.should match('ftp_password')
-    mail.body.encoded.should match('mysql_password')
-    mail.body.encoded.should match('pgsql_password')
+    expect(mail.subject).to eq('Хостинг new_login')
+    expect(mail.body.encoded).to match('example.com')
+    expect(mail.body.encoded).to match('user_password')
+    expect(mail.body.encoded).to match('ssh_password')
+    expect(mail.body.encoded).to match('ftp_password')
+    expect(mail.body.encoded).to match('mysql_password')
+    expect(mail.body.encoded).to match('pgsql_password')
   end
 end

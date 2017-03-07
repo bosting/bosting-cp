@@ -4,6 +4,6 @@ class EmailAlias < ActiveRecord::Base
   default_scope { where(hidden: false).order(:email) }
 
   def name
-    self.username
+    username
   end
 end

@@ -44,7 +44,7 @@ describe PgsqlUsersController do
       PgsqlUser.any_instance.stubs(:valid?).returns(true)
       post :create, pgsql_user: params_for(:pgsql_user)
       response.should redirect_to(pgsql_users_path)
-      PgsqlUser.last.pgsql_dbs.should == []
+      expect(PgsqlUser.last.pgsql_dbs).to match_array([])
     end
 
     it 'should create a db with the same name' do
