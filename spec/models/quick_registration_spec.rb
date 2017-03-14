@@ -31,22 +31,22 @@ describe QuickRegistration do
       it 'should extract 2 level' do
         qr = QuickRegistration.new(domain: 'example.com')
         qr.send(:extract_top_domain)
-        expect(qr.top_domain).to eq('example.com')
-        expect(qr.sub_domain).to be_blank
+        expect(qr.instance_variable_get(:@top_domain)).to eq('example.com')
+        expect(qr.instance_variable_get(:@sub_domain)).to be_blank
       end
 
       it 'should extract 3 level' do
         qr = QuickRegistration.new(domain: 'sub.example.com')
         qr.send(:extract_top_domain)
-        expect(qr.top_domain).to eq('example.com')
-        expect(qr.sub_domain).to eq('sub')
+        expect(qr.instance_variable_get(:@top_domain)).to eq('example.com')
+        expect(qr.instance_variable_get(:@sub_domain)).to eq('sub')
       end
 
       it 'should extract 4 level' do
         qr = QuickRegistration.new(domain: 'bus.sub.example.com')
         qr.send(:extract_top_domain)
-        expect(qr.top_domain).to eq('example.com')
-        expect(qr.sub_domain).to eq('bus.sub')
+        expect(qr.instance_variable_get(:@top_domain)).to eq('example.com')
+        expect(qr.instance_variable_get(:@sub_domain)).to eq('bus.sub')
       end
     end
 
@@ -54,22 +54,22 @@ describe QuickRegistration do
       it 'should extract 2 level' do
         qr = QuickRegistration.new(domain: 'example.com.ru')
         qr.send(:extract_top_domain)
-        expect(qr.top_domain).to eq('example.com.ru')
-        expect(qr.sub_domain).to be_blank
+        expect(qr.instance_variable_get(:@top_domain)).to eq('example.com.ru')
+        expect(qr.instance_variable_get(:@sub_domain)).to be_blank
       end
 
       it 'should extract 3 level' do
         qr = QuickRegistration.new(domain: 'sub.example.com.ru')
         qr.send(:extract_top_domain)
-        expect(qr.top_domain).to eq('example.com.ru')
-        expect(qr.sub_domain).to eq('sub')
+        expect(qr.instance_variable_get(:@top_domain)).to eq('example.com.ru')
+        expect(qr.instance_variable_get(:@sub_domain)).to eq('sub')
       end
 
       it 'should extract 4 level' do
         qr = QuickRegistration.new(domain: 'bus.sub.example.com.ru')
         qr.send(:extract_top_domain)
-        expect(qr.top_domain).to eq('example.com.ru')
-        expect(qr.sub_domain).to eq('bus.sub')
+        expect(qr.instance_variable_get(:@top_domain)).to eq('example.com.ru')
+        expect(qr.instance_variable_get(:@sub_domain)).to eq('bus.sub')
       end
     end
 
@@ -77,22 +77,22 @@ describe QuickRegistration do
       it 'should extract 2 level' do
         qr = QuickRegistration.new(domain: 'example.test')
         qr.send(:extract_top_domain)
-        expect(qr.top_domain).to eq('example.test')
-        expect(qr.sub_domain).to be_blank
+        expect(qr.instance_variable_get(:@top_domain)).to eq('example.test')
+        expect(qr.instance_variable_get(:@sub_domain)).to be_blank
       end
 
       it 'should extract 3 level' do
         qr = QuickRegistration.new(domain: 'sub.example.test')
         qr.send(:extract_top_domain)
-        expect(qr.top_domain).to eq('example.test')
-        expect(qr.sub_domain).to eq('sub')
+        expect(qr.instance_variable_get(:@top_domain)).to eq('example.test')
+        expect(qr.instance_variable_get(:@sub_domain)).to eq('sub')
       end
 
       it 'should extract 4 level' do
         qr = QuickRegistration.new(domain: 'bus.sub.example.test')
         qr.send(:extract_top_domain)
-        expect(qr.top_domain).to eq('example.test')
-        expect(qr.sub_domain).to eq('bus.sub')
+        expect(qr.instance_variable_get(:@top_domain)).to eq('example.test')
+        expect(qr.instance_variable_get(:@sub_domain)).to eq('bus.sub')
       end
     end
   end
@@ -105,53 +105,59 @@ describe QuickRegistration do
       end
     end
 
-    it('should create a user') { should change(User, :count).by(1) }
+    it 'should create everything' do
 
-    it('should create a system user') do
+    end
+
+    it 'should create a user' do
+      expect(subject).to change(User, :count).by(1)
+    end
+
+    it 'should create a system user' do
       expect(subject).to change(SystemUser, :count).by(1)
     end
 
-    it('should create a domain') do
+    it 'should create a domain' do
       expect(subject).to change(Domain, :count).by(1)
     end
 
-    it('should create an origin and www dns records') do
+    it 'should create an origin and www dns records' do
       expect(subject).to change(DnsRecord, :count).by(2)
     end
 
-    it('should create an apache') do
+    it 'should create an apache' do
       expect(subject).to change(Apache, :count).by(1)
     end
 
-    it('should create a vhost') do
+    it 'should create a vhost' do
       expect(subject).to change(Vhost, :count).by(1)
     end
 
-    it('should create a vhost alias') do
+    it 'should create a vhost alias' do
       expect(subject).to change(VhostAlias, :count).by(1)
     end
 
-    it('should not create an ftp') do
+    it 'should not create an ftp' do
       expect(subject).to change(Ftp, :count).by(0)
     end
 
-    it('should not create a mysql user') do
+    it 'should not create a mysql user' do
       expect(subject).to change(MysqlUser, :count).by(0)
     end
 
-    it('should not create a mysql db') do
+    it 'should not create a mysql db' do
       expect(subject).to change(MysqlDb, :count).by(0)
     end
 
-    it('should not create a pgsql user') do
+    it 'should not create a pgsql user' do
       expect(subject).to change(PgsqlUser, :count).by(0)
     end
 
-    it('should not create a pgsql db') do
+    it 'should not create a pgsql db' do
       expect(subject).to change(PgsqlDb, :count).by(0)
     end
 
-    it('should send an email') do
+    it 'should send an email' do
       expect(subject).to change(ActionMailer::Base.deliveries, :size).by(1)
     end
 

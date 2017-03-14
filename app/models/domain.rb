@@ -38,7 +38,7 @@ class Domain < ActiveRecord::Base
 
   def do_add_default_records
     return if add_default_records != '1'
-    type_a = DnsRecordType.find_by_name('A')
+    type_a = DnsRecordType.find_a
     www_server_ip = IpAddress.find_by(name: Setting.get('server_domain'))
     dns_records.create!(origin: '@', dns_record_type: type_a,
                         ip_address: www_server_ip)
@@ -48,7 +48,7 @@ class Domain < ActiveRecord::Base
 
   def do_add_default_mx_records
     return if add_default_mx_records != '1'
-    type_mx = DnsRecordType.find_by_name('MX')
+    type_mx = DnsRecordType.find_mx
     value = Domain.ensure_dot(Setting.get('default_mx'))
     dns_records.create!(origin: '@', dns_record_type: type_mx, value: value,
                         mx_priority: 10)
@@ -56,7 +56,7 @@ class Domain < ActiveRecord::Base
 
   def do_add_gmail_mx_records
     return if add_gmail_mx_records != '1'
-    type_mx = DnsRecordType.find_by(name: 'MX')
+    type_mx = DnsRecordType.find_mx
     [
       %w(aspmx.l.google.com. 1),
       %w(alt1.aspmx.l.google.com. 5),

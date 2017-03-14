@@ -1,9 +1,7 @@
 class QuickRegistration
-  include ActiveAttr::Model, PasswordGenerator
+  include ActiveAttr::Model, PasswordGenerator, HostingServicesGenerators
 
   attribute :domain
-  attribute :top_domain
-  attribute :sub_domain
   attribute :ns1_ip_address
   attribute :ns2_ip_address
   attribute :user
@@ -17,122 +15,55 @@ class QuickRegistration
   attribute :with_pgsql, type: Boolean
   attribute :with_email, type: Boolean
 
-  validates_presence_of :domain, :ns1_ip_address, :ns2_ip_address, :login, :apache_variation, :ip_address
-  validate :user_selected_or_new, :uniqueness
-  validates :domain, domain: true
+  include QuickRegistrationValidations
 
   def process_registration
     return unless valid?
 
-    user = if self.user.present?
-             User.find(self.user)
-           else
-             user_password = generate_random_password
-             User.create!(email: email, password: user_password)
-           end
-
-    ssh_password = generate_random_password if with_ssh
-    system_user = SystemUser.new(name: login, user: user, new_password: ssh_password)
-    system_user.set_defaults(!with_ssh)
-    system_user.save!
-
-    domain = Domain.find_or_initialize_by(name: top_domain)
-    if domain.new_record?
-      domain.set_defaults
-      domain.user = user
-      domain.ns1_ip_address_id = ns1_ip_address
-      domain.ns2_ip_address_id = ns2_ip_address
-      domain.save!
-    end
-
-    type_a = DnsRecordType.find_by(name: 'A')
-    domain.dns_records.create!(origin: sub_domain.blank? ? '@' : sub_domain, ip_address_id: ip_address, dns_record_type: type_a)
-
-    apache = Apache.new(user: user, system_user: system_user)
-    apache.apache_variation_id = apache_variation
-    apache.ip_address_id = ip_address
-    apache.set_defaults
-    apache.save!
-    apache.create_chef_task(:create)
-
-    vhost = apache.vhosts.build(server_name: self.domain, primary: true)
-    vhost.set_defaults
-    vhost.save!
-    vhost.create_chef_task(:create)
-
-    # System user must belong to apache before creating
-    system_user.create_chef_task(:create)
-
-    if self.domain == top_domain
-      domain.dns_records.create!(origin: 'www', ip_address_id: ip_address, dns_record_type: type_a)
-      vhost.vhost_aliases.create!(name: 'www.' + self.domain)
-    end
-
-    if with_ftp
-      ftp_password = generate_random_password
-      Ftp.create!(User: login, new_password: ftp_password, Dir: "/home/#{login}", system_user: system_user)
-    end
-
-    if with_mysql
-      mysql_password = generate_random_password
-      mysql_user = MysqlUser.create!(login: login, apache: apache, new_password: mysql_password)
-      mysql_user.create_chef_task(:create)
-      mysql_db = MysqlDb.create!(db_name: login, mysql_user: mysql_user)
-      mysql_db.create_chef_task(:create)
-    end
-
-    if with_pgsql
-      pgsql_password = generate_random_password
-      pgsql_user = PgsqlUser.create!(login: login, apache: apache, new_password: pgsql_password)
-      pgsql_user.create_chef_task(:create)
-      pgsql_db = PgsqlDb.create!(db_name: login, pgsql_user: pgsql_user)
-      pgsql_db.create_chef_task(:create)
-    end
-
-    if with_email
-      # todo
-    end
-
-    NotificationsMailer.registration(user.email, login, user_password, self.domain, ssh_password, ftp_password, mysql_password, pgsql_password).deliver_now
+    generate_all_passwords
+    user = create_user
+    create_all_services(user)
+    send_email_to_user(user)
   end
 
   private
 
-  def extract_top_domain
-    if top_domain.blank? || sub_domain.blank?
-      self.top_domain = begin
-        PublicSuffix.parse(domain).domain
-      rescue
-        domain.split('.').last(2).join('.')
-      end
-      self.sub_domain = domain.sub(/\.?#{top_domain}$/, '')
-    end
+  def generate_all_passwords
+    @user_password  = generate_random_password
+    @ssh_password   = generate_random_password if with_ssh
+    @ftp_password   = generate_random_password if with_ftp
+    @mysql_password = generate_random_password if with_mysql
+    @pgsql_password = generate_random_password if with_pgsql
   end
 
-  def user_selected_or_new
-    if user.blank? && email.blank?
-      errors.add(:user, 'необходимо выбрать пользователя или создать нового')
-    end
+  def create_all_services(user)
+    system_user = create_system_user(login: login, user: user)
+
+    create_domain(user)
+
+    apache = create_apache(system_user: system_user, user: user)
+
+    # We really need to create system_user two times. First time it is required
+    # for apache to be created, second time it updates chroot_directory for
+    # system_user.
+    system_user.create_chef_task(:create)
+
+    create_ftp(system_user) if with_ftp
+    create_mysql(apache)    if with_mysql
+    create_pgsql(apache)    if with_pgsql
+    create_email            if with_email
   end
 
-  def uniqueness
-    extract_top_domain
-
-    if Domain.where(name: domain).exists? || Vhost.where(server_name: domain).exists? || VhostAlias.where(name: domain).exists?
-      errors.add(:domain, :taken)
-    end
-
-    domain_test = Domain.where(name: top_domain)
-    if domain_test.exists?
-      if domain_test.first.dns_records.map(&:origin).include?(sub_domain)
-        errors.add(:domain, :taken)
-      end
-    end
-
-    errors.add(:with_mysql, :taken) if with_mysql && (MysqlUser.where(login: login).exists? || MysqlDb.where(db_name: login).exists?)
-    errors.add(:with_pgsql, :taken) if with_pgsql && (PgsqlUser.where(login: login).exists? || PgsqlDb.where(db_name: login).exists?)
-    errors.add(:login, :taken) if with_ssh && SystemUser.where(name: login).exists?
-    errors.add(:with_ftp, :taken) if with_ftp && Ftp.where(user: login).exists?
-    errors.add(:email, :taken) if user.blank? && User.where(email: email).exists?
+  def send_email_to_user(user)
+    NotificationsMailer.registration(
+      email: user.email,
+      login: login,
+      user_password: @user_password,
+      domain: domain,
+      ssh_password: @ssh_password,
+      ftp_password: @ftp_password,
+      mysql_password: @mysql_password,
+      pgsql_password: @pgsql_password
+    ).deliver_now
   end
 end

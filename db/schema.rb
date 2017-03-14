@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160919141545) do
+ActiveRecord::Schema.define(version: 20170314105734) do
 
   create_table "apache_variations", force: :cascade do |t|
     t.string   "name",           limit: 255
@@ -33,7 +33,6 @@ ActiveRecord::Schema.define(version: 20160919141545) do
     t.integer  "system_user_id",      limit: 4
     t.integer  "system_group_id",     limit: 4
     t.integer  "ip_address_id",       limit: 4
-    t.integer  "port",                limit: 4
     t.integer  "min_spare_servers",   limit: 4
     t.integer  "max_spare_servers",   limit: 4
     t.integer  "start_servers",       limit: 4
@@ -48,7 +47,6 @@ ActiveRecord::Schema.define(version: 20160919141545) do
   end
 
   add_index "apaches", ["active"], name: "index_apaches_on_skip", using: :btree
-  add_index "apaches", ["port"], name: "index_apaches_on_port", unique: true, using: :btree
   add_index "apaches", ["system_user_id"], name: "index_apaches_on_system_user_id", unique: true, using: :btree
   add_index "apaches", ["user_id"], name: "index_apaches_on_user_id", using: :btree
 

@@ -4,7 +4,6 @@ FactoryGirl.define do
     system_user
     system_group
     ip_address
-    sequence(:port) { |n| 5000 + n }
     start_servers 1
     min_spare_servers 1
     max_spare_servers 1

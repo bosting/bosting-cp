@@ -2,8 +2,15 @@ require 'spec_helper'
 
 describe NotificationsMailer do
   it 'should send support_message' do
-    mail = NotificationsMailer.registration(generate(:email), 'new_login', 'user_password', 'example.com',
-                                            'ssh_password', 'ftp_password', 'mysql_password', 'pgsql_password')
+    mail = NotificationsMailer.registration(
+      email: generate(:email),
+      login: 'new_login',
+      user_password: 'user_password',
+      domain: 'example.com',
+      ssh_password: 'ssh_password',
+      ftp_password: 'ftp_password',
+      mysql_password: 'mysql_password',
+      pgsql_password: 'pgsql_password')
     expect(mail.subject).to eq('Хостинг new_login')
     expect(mail.body.encoded).to match('example.com')
     expect(mail.body.encoded).to match('user_password')
