@@ -8,7 +8,7 @@ module DbNameValidation
 
   def db_name_is_similar_to_db_login
     login = if respond_to?(:mysql_user)
-              mysql_user.try(login)
+              mysql_user.try(:login)
             elsif respond_to?(:pgsql_user)
               pgsql_user.try(:login)
             end

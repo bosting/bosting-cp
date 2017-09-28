@@ -5,7 +5,7 @@ class MysqlUser < ActiveRecord::Base
   belongs_to :rails_server
   has_many :mysql_dbs, dependent: :destroy
 
-  validates :login, presence: true, uniqueness: true
+  validates :login, presence: true, uniqueness: true, length: { maximum: 16 }
 
   attr_accessor :new_password, :create_db
 

@@ -4,7 +4,7 @@ class MysqlDb < ActiveRecord::Base
   belongs_to :mysql_user
 
   validates :db_name, :mysql_user, presence: true
-  validates :db_name, uniqueness: true
+  validates :db_name, uniqueness: true, length: { maximum: 16 }
 
   default_scope { order(:db_name) }
 
