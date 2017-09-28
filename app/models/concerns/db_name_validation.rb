@@ -8,9 +8,9 @@ module DbNameValidation
 
   def db_name_is_similar_to_db_login
     login = if respond_to?(:mysql_user)
-              mysql_user.login
+              mysql_user.try(login)
             elsif respond_to?(:pgsql_user)
-              pgsql_user.login
+              pgsql_user.try(:login)
             end
     return if db_name =~ /^#{login}/
     errors.add(:db_name, I18n.t('errors.db_name_not_similar', login: login))
