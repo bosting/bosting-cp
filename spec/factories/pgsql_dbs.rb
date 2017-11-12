@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :pgsql_db do
     db_name
     association :pgsql_user, factory: :pgsql_user_with_new_password

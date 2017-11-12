@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :vhost_alias do
     name 'MyString'
     vhost

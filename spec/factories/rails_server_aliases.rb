@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :rails_server_alias do
     name 'MyString'
     rails_server

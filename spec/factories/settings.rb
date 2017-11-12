@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :setting do
     sequence(:name) { |n| "setting#{n}" }
     value 'some value'

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :system_user do
     name { generate(:login) }
     system_group

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :ftp do
     User { generate(:user_name) }
     new_password 'new password'

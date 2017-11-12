@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :domain do
     name { generate(:domain) }
     email

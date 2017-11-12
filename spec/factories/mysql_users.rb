@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :mysql_user do
     apache
     sequence(:login) { |i| "#{apache.system_user.name}_#{i}" }

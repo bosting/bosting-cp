@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :rails_server do
     name 'MyString'
     hostname 'the-domain.com'

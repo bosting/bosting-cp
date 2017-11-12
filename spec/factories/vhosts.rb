@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :vhost do
     apache
     server_name { generate(:domain) }

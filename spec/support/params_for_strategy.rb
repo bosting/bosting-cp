@@ -4,7 +4,7 @@ module ParamsForStrategy
     merge_attrs   = options[:merge_attrs]   || {}
 
     exclude_params = %w(id slug position created_at updated_at)
-    f = FactoryGirl.build(factory_name, factory_attrs)
+    f = FactoryBot.build(factory_name, factory_attrs)
 
     params = f.attributes.except(*exclude_params).dup.with_indifferent_access
 

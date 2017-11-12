@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :dns_record do
     origin 'MyString'
     dns_record_type

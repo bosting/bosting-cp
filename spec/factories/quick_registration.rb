@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :quick_registration do
     sequence(:domain) { |n| "example#{n}.com" }
     login
