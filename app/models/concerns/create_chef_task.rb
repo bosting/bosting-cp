@@ -17,6 +17,9 @@ module CreateChefTask
 
   def run_chef_client(json, name = 'root')
     $redis.lpush("tasks_for_#{name}", json)
-    system("sudo /usr/local/bin/notify_chef #{name}") if Rails.env.production?
+    if Rails.env.production?
+      # Workaround explained: https://github.com/rbenv/rbenv/issues/1072
+      system("RBENV_HOOK_PATH=/usr/local/rbenv/rbenv.d && sudo /usr/local/bin/notify_chef #{name}")
+    end
   end
 end
