@@ -1,31 +1,31 @@
 require 'spec_helper'
 
 describe SystemUser do
-  it 'should be valid' do
-    build(:system_user).should be_valid
+  it 'is valid' do
+    expect(build(:system_user)).to be_valid
   end
 
-  it 'should not be valid if uid is too low' do
+  it 'is not valid if uid is too low' do
     expect(build(:system_user, uid: 4_000)).not_to be_valid
   end
 
-  it 'should not be valid if uid is too high' do
+  it 'is not valid if uid is too high' do
     expect(build(:system_user, uid: 65_200)).not_to be_valid
   end
 
-  it 'should hash new password' do
-    create(:system_user, new_password: 'test').hashed_password.should be_present
+  it 'hashes new password' do
+    expect(create(:system_user, new_password: 'test', uid: 5_000).hashed_password).to be_present
   end
 
   describe 'uid' do
-    it 'should be 5000 if it is the first system user' do
+    it 'is 5000 if it is the first system user' do
       SystemUser.stubs(:maximum).returns(nil)
       system_user = build(:system_user)
       system_user.set_defaults
       expect(system_user.uid).to eq(5_000)
     end
 
-    it 'should be higher than maximum' do
+    it 'is higher than maximum' do
       SystemUser.stubs(:maximum).returns(5_005)
       system_user = build(:system_user)
       system_user.set_defaults
@@ -73,7 +73,7 @@ describe SystemUser do
       )
     end
 
-    it 'should add chroot directory if apache is present' do
+    it 'adds chroot directory if apache is present' do
       system_user = create(:system_user, name: 'site3', uid: 5_003,
                            system_group: @system_group,
                            system_user_shell:
@@ -97,7 +97,7 @@ describe SystemUser do
       )
     end
 
-    it 'should set nologin shell if inside apache variation' do
+    it 'sets nologin shell if inside apache variation' do
       system_user = create(:system_user, name: 'site4', uid: 5_004,
                            system_group: @system_group,
                            system_user_shell:
