@@ -1,17 +1,13 @@
 require 'spec_helper'
 
 describe QuickRegistration do
-  before(:all) do
+  before do
     create_system_user_shells
     create_system_groups
     create_ip_addresses
     create_dns_record_types
     create_apache_variations
-  end
-  after(:each) do
-    User.where(is_admin: false).delete_all
-    [SystemUser, Domain, DnsRecord, Apache, Vhost, VhostAlias, MysqlUser,
-     MysqlDb, PgsqlUser, PgsqlDb, Ftp].each(&:delete_all)
+    create_settings
   end
 
   it 'should be valid' do
@@ -103,10 +99,6 @@ describe QuickRegistration do
         build(:quick_registration, domain: 'example.com')
           .process_registration
       end
-    end
-
-    it 'should create everything' do
-
     end
 
     it 'should create a user' do

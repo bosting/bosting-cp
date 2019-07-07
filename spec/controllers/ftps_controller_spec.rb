@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe FtpsController do
-  before(:all) do
-    2.times { create(:ftp) }
-  end
+  let!(:ftp) { create(:ftp) }
+
   render_views
 
   context 'as admin user' do
@@ -11,13 +10,13 @@ describe FtpsController do
 
     it 'new action should render new template' do
       get :new
-      response.should render_template(:new)
+      expect(response).to render_template(:new)
     end
 
     it 'update action should render edit template when model is invalid' do
       Ftp.any_instance.stubs(:valid?).returns(false)
-      put :update, id: Ftp.first, ftp: params_for(:ftp)
-      response.should render_template(:edit)
+      put :update, id: ftp, ftp: params_for(:ftp)
+      expect(response).to render_template(:edit)
     end
   end
 
@@ -26,47 +25,46 @@ describe FtpsController do
 
     it 'index action should render index template' do
       get :index
-      response.should render_template(:index)
+      expect(response).to render_template(:index)
     end
 
     it 'new action should render new template' do
       get :new
-      response.should render_template(:new)
+      expect(response).to render_template(:new)
     end
 
     it 'create action should render new template when model is invalid' do
       Ftp.any_instance.stubs(:valid?).returns(false)
       post :create, ftp: params_for(:ftp)
-      response.should render_template(:new)
+      expect(response).to render_template(:new)
     end
 
     it 'create action should redirect when model is valid' do
       Ftp.any_instance.stubs(:valid?).returns(true)
       post :create, ftp: params_for(:ftp)
-      response.should redirect_to(ftps_path)
+      expect(response).to redirect_to(ftps_url)
     end
 
     it 'edit action should render edit template' do
-      get :edit, id: Ftp.first
-      response.should render_template(:edit)
+      get :edit, id: ftp
+      expect(response).to render_template(:edit)
     end
 
     it 'update action should render edit template when model is invalid' do
       Ftp.any_instance.stubs(:valid?).returns(false)
-      put :update, id: Ftp.first, ftp: params_for(:ftp)
-      response.should render_template(:edit)
+      put :update, id: ftp, ftp: params_for(:ftp)
+      expect(response).to render_template(:edit)
     end
 
     it 'update action should redirect when model is valid' do
       Ftp.any_instance.stubs(:valid?).returns(true)
-      put :update, id: Ftp.first, ftp: params_for(:ftp)
-      response.should redirect_to(ftps_path)
+      put :update, id: ftp, ftp: params_for(:ftp)
+      expect(response).to redirect_to(ftps_url)
     end
 
     it 'destroy action should destroy model and redirect to index action' do
-      ftp = Ftp.first
       delete :destroy, id: ftp
-      response.should redirect_to(ftps_path)
+      expect(response).to redirect_to(ftps_url)
       Ftp.exists?(ftp.id).should be_falsey
     end
   end

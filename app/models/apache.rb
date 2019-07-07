@@ -53,34 +53,36 @@ class Apache < ActiveRecord::Base
     end
   end
 
-  def to_chef_json(action, apache_variation = nil)
+  def to_chef(action, apache_variation = nil)
     apache_variation = self.apache_variation if apache_variation.nil?
     system_user_name = system_user.name
     apache_version = apache_variation.apache_version.sub('.', '')
     case action
     when :create
-      apache_hash =
-        serializable_hash.slice('server_admin', 'min_spare_servers',
-                                'max_spare_servers', 'start_servers',
-                                'max_clients')
-      apache_hash['user'] = system_user_name
-      apache_hash['group'] = system_group.name
-      apache_hash['ip'] = apache_variation.ip
-      apache_hash['php_version'] = apache_variation.php_version.sub('.', '')
-      apache_hash['action'] = if apache_variation == self.apache_variation
-                                'create'
-                              else
-                                'stop'
-                              end
-      apache_hash['port'] = port
-      apache_hash
+      action = if apache_variation == self.apache_variation
+                 'create'
+               else
+                 'stop'
+               end
+      {
+        server_admin: server_admin,
+        min_spare_servers: min_spare_servers,
+        max_spare_servers: max_spare_servers,
+        start_servers: start_servers,
+        max_clients: max_clients,
+        user: system_user_name,
+        group: system_group.name,
+        ip: apache_variation.ip,
+        php_version: apache_variation.php_version.sub('.', ''),
+        action: action,
+        port: port
+      }
     when :destroy
       { user: system_user_name, action: 'destroy' }
     else
       raise ArgumentError, "Unknown action specified: #{action}"
     end
-      .merge('type' => 'apache', 'apache_version' => apache_version)
-      .to_json
+      .merge(type: 'apache', apache_version: apache_version)
   end
 
   def create_all_chef_tasks(is_update_action)

@@ -1,21 +1,21 @@
 require 'spec_helper'
 
 describe Domain do
-  before(:all) { create_dns_record_types }
+  before { create_dns_record_types }
 
-  it 'should be valid' do
-    create(:domain).should be_valid
+  it 'is be valid' do
+    expect(create(:domain)).to be_valid
   end
 
-  it 'should be valid when adding default records' do
-    create(:domain, add_default_records: '1').should be_valid
+  it 'is valid when adding default records' do
+    expect(create(:domain, add_default_records: '1')).to be_valid
   end
 
-  it 'should be valid when adding gmail mx records' do
-    create(:domain, add_gmail_mx_records: '1').should be_valid
+  it 'is valid when adding gmail mx records' do
+    expect(create(:domain, add_gmail_mx_records: '1')).to be_valid
   end
 
-  it 'should set serial' do
+  it 'increases serial' do
     domain = create(:domain)
     expect(domain.serial).to eq('2008090140')
     domain.save

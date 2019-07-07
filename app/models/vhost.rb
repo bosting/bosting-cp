@@ -25,28 +25,30 @@ class Vhost < ActiveRecord::Base
     server_name
   end
 
-  def to_chef_json(action, apache_variation = nil)
+  def to_chef(action, apache_variation = nil)
     apache_variation = apache.apache_variation if apache_variation.nil?
     apache_version = apache_variation.apache_version.sub('.', '')
     user = apache.system_user.name
     if action == :create
-      vhost_hash = serializable_hash.slice('directory_index')
-      vhost_hash['server_name'] = server_name
-      vhost_hash['server_aliases'] = vhost_aliases.map(&:name)
-      vhost_hash['port'] = apache.port
-      vhost_hash['apache_variation'] = apache_variation.name
-      vhost_hash['show_indexes'] = indexes
-      vhost_hash['user'] = user
-      vhost_hash['group'] = apache.system_user.system_group.name
-      vhost_hash['ip'] = apache_variation.ip
-      vhost_hash['external_ip'] = apache.ip_address.ip
-      vhost_hash['php_version'] = apache_variation.php_version[0]
-      vhost_hash['action'] = 'create'
-      vhost_hash
+      {
+        directory_index: directory_index,
+        server_name: server_name,
+        server_aliases: vhost_aliases.map(&:name),
+        port: apache.port,
+        apache_variation: apache_variation.name,
+        show_indexes: indexes,
+        user: user,
+        group: apache.system_user.system_group.name,
+        ip: apache_variation.ip,
+        external_ip: apache.ip_address.ip,
+        php_version: apache_variation.php_version.first,
+        action: 'create'
+      }
     elsif action == :destroy
       { user: user, server_name: server_name, action: 'destroy' }
     else
       raise ArgumentError, "Unknown action specified: #{action}"
-    end.merge('type' => 'vhost', 'apache_version' => apache_version).to_json
+    end
+      .merge(type: 'vhost', apache_version: apache_version)
   end
 end

@@ -1,13 +1,11 @@
 require 'spec_helper'
 
 describe MysqlDb do
-  before(:each) { MysqlDb.delete_all }
-
-  it 'should be valid' do
+  it 'is be valid' do
     expect(create(:mysql_db_with_similar_name)).to be_valid
   end
 
-  it 'should be unique' do
+  it 'is unique' do
     system_user = create(:system_user, name: 'db_uniq')
     apache = create(:apache, system_user: system_user)
     mysql_user = create(:mysql_user_with_new_password, login: 'db_uniq', apache: apache)
@@ -25,7 +23,7 @@ describe MysqlDb do
     expect(build(:mysql_db, db_name: 'bolobolo', mysql_user: mysql_user)).not_to be_valid
   end
 
-  describe 'JSON for Chef' do
+  describe '#to_chef' do
     before(:all) do
       apache = create(:apache)
       @login = apache.system_user.name
@@ -35,23 +33,23 @@ describe MysqlDb do
     end
 
     specify 'create action' do
-      expect(JSON.parse(@mysql_db.to_chef_json(:create))).to(
-        match_json_expression(
-          "db_name": @db_name,
-          "mysql_user": @login,
-          "type": 'mysql_db',
-          "action": 'create'
+      expect(@mysql_db.to_chef(:create)).to(
+        match(
+          db_name: @db_name,
+          mysql_user: @login,
+          type: 'mysql_db',
+          action: 'create'
         )
       )
     end
 
     specify 'destroy action' do
-      expect(JSON.parse(@mysql_db.to_chef_json(:destroy))).to(
-        match_json_expression(
-          "db_name": @db_name,
-          "mysql_user": @login,
-          "type": 'mysql_db',
-          "action": 'destroy'
+      expect(@mysql_db.to_chef(:destroy)).to(
+        match(
+          db_name: @db_name,
+          mysql_user: @login,
+          type: 'mysql_db',
+          action: 'destroy'
         )
       )
     end

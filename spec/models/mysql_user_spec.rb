@@ -40,7 +40,7 @@ describe MysqlUser do
     expect(build(:mysql_user_with_new_password, login: 'john', apache: apache)).not_to be_valid
   end
 
-  describe 'JSON for Chef' do
+  describe '#to_chef' do
     before(:all) do
       apache = create(:apache)
       @login = apache.system_user.name
@@ -49,22 +49,22 @@ describe MysqlUser do
     before(:each) { MysqlUser.any_instance.stubs(:hashed_password).returns('*HASHEDPASSWORD') }
 
     specify 'create action' do
-      expect(JSON.parse(@mysql_user.to_chef_json(:create))).to(
-        match_json_expression(
-          "login": @login,
-          "hashed_password": '*HASHEDPASSWORD',
-          "type": 'mysql_user',
-          "action": 'create'
+      expect(@mysql_user.to_chef(:create)).to(
+        match(
+          login: @login,
+          hashed_password: '*HASHEDPASSWORD',
+          type: 'mysql_user',
+          action: 'create'
         )
       )
     end
 
     specify 'destroy action' do
-      expect(JSON.parse(@mysql_user.to_chef_json(:destroy))).to(
-        match_json_expression(
-          "login": @login,
-          "type": 'mysql_user',
-          "action": 'destroy'
+      expect(@mysql_user.to_chef(:destroy)).to(
+        match(
+          login: @login,
+          type: 'mysql_user',
+          action: 'destroy'
         )
       )
     end

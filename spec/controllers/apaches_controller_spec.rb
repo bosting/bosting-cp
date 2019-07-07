@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe ApachesController do
-  before(:all) do
-    2.times { create(:apache) }
-  end
+  let!(:apache) { create(:apache) }
+
   render_views
 
   context 'as user' do
@@ -11,24 +10,24 @@ describe ApachesController do
 
     it 'index action should render index template' do
       get :index
-      response.should render_template(:index)
+      expect(response).to render_template(:index)
     end
 
     it 'edit action should render edit template' do
-      get :edit, id: Apache.first
-      response.should render_template(:edit)
+      get :edit, id: apache
+      expect(response).to render_template(:edit)
     end
 
     it 'update action should render edit template when model is invalid' do
       Apache.any_instance.stubs(:valid?).returns(false)
-      put :update, id: Apache.first, apache: params_for(:apache)
-      response.should render_template(:edit)
+      put :update, id: apache, apache: params_for(:apache)
+      expect(response).to render_template(:edit)
     end
 
     it 'update action should redirect when model is valid' do
       Apache.any_instance.stubs(:valid?).returns(true)
-      put :update, id: Apache.first, apache: params_for(:apache)
-      response.should redirect_to(apaches_path)
+      put :update, id: apache, apache: params_for(:apache)
+      expect(response).to redirect_to(apaches_path)
     end
   end
 
@@ -37,19 +36,19 @@ describe ApachesController do
 
     it 'new action should render new template' do
       get :new
-      response.should render_template(:new)
+      expect(response).to render_template(:new)
     end
 
     it 'create action should render new template when model is invalid' do
       Apache.any_instance.stubs(:valid?).returns(false)
       post :create, apache: params_for(:apache)
-      response.should render_template(:new)
+      expect(response).to render_template(:new)
     end
 
     it 'create action should redirect when model is valid' do
       Apache.any_instance.stubs(:valid?).returns(true)
       post :create, apache: params_for(:apache)
-      response.should redirect_to(apaches_path)
+      expect(response).to redirect_to(apaches_path)
     end
   end
 end

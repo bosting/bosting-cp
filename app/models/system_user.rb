@@ -51,11 +51,11 @@ class SystemUser < ActiveRecord::Base
     [MINIMUM_UID, max_uid + 1].max
   end
 
-  def to_chef_json(action, apache_variation = nil)
+  def to_chef(action, apache_variation = nil)
     hash = chef_hash(action, apache_variation)
-    hash['type'] = 'system_user'
-    hash['chroot_directory'] = chroot_directory(apache_variation)
-    hash.to_json
+    hash[:type] = 'system_user'
+    hash[:chroot_directory] = chroot_directory(apache_variation)
+    hash
   end
 
   private
@@ -72,15 +72,19 @@ class SystemUser < ActiveRecord::Base
   end
 
   def chef_hash_for_create(apache_variation)
-    hash = serializable_hash.slice('name', 'uid', 'hashed_password')
-    hash['group'] = system_group.name
-    hash['shell'] = if apache_variation.present?
-                      '/sbin/nologin'
-                    else
-                      system_user_shell.path
-                    end
-    hash['action'] = 'create'
-    hash
+    shell = if apache_variation.present?
+              '/sbin/nologin'
+            else
+              system_user_shell.path
+            end
+    {
+      name: name,
+      uid: uid,
+      hashed_password: hashed_password,
+      group: system_group.name,
+      shell: shell,
+      action: 'create'
+    }
   end
 
   def chroot_directory(apache_variation)

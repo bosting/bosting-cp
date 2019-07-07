@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe NotificationsMailer do
+  before { create_settings }
+
   it 'should send support_message' do
     mail = NotificationsMailer.registration(
       email: generate(:email),
