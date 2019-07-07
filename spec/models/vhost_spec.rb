@@ -72,6 +72,7 @@ describe Vhost do
           apache_version: '22',
           php_version: '5',
           show_indexes: false,
+          custom_config: '# some custom config',
           type: 'vhost',
           action: 'create'
         }
@@ -111,6 +112,7 @@ describe Vhost do
           apache_version: '24',
           php_version: '7',
           show_indexes: false,
+          custom_config: '# some custom config',
           type: 'vhost',
           action: 'create'
         )

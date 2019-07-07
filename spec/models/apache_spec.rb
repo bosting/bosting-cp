@@ -50,6 +50,7 @@ describe Apache do
           min_spare_servers: 1,
           max_spare_servers: 2,
           max_clients: 4,
+          custom_config: '# some custom config',
           type: 'apache',
           action: 'create'
         )
@@ -80,6 +81,7 @@ describe Apache do
           min_spare_servers: 1,
           max_spare_servers: 2,
           max_clients: 4,
+          custom_config: '# some custom config',
           type: 'apache',
           action: 'create'
         )
@@ -112,6 +114,7 @@ describe Apache do
           min_spare_servers: 1,
           max_spare_servers: 2,
           max_clients: 4,
+          custom_config: '# some custom config',
           type: 'apache',
           action: 'stop'
         )

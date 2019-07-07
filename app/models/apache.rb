@@ -75,7 +75,8 @@ class Apache < ActiveRecord::Base
         ip: apache_variation.ip,
         php_version: apache_variation.php_version.sub('.', ''),
         action: action,
-        port: port
+        port: port,
+        custom_config: custom_config.to_s
       }
     when :destroy
       { user: system_user_name, action: 'destroy' }

@@ -3,6 +3,7 @@ FactoryBot.define do
     apache
     server_name { generate(:domain) }
     directory_index 'index.html'
+    custom_config { '# some custom config' }
 
     factory :vhost_ssl do
       ssl true

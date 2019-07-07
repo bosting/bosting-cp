@@ -42,13 +42,13 @@ class Vhost < ActiveRecord::Base
         ip: apache_variation.ip,
         external_ip: apache.ip_address.ip,
         php_version: apache_variation.php_version.first,
-        action: 'create'
+        custom_config: custom_config.to_s
       }
     elsif action == :destroy
-      { user: user, server_name: server_name, action: 'destroy' }
+      { user: user, server_name: server_name }
     else
       raise ArgumentError, "Unknown action specified: #{action}"
     end
-      .merge(type: 'vhost', apache_version: apache_version)
+      .merge(type: 'vhost', apache_version: apache_version, action: action.to_s)
   end
 end
