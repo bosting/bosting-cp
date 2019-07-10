@@ -30,16 +30,19 @@ class PgsqlUser < ActiveRecord::Base
     end
   end
 
-  def to_chef_json(action)
+  def to_chef(action)
     if action == :create
-      pgsql_user_hash = serializable_hash.slice('login', 'hashed_password')
-      pgsql_user_hash['action'] = 'create'
-      pgsql_user_hash
+      {
+        login: login,
+        hashed_password: hashed_password,
+        action: 'create'
+      }
     elsif action == :destroy
       { login: login, action: 'destroy' }
     else
       raise ArgumentError, "Unknown action specified: #{action}"
-    end.merge('type' => 'pgsql_user').to_json
+    end
+      .merge(type: 'pgsql_user')
   end
 
   private

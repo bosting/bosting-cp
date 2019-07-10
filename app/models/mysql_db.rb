@@ -12,15 +12,14 @@ class MysqlDb < ActiveRecord::Base
     db_name
   end
 
-  def to_chef_json(action)
+  def to_chef(action)
     if action == :create
-      mysql_db_hash = serializable_hash.slice('db_name')
-      mysql_db_hash['action'] = 'create'
-      mysql_db_hash
+      { db_name: db_name, action: 'create' }
     elsif action == :destroy
       { db_name: db_name, action: 'destroy' }
     else
       raise ArgumentError, "Unknown action specified: #{action}"
-    end.merge('type' => 'mysql_db', 'mysql_user' => mysql_user.login).to_json
+    end
+      .merge(type: 'mysql_db', mysql_user: mysql_user.login)
   end
 end

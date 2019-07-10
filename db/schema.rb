@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314105734) do
+ActiveRecord::Schema.define(version: 20190707150814) do
 
   create_table "apache_variations", force: :cascade do |t|
     t.string   "name",           limit: 255
@@ -338,6 +338,7 @@ ActiveRecord::Schema.define(version: 20170314105734) do
     t.integer  "ssl_cert_chain_id", limit: 4
     t.text     "ssl_certificate",   limit: 65535
     t.text     "ssl_key",           limit: 65535
+    t.text     "custom_config",     limit: 65535
   end
 
   add_index "vhosts", ["active"], name: "index_vhosts_on_active", using: :btree

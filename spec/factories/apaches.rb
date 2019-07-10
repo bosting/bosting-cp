@@ -10,6 +10,7 @@ FactoryBot.define do
     max_clients 4
     server_admin 'mail@example.com'
     apache_variation
+    custom_config { '# some custom config' }
 
     factory :apache_without_system_user_and_user do
       user nil

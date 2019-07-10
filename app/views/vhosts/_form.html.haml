@@ -9,12 +9,12 @@
       = tab_presentation 'main', 'Основное', true
       = tab_presentation 'indexes', 'Индексы'
       = tab_presentation 'ssl', 'SSL'
+      = tab_presentation 'settings', 'Настройки'
     = tabs_content do
       = tab_pane('main', true) do
         = f.input :server_name
         = f.input :primary
         = f.input :active
-        = f.input :skip_nginx
         = field_set_tag t('headers.vhost_aliases') do
           = f.simple_fields_for :vhost_aliases do |g|
             = g.label :name, class: 'control-label'
@@ -33,4 +33,7 @@
         = f.association :ssl_cert_chain
         = f.input :ssl_key, required: true
         = f.input :ssl_certificate, required: true
+      = tab_pane('settings') do
+        = f.input :skip_nginx
+        = f.input :custom_config
     = f.button :submit

@@ -25,7 +25,7 @@ describe PgsqlDb do
     expect(build(:pgsql_db, db_name: 'bolobolo', pgsql_user: pgsql_user)).not_to be_valid
   end
 
-  describe 'JSON for Chef' do
+  describe '#to_chef' do
     before(:all) do
       apache = create(:apache)
       @login = apache.system_user.name
@@ -35,23 +35,23 @@ describe PgsqlDb do
     end
 
     specify 'create action' do
-      expect(JSON.parse(@pgsql_db.to_chef_json(:create))).to(
-        match_json_expression(
-          "db_name": @db_name,
-          "pgsql_user": @login,
-          "type": 'pgsql_db',
-          "action": 'create'
+      expect(@pgsql_db.to_chef(:create)).to(
+        match(
+          db_name: @db_name,
+          pgsql_user: @login,
+          type: 'pgsql_db',
+          action: 'create'
         )
       )
     end
 
     specify 'destroy action' do
-      expect(JSON.parse(@pgsql_db.to_chef_json(:destroy))).to(
-        match_json_expression(
-          "db_name": @db_name,
-          "pgsql_user": @login,
-          "type": 'pgsql_db',
-          "action": 'destroy'
+      expect(@pgsql_db.to_chef(:destroy)).to(
+        match(
+          db_name: @db_name,
+          pgsql_user: @login,
+          type: 'pgsql_db',
+          action: 'destroy'
         )
       )
     end

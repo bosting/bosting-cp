@@ -33,7 +33,7 @@ describe SystemUser do
     end
   end
 
-  describe 'JSON for Chef' do
+  describe '#to_chef' do
     before(:all) { @system_group = create(:system_group, name: 'webuser') }
 
     specify 'create action' do
@@ -43,16 +43,16 @@ describe SystemUser do
                              create(:system_user_shell, name: 'bash',
                                     path: '/usr/local/bin/bash'))
       system_user.stubs(:hashed_password).returns('hashed_password')
-      expect(JSON.parse(system_user.to_chef_json(:create))).to(
-        match_json_expression(
-          'name': 'site',
-          'group': 'webuser',
-          'uid': 5_001,
-          'shell': '/usr/local/bin/bash',
-          'chroot_directory': '',
-          'hashed_password': 'hashed_password',
-          'type': 'system_user',
-          'action': 'create'
+      expect(system_user.to_chef(:create)).to(
+        match(
+          name: 'site',
+          group: 'webuser',
+          uid: 5_001,
+          shell: '/usr/local/bin/bash',
+          chroot_directory: '',
+          hashed_password: 'hashed_password',
+          type: 'system_user',
+          action: 'create'
         )
       )
     end
@@ -63,12 +63,12 @@ describe SystemUser do
                            system_user_shell:
                              create(:system_user_shell, name: 'bash',
                                     path: '/usr/local/bin/bash'))
-      expect(JSON.parse(system_user.to_chef_json(:destroy))).to(
-        match_json_expression(
-          'name': 'site2',
-          'chroot_directory': '',
-          'type': 'system_user',
-          'action': 'destroy'
+      expect(system_user.to_chef(:destroy)).to(
+        match(
+          name: 'site2',
+          chroot_directory: '',
+          type: 'system_user',
+          action: 'destroy'
         )
       )
     end
@@ -83,16 +83,16 @@ describe SystemUser do
       apache_variation = create(:apache_variation, name: 'apache22_php56')
       create(:apache, system_user: system_user,
              apache_variation: apache_variation)
-      expect(JSON.parse(system_user.to_chef_json(:create))).to(
-        match_json_expression(
-          'name': 'site3',
-          'group': 'webuser',
-          'uid': 5_003,
-          'shell': '/usr/local/bin/bash',
-          'chroot_directory': '/usr/jails/apache22_php56',
-          'hashed_password': 'hashed_password',
-          'type': 'system_user',
-          'action': 'create'
+      expect(system_user.to_chef(:create)).to(
+        match(
+          name: 'site3',
+          group: 'webuser',
+          uid: 5_003,
+          shell: '/usr/local/bin/bash',
+          chroot_directory: '/usr/jails/apache22_php56',
+          hashed_password: 'hashed_password',
+          type: 'system_user',
+          action: 'create'
         )
       )
     end
@@ -106,16 +106,16 @@ describe SystemUser do
       system_user.stubs(:hashed_password).returns('hashed_password')
       apache_variation = create(:apache_variation, name: 'apache22_php56')
       create(:apache, system_user: system_user, apache_variation: apache_variation)
-      expect(JSON.parse(system_user.to_chef_json(:create, apache_variation))).to(
-        match_json_expression(
-          'name': 'site4',
-          'group': 'webuser',
-          'uid': 5_004,
-          'shell': '/sbin/nologin',
-          'chroot_directory': '',
-          'hashed_password': 'hashed_password',
-          'type': 'system_user',
-          'action': 'create'
+      expect(system_user.to_chef(:create, apache_variation)).to(
+        match(
+          name: 'site4',
+          group: 'webuser',
+          uid: 5_004,
+          shell: '/sbin/nologin',
+          chroot_directory: '',
+          hashed_password: 'hashed_password',
+          type: 'system_user',
+          action: 'create'
         )
       )
     end

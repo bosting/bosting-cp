@@ -30,18 +30,18 @@ describe ApacheDestruction do
 
     apache_destruction.destroy_dependencies(apache)
 
-    expect(User.exists?(user.id)).to be_falsey
-    expect(Ftp.exists?(ftp.id)).to be_falsey
-    expect(SystemUser.exists?(system_user.id)).to be_falsey
-    expect(Domain.exists?(domain)).to be_falsey
-    expect(MysqlUser.exists?(mysql_user1)).to be_falsey
-    expect(MysqlUser.exists?(mysql_user2)).to be_falsey
-    expect(MysqlDb.exists?(mysql_db1)).to be_falsey
-    expect(MysqlDb.exists?(mysql_db2)).to be_falsey
-    expect(PgsqlUser.exists?(pgsql_user1)).to be_falsey
-    expect(PgsqlUser.exists?(pgsql_user2)).to be_falsey
-    expect(PgsqlDb.exists?(pgsql_db1)).to be_falsey
-    expect(PgsqlDb.exists?(pgsql_db2)).to be_falsey
+    expect(User.exists?(user.id)).to eq(false)
+    expect(Ftp.exists?(ftp.id)).to eq(false)
+    expect(SystemUser.exists?(system_user.id)).to eq(false)
+    expect(Domain.exists?(domain.id)).to eq(false)
+    expect(MysqlUser.exists?(mysql_user1.id)).to eq(false)
+    expect(MysqlUser.exists?(mysql_user2.id)).to eq(false)
+    expect(MysqlDb.exists?(mysql_db1.id)).to eq(false)
+    expect(MysqlDb.exists?(mysql_db2.id)).to eq(false)
+    expect(PgsqlUser.exists?(pgsql_user1.id)).to eq(false)
+    expect(PgsqlUser.exists?(pgsql_user2.id)).to eq(false)
+    expect(PgsqlDb.exists?(pgsql_db1.id)).to eq(false)
+    expect(PgsqlDb.exists?(pgsql_db2.id)).to eq(false)
   end
 
   it 'should not destroy dependencies' do
@@ -69,17 +69,17 @@ describe ApacheDestruction do
 
     apache_destruction.destroy_dependencies(apache)
 
-    expect(User.exists?(user.id)).to be_truthy
-    expect(Ftp.exists?(ftp.id)).to be_truthy
-    expect(SystemUser.exists?(system_user.id)).to be_truthy
-    expect(Domain.exists?(domain)).to be_truthy
-    expect(MysqlUser.exists?(mysql_user1)).to be_truthy
-    expect(MysqlUser.exists?(mysql_user2)).to be_truthy
-    expect(MysqlDb.exists?(mysql_db1)).to be_truthy
-    expect(MysqlDb.exists?(mysql_db2)).to be_truthy
-    expect(PgsqlUser.exists?(pgsql_user1)).to be_truthy
-    expect(PgsqlUser.exists?(pgsql_user2)).to be_truthy
-    expect(PgsqlDb.exists?(pgsql_db1)).to be_truthy
-    expect(PgsqlDb.exists?(pgsql_db2)).to be_truthy
+    expect(User.exists?(user.id)).to eq(true)
+    expect(Ftp.exists?(ftp.id)).to eq(true)
+    expect(SystemUser.exists?(system_user.id)).to eq(true)
+    expect(Domain.exists?(domain.id)).to eq(true)
+    expect(MysqlUser.exists?(mysql_user1.id)).to eq(true)
+    expect(MysqlUser.exists?(mysql_user2.id)).to eq(true)
+    expect(MysqlDb.exists?(mysql_db1.id)).to eq(true)
+    expect(MysqlDb.exists?(mysql_db2.id)).to eq(true)
+    expect(PgsqlUser.exists?(pgsql_user1.id)).to eq(true)
+    expect(PgsqlUser.exists?(pgsql_user2.id)).to eq(true)
+    expect(PgsqlDb.exists?(pgsql_db1.id)).to eq(true)
+    expect(PgsqlDb.exists?(pgsql_db2.id)).to eq(true)
   end
 end

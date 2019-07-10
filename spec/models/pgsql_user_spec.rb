@@ -41,7 +41,7 @@ describe PgsqlUser do
     expect(build(:pgsql_user_with_new_password, login: 'john', apache: apache)).not_to be_valid
   end
 
-  describe 'JSON for Chef' do
+  describe '#to_chef' do
     before(:all) do
       apache = create(:apache)
       @login = apache.system_user.name
@@ -50,22 +50,22 @@ describe PgsqlUser do
     before(:each) { PgsqlUser.any_instance.stubs(:hashed_password).returns('md5hashedpassword') }
 
     specify 'create action' do
-      expect(JSON.parse(@pgsql_user.to_chef_json(:create))).to(
-        match_json_expression(
-          "login": @login,
-          "hashed_password": 'md5hashedpassword',
-          "type": 'pgsql_user',
-          "action": 'create'
+      expect(@pgsql_user.to_chef(:create)).to(
+        match(
+          login: @login,
+          hashed_password: 'md5hashedpassword',
+          type: 'pgsql_user',
+          action: 'create'
         )
       )
     end
 
     specify 'destroy action' do
-      expect(JSON.parse(@pgsql_user.to_chef_json(:destroy))).to(
-        match_json_expression(
-          "login": @login,
-          "type": 'pgsql_user',
-          "action": 'destroy'
+      expect(@pgsql_user.to_chef(:destroy)).to(
+        match(
+          login: @login,
+          type: 'pgsql_user',
+          action: 'destroy'
         )
       )
     end
