@@ -199,7 +199,7 @@ GEM
     mysql2 (0.4.9)
     nested_form (0.3.2)
     net-ssh (3.2.0)
-    nokogiri (1.10.5)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
     parallel (1.12.0)
