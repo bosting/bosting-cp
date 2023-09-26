@@ -42,6 +42,7 @@ class Vhost < ActiveRecord::Base
         ip: apache_variation.ip,
         external_ip: apache.ip_address.ip,
         php_version: apache_variation.php_version.first,
+        skip_nginx: skip_nginx,
         custom_config: custom_config.to_s
       }
     elsif action == :destroy
